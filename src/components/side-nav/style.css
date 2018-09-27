@@ -1,0 +1,36 @@
+.menuWrapper {
+    width: 25% !important;
+    min-width: 265px;
+    max-width: 280px;
+    height: auto;
+    margin: 50px 25px 0 25px;
+}
+
+
+.menuWrapper .mainList{
+    list-style-type: none;
+    padding: 0;
+}
+
+.menuWrapper .subList{
+    list-style-type: none;
+    padding-left: 35px;
+}
+
+.menuWrapper li {
+    margin-bottom: 15px;
+}
+
+.menuWrapper a {
+    color: #7f7f7f;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.menuWrapper a:hover {
+    color: #3d5273;
+}
+
+.menuWrapper .active, .menuWrapper .active:hover {
+    color: #e3002b;
+}
