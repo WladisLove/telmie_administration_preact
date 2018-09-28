@@ -27,6 +27,7 @@
     "preact-render-spy": "^1.2.1"
   },
   "dependencies": {
+    "antd": "^3.9.3",
     "preact": "^8.2.6",
     "preact-compat": "^3.17.0",
     "preact-router": "^2.5.7"
