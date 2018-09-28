@@ -23,7 +23,21 @@ html, body {
 }
 
 .route-content {
-	margin-top: 50px;
+	margin: 50px 30px 0 0;
 	padding: 20px;
 	width: 100%;
+}
+
+.ant-table-thead > tr > th, 
+.ant-table-tbody > tr > td{
+    padding: 5px !important;
+}
+
+.ant-table-tbody > tr:nth-child(even){
+    background-color: #ececec;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+	background-color: #e3002b !important;
+	border-color: #7f7f7f !important;
 }
