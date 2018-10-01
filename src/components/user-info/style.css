@@ -1,0 +1,22 @@
+.profileHeader{
+    position: relative;
+    text-align: center;
+}
+
+
+.backBtn{
+    position: absolute;
+    top: 10px;
+    font-size: 16px;
+}
+
+.backBtn:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.topBtns{
+    display: flex;
+    justify-content: space-around; 
+    flex-wrap: wrap;
+}

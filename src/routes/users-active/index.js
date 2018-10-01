@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import Card from '../../components/card'
 import { Table, Checkbox, Button } from 'antd';
+import UserInfo from '../../components/user-info'
 import 'antd/dist/antd.css';
 import style from './style'
 
@@ -78,6 +79,18 @@ export default class ActiveUsers extends Component{
 			statusFilter: getDefaultStatuses() || [],
 			isFiltered: false,
 			filteredData: [],
+			selectedUser: {
+				id: '11245',
+				firstName: 'John',
+				lastName: 'Brown',
+				email: '',
+				status: 'Started Pro Appl',
+				lastActive: '',
+				creditCard: 'yes',
+				registrationDate: '',
+				bankAccount: 'no',
+				totalEarning: 22,
+			},
 			data: [{
 				id: '11245',
 				firstName: 'John',
@@ -138,31 +151,49 @@ export default class ActiveUsers extends Component{
 			let newData = data.filter(el => statusFilter.indexOf(el.status) != -1 );
 			this.setState({ filteredData: newData, isFiltered: true });
 		}
-		
+	}
+
+	onRow = (record) => {
+		return {
+			onClick: () => this.setState({ selectedUser: record })
+		}
+	}
+
+	onBackToList = () => {
+		this.setState({ selectedUser: null })
 	}
 
 	render(){
-		const {statusFilter, data, isFiltered, filteredData} = this.state;
+		const {statusFilter, data, isFiltered, filteredData, selectedUser} = this.state;
 
 		const dataSource = isFiltered ? filteredData : data;
 		return (
 			<Card cardClass='route-content'>
-				<h1>Active Users</h1>
-				<div class={style.filterGroup}>
-					<div class={style.filterGroupLabel}> Status filter: </div>
-					
-					<Checkbox.Group onChange={this.onChange} value={statusFilter}	>
-						{statusArr.map(({name}) => (<Checkbox className={statusFilter.indexOf(name) != -1 && style.checked} 
-																		key={name} value={name}>{name}</Checkbox>))}
-					</Checkbox.Group>
-					
-					<Button size='small' onClick={this.onFilter} className={style.filterBtn}>Filter</Button>
-				</div>
-					
-				<Table columns={columns} 
-					rowKey={(record) => record.id} 
-					dataSource={dataSource} 
-					onChange={onChange} />
+					{
+						selectedUser ? 
+							<UserInfo user={selectedUser}
+								backToList={this.onBackToList}/>
+								:
+							[
+								(<div class={style.filterGroup}>
+									<div class={style.filterGroupLabel}> Status filter: </div>
+									
+									<Checkbox.Group onChange={this.onChange} value={statusFilter}	>
+										{statusArr.map(({name}) => (<Checkbox className={statusFilter.indexOf(name) != -1 && style.checked} 
+																						key={name} value={name}>{name}</Checkbox>))}
+									</Checkbox.Group>
+									
+									<Button size='small' onClick={this.onFilter} className={style.filterBtn}>Filter</Button>
+								</div>) ,
+								(<Table columns={columns} 
+									rowKey={(record) => record.id} 
+									onRow={this.onRow}
+									dataSource={dataSource} 
+									onChange={onChange} />)
+							]
+													
+					}
+				
 			</Card>
 		)
 	}
