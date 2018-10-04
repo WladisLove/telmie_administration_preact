@@ -1,5 +1,7 @@
 import { h, Component } from 'preact';
 import Delimeter from './delimeter'
+import AccountDetail from './account-detail'
+import IndividualProDetail from './individual-pro-detail'
 import { Icon } from 'antd'
 import style from './style.css';
 
@@ -13,13 +15,16 @@ const UserInfo = props =>  {
             </div>
             <Delimeter statusText={user.status}/>
 
-            <div class={style.topBtns}>
-                <button>Activities</button>
-                <button>Money</button>
-                <button>Clients</button>
-                <button>List of Pros</button>
-                <button>Change Status</button>
+            <div class={style.topBtnsArea}>
+                <button disabled={true} class={style.topBtn}>Activities</button>
+                <button disabled={true} class={style.topBtn}>Money</button>
+                <button disabled={true} class={style.topBtn}>Clients</button>
+                <button disabled={true} class={style.topBtn}>List of Pros</button>
+                <button disabled={true} class={style.topBtn}>Change Status</button>
             </div>
+
+            <AccountDetail/>
+            <IndividualProDetail/>
         </div>
     )
 }

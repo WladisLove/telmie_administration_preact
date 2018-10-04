@@ -29,6 +29,24 @@ html, body {
 	width: 100%;
 }
 
+.headline {
+    font-size: 28px;
+    color: #7f7f7f;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.doubleInput{
+    display: flex;
+}
+.doubleInput > div {
+    width: 49%;
+}
+
+.doubleInput > div:first-child {
+    margin-right: 2%;
+}
+
 .ant-table-thead > tr > th, 
 .ant-table-tbody > tr > td{
     padding: 5px !important;

@@ -1,0 +1,31 @@
+.formTextarea{
+    display: flex;
+	position: relative;
+    font-size: 18px;
+    color: #3d5273;
+    margin-bottom: 10px;
+}
+
+.formTextarea label {
+    padding: 3px 0;
+    margin-right: 20px;
+    font-size: 18px;
+    white-space: nowrap;
+    width: auto;
+}
+
+.formTextarea textarea {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: transparent;
+
+    font-size: 18px;
+    color: #3d5273;
+    resize: none;
+    
+    outline: none;
+    display: block;
+    line-height: 1.2;
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+}
