@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-//import style from './style.css';
+import style from './style.css';
 import Input from '../../input'
 import Select from '../../select'
 import Textarea from '../../textarea'
@@ -9,7 +9,7 @@ const IndividualProDetail = props =>  {
     return (
         <div class={''}>
             <div class='headline'>Individual Pro details</div>
-            <Card>
+            <Card cardClass={style.proDetailsCard}>
                 <div style={{maxWidth: 700}}>
                     <Textarea label='Personal address:'/>
                     <div class='doubleInput'>

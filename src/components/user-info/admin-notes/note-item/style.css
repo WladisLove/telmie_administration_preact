@@ -1,0 +1,10 @@
+.noteContainer{
+    display: flex; 
+    color: #3d5273;
+    margin: 15px;
+}
+
+.noteContainer .dateDiv{
+    width: 200px;
+    flex: 0 0 200px;
+}

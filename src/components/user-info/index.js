@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 import Delimeter from './delimeter'
 import AccountDetail from './account-detail'
 import IndividualProDetail from './individual-pro-detail'
+import AdminNotes from './admin-notes'
 import { Icon } from 'antd'
 import style from './style.css';
 
@@ -25,6 +26,7 @@ const UserInfo = props =>  {
 
             <AccountDetail/>
             <IndividualProDetail/>
+            <AdminNotes saveNote={(note) => console.log('save note:', note)}/>
         </div>
     )
 }
