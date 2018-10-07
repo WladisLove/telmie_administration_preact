@@ -1,0 +1,20 @@
+
+
+.logInForm {
+	width: 450px;
+	margin: 0 auto;
+}
+
+.failure {
+    color: #e3002b;
+    background: #fef4f6;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 880px) {
+	.logInForm {
+		width: 100%;
+	}
+}
