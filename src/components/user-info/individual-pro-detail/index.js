@@ -17,20 +17,20 @@ const IndividualProDetail = props =>  {
                         <Input label='Post Code:' name='2'/>
                     </div>
                     <Input label='Country:' name='3'/>
-                    <Select label='Service category' data={['lol','lol2']} isArrayData/>
+                    <Select label='Service category' data={['test','test2']} isArrayData/>
                     <Input label='Service name:' name='4'/>
-                    <Select label='Service category:' data={['lol','lol2']} isArrayData/>
-                    <Select label='Service sub-category:' data={['lol','lol2']} isArrayData/>                    
+                    <Select label='Service category:' data={['test','test2']} isArrayData/>
+                    <Select label='Service sub-category:' data={['test','test2']} isArrayData/>                    
                     <Textarea label='Service description:'/>
 
                     <div style={{display: 'inline-block',width: '20%'}}>
-                        <Select data={['lol','lol2']} isArrayData/>
+                        <Select data={['test','test2']} isArrayData/>
                     </div>
                     <div style={{display: 'inline-block',width: '47%', marginLeft: '3%'}}>
                         <Input name='5'/>
                     </div>
                     <div style={{display: 'inline-block',width: '27%', marginLeft: '3%'}}>
-                        <Select data={['lol','lol2']} isArrayData/>
+                        <Select data={['test','test2']} isArrayData/>
                     </div>
                 </div>
             </Card>

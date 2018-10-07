@@ -36,6 +36,11 @@ html, body {
 	margin-bottom: 10px;
 }
 
+.fileContainer{
+	padding: 0 !important;
+	text-align: center;
+}
+
 .doubleInput{
     display: flex;
 }

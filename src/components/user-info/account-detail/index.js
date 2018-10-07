@@ -1,8 +1,12 @@
 import { h, Component } from 'preact';
 import style from './style.css';
 import Input from '../../input'
+import ImageUploader from 'react-images-upload';
 
 const AccountDetail = props =>  {
+    const onDrop = () => {
+
+    }
     return (
         <div class={style.accountDetail}>
             <div style={{width: '100%'}}>
@@ -14,7 +18,23 @@ const AccountDetail = props =>  {
                 <Input label='Email:' name='email'/>
             </div>
             
-            <div style={{width: 150}}> Avatar </div>
+            <div class={style.imageContainer}>
+
+                <div className={style.image}>
+					{/* (userData.avatar != null) ? (
+						<img src={apiRoot + 'image/' + userData.avatar.id} alt={userData.name + ' ' + userData.lastName} />
+					) : (
+						<img src="/assets/nouserimage.jpg" alt={''} />
+					)*/}
+				</div>
+
+                <ImageUploader
+					withIcon={false}
+					buttonText='Upload new'
+					onChange={onDrop}
+					imgExtension={['.jpg', '.png', '.gif']}
+					maxFileSize={5242880} />
+            </div>
             
         </div>
     )
