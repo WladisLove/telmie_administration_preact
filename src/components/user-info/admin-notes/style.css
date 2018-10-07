@@ -1,0 +1,32 @@
+.adminNotesCard{
+    background-color: #f6f6f6;
+}
+
+.adminNotesCard .taLabel {
+    font-size: 22px;
+    color: #7f7f7f;
+	font-weight: bold;
+    margin-bottom: 10px;
+    width: 200px;
+    flex: 0 0 200px;
+}
+
+.adminNotesCard .ta{
+    width: 100%;
+    box-sizing: border-box;
+    background-color: transparent;
+
+    font-size: 18px;
+    color: #3d5273;
+    resize: none;
+    outline: none;
+    display: block;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+}
+
+.adminNotesCard .saveNoteBtn{
+    box-sizing: border-box;
+    width: 70px;
+    margin: 10px 0 15px calc(100% - 70px);
+}

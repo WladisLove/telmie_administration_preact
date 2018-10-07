@@ -1,0 +1,26 @@
+.formInput {
+    font-size: 18px;
+    display: flex;
+    color: #3d5273;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.formInput label {
+    padding: 3px 0;
+    margin-right: 20px;
+    white-space: nowrap;
+    width: auto;
+}
+
+.formInput input {
+    background: transparent;
+    width: 100%;
+    min-width: 150px;
+    outline: none;
+    color: #3d5273;
+    font-size: 18px;
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 3px 0;
+}
