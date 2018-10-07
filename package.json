@@ -31,7 +31,7 @@
     "preact": "^8.2.6",
     "preact-compat": "^3.17.0",
     "preact-router": "^2.5.7",
-    "react-images-upload": "^1.2.3"
+    "react-images-upload": "^1.2.3",
     "preact-redux": "^2.0.3",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
