@@ -28,12 +28,12 @@ const loggedOff = (response) => ({
 
 export const logIn = (authData) => async (dispatch) => {
 	const response = await user.logIn(authData);
-	if (Object.keys(response).length === 0) {
-		dispatch(logInFailure());
-	} else {
-		dispatch(logInSuccess(response, authData));
-		setCookie('USER_AUTH', authData, 30);
-	}
+	Object.keys(response).length === 0 ?(
+		dispatch(logInFailure())
+	) : (
+		dispatch(logInSuccess(response, authData)),
+		setCookie('USER_AUTH', authData, 30)
+	)
 };
 
 export const logOff = () => (dispatch) => {

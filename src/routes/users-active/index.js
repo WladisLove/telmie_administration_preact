@@ -1,10 +1,14 @@
 import { h, Component } from 'preact';
+import { bindActionCreators } from 'redux';
+import { connect } from 'preact-redux';
 import Card from '../../components/card'
 import { Table, Checkbox, Button } from 'antd';
 import UserInfo from '../../components/user-info'
 import 'antd/dist/antd.css';
 import style from './style'
 
+import { getCategories } from '../../store/actions/data'
+import { getCookie } from '../../helpers/cookie'
 
 const columns = [{
   title: 'Id',
@@ -53,10 +57,6 @@ const columns = [{
   sorter: (a, b) => a.totalEarning - b.totalEarning,
 },];
 
-function onChange(pagination, filters, sorter) {
-  console.log('params', pagination, filters, sorter);
-}
-
 const statusArr = [{
 	name: 'Registered',
 }, {
@@ -74,7 +74,7 @@ const statusArr = [{
 const getDefaultStatuses = () => statusArr.map(el => el.name);
 
 
-export default class ActiveUsers extends Component{
+class ActiveUsers extends Component{
 	constructor(props){
 		super(props);
 
@@ -131,9 +131,7 @@ export default class ActiveUsers extends Component{
 		}
 	}
 
-	onChange = (checkedValues) => {
-		this.setState({statusFilter: [...checkedValues]});
-	}
+	onChange = (checkedValues) => this.setState({statusFilter: [...checkedValues]});
 
 	onFilter = () => {
 		const {data = [], statusFilter} = this.state;
@@ -145,25 +143,29 @@ export default class ActiveUsers extends Component{
 		}
 	}
 
-	onRow = (record) => {
-		return {
-			onClick: () => this.setState({ selectedUser: record })
-		}
-	}
+	onRow = (record) => ({
+		onClick: () => this.setState({ selectedUser: record }),
+	});
 
-	onBackToList = () => {
-		this.setState({ selectedUser: null })
-	}
+	onBackToList = () => this.setState({ selectedUser: null });
+
+	componentDidMount(){
+		let userAuth = this.props.userData.userAuth || getCookie('USER_AUTH');
+		userAuth && this.props.getCategories(userAuth);
+	};
 
 	render(){
 		const {statusFilter, data, isFiltered, filteredData, selectedUser} = this.state;
 
 		const dataSource = isFiltered ? filteredData : data;
+
+		console.log(...this.props);
 		return (
 			<Card cardClass='route-content'>
 					{
 						selectedUser ? 
 							<UserInfo user={selectedUser}
+								serverData={this.props.serverData}
 								backToList={this.onBackToList}/>
 								:
 							[
@@ -180,8 +182,7 @@ export default class ActiveUsers extends Component{
 								(<Table columns={columns} 
 									rowKey={(record) => record.id} 
 									onRow={this.onRow}
-									dataSource={dataSource} 
-									onChange={onChange} />)
+									dataSource={dataSource} />)
 							]
 													
 					}
@@ -191,3 +192,17 @@ export default class ActiveUsers extends Component{
 	}
 	
 };
+
+const mapStateToProps = (state) => ({
+	userData: state.loggedInUser,
+	serverData: state.serverData,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+	getCategories,
+}, dispatch);
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ActiveUsers);

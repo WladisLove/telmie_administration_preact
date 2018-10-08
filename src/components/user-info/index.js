@@ -6,8 +6,20 @@ import AdminNotes from './admin-notes'
 import { Icon } from 'antd'
 import style from './style.css';
 
+const currencyArr = [{
+    name: '£',
+    value: '£'
+}];
+
+const timeArr = [{
+    name: 'min',
+    value: 'min',
+}];
+
 const UserInfo = props =>  {
-    const {user, backToList } = props;
+    const {user, backToList, serverData } = props;
+    const {categories = [],subCategories=[]} = serverData;
+
     return (
         <div class={``}>
             <div class={style.profileHeader}>
@@ -25,7 +37,7 @@ const UserInfo = props =>  {
             </div>
 
             <AccountDetail/>
-            <IndividualProDetail/>
+            <IndividualProDetail categories={categories} subCategories={subCategories}/>
             <AdminNotes saveNote={(note) => console.log('save note:', note)}/>
         </div>
     )
