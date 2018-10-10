@@ -1,9 +1,13 @@
 import { h } from 'preact';
+import Fees from '../../components/fees-card'
+import WithdrawalFee from '../../components/withdrawal-fee-card'
+import Credits from '../../components/credits-card'
 
 const VariablesSettings = () => (
 	<div class='route-content'>
-		<h1>VariablesSettings</h1>
-		<p>This is the VariablesSettings component.</p>
+		<Fees/>
+		<WithdrawalFee/>
+		<Credits/>
 	</div>
 );
 

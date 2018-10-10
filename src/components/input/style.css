@@ -3,7 +3,6 @@
     display: flex;
     color: #3d5273;
     width: 100%;
-    margin-bottom: 10px;
 }
 
 .formInput label {
@@ -23,4 +22,14 @@
     border: none;
     border-bottom: 1px solid #e0e0e0;
     padding: 3px 0;
+}
+
+.formInput input:disabled::placeholder {
+    color: #3d5273;
+}
+
+.info{
+    width: 100%;
+    font-size: 12px;
+    margin-top: 3px;
 }

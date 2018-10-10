@@ -1,0 +1,16 @@
+.withdrawalTable{
+    font-size: 18px;
+}
+
+.withdrawalTable th {
+    width: 150px;
+    text-align: center;
+}
+
+.withdrawalTable > thead th {
+    font-weight: bold;
+}
+
+.withdrawalTable > tbody th {
+    font-weight: normal;
+}
