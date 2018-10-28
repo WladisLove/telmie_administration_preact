@@ -4,18 +4,22 @@ import Input from '../../input'
 import ImageUploader from 'react-images-upload';
 
 const AccountDetail = props =>  {
+    const { user = {} } = props;
+    const {name, lastName, email, avatar} = user;
+
     const onDrop = () => {
 
     }
+    
     return (
         <div class={style.accountDetail}>
             <div style={{width: '100%'}}>
                 <div class='headline'>Account details</div>
                 <div class='doubleInput'>
-                    <Input label='First Name:' name='name'/>
-                    <Input label='Last Name:' name='lastName'/>
+                    <Input label='First Name:' name='name' value={name}/>
+                    <Input label='Last Name:' name='lastName' value={lastName}/>
                 </div>
-                <Input label='Email:' name='email'/>
+                <Input label='Email:' name='email' value={email}/>
             </div>
             
             <div class={style.imageContainer}>

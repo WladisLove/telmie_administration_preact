@@ -66,3 +66,33 @@ html, body {
 	background-color: #e3002b !important;
 	border-color: #7f7f7f !important;
 }
+
+.spinContainer{
+	text-align: center;
+    margin: 30px 0;
+}
+.errorContainer{
+    color: #e3002b;
+    text-align: center;
+    font-size: 28px;
+    margin: 30px 10px;
+}
+.errorContainer .errorMsg{
+    font-size: 20px;
+}
+
+button {
+	color: #ffffff !important;
+	background-color: #979797;
+    width: 160px;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+button:disabled{
+    background-color: #4d4c4c;
+    cursor: default;
+}

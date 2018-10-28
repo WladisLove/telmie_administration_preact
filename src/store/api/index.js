@@ -5,4 +5,6 @@ export const apiUrls = {
   LOG_IN: apiRoot + 'auth',
   GET_CATEGORIES: apiRoot + 'categories',
   GET_ACTIVE_USERS: apiAdminRoot + 'users/active',
+  GET_PENDINGS: apiAdminRoot + 'pending',
+  GET_PENDING: (id) => (apiAdminRoot + 'pending/' + id),
 }

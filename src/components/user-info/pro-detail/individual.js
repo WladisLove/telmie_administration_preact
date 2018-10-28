@@ -39,9 +39,6 @@ class IndividualProDetail extends Component {
         const {category, subCategory} = this.state;
         const {categories, subCategories} = this.props;
 
-        console.log(...this.state);
-
-
         return (
             <div class={''}>
                 <div class='headline'>Individual Pro details</div>
@@ -53,7 +50,6 @@ class IndividualProDetail extends Component {
                             <Input label='Post Code:' name='2'/>
                         </div>
                         <Input label='Country:' name='3'/>
-                        <Select label='Service category' data={['test','test2']} isArrayData/>
                         <Input label='Service name:' name='4'/>
                         <Select label='Service category:' name='category' value={category} data={categories} onChange={this.onSelectCategory} isArrayData/>
                         <Select label='Service sub-category:' name='subCategory' value={subCategory} data={subCategories[category] ? subCategories[category] : []} onChange={this.onChange} isArrayData/>                    

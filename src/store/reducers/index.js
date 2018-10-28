@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 import * as user from './user';
 import * as data from './data';
+import * as pending from './pending';
 
 
 const rootReducer = combineReducers({
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
     logInFailure: user.logInError,
     serverData: data.serverData,
     usersArrays: user.usersArrays,
+    pending: pending.pendingReducer,
 });
 
 export default rootReducer;
