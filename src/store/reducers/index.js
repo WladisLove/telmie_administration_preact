@@ -8,6 +8,7 @@ const rootReducer = combineReducers({
     loggedInUser: user.loggedInUser,
     logInFailure: user.logInError,
     serverData: data.serverData,
+    usersArrays: user.usersArrays,
 });
 
 export default rootReducer;

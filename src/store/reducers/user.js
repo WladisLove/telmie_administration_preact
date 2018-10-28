@@ -27,3 +27,37 @@ export const logInError = (state = {}, action) => {
 			return false;
 	}
 };
+
+export const usersArrays = (state = {error: false, load: false}, action) => {
+	const setFields = {
+		error: false,
+		load: true,
+	},
+		clearFields = {
+			error: false,
+			load: false,
+		}
+	switch (action.type) {
+		case actionTypes.SET_ACTIVE_USERS:
+			return {
+				...state,
+				...setFields,
+				activeUsers: action.users,
+			}
+		case actionTypes.CLEAR_ACTIVE_USERS:
+			return {
+				...state,
+				...clearFields,
+				activeUsers: [],
+			}
+		case actionTypes.ERROR_GETTING_USERS:
+			return {
+				...state,
+				error: true,
+				load: true,
+				message: action.message,
+			}
+		default:
+			return state;
+	}
+};

@@ -25,6 +25,17 @@ const logInFailure = () => ({
 const loggedOff = (response) => ({
 	type: actionTypes.LOGGED_OFF
 });
+const getUsersFailure = (message) =>({
+	type: actionTypes.ERROR_GETTING_USERS,
+	message,
+})
+const setActiveU = (users) => ({
+	type: actionTypes.SET_ACTIVE_USERS,
+	users
+});
+const clearActiveU = () => ({
+	type: actionTypes.CLEAR_ACTIVE_USERS,
+});
 
 export const logIn = (authData) => async (dispatch) => {
 	const response = await user.logIn(authData);
@@ -42,3 +53,13 @@ export const logOff = () => (dispatch) => {
 };
 
 export const checkIfLoggedIn = () =>  /(^|;)\s*USER_AUTH=/.test(document.cookie);
+
+export const getActiveUsers = (authData) => async (dispatch) => {
+	const response = await user.getActiveUsers(authData);
+	response.error ? 
+		dispatch(getUsersFailure(response.message))
+		: dispatch(setActiveU(response));
+};
+export const clearActiveUsers = () => (dispatch) => {
+	dispatch(clearActiveU());
+};

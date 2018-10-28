@@ -2,12 +2,13 @@ import { h, Component } from 'preact';
 import { bindActionCreators } from 'redux';
 import { connect } from 'preact-redux';
 import Card from '../../components/card'
-import { Table, Checkbox, Button } from 'antd';
+import { Table, Checkbox, Button, Spin } from 'antd';
 import UserInfo from '../../components/user-info'
 import 'antd/dist/antd.css';
 import style from './style'
 
 import { getCategories } from '../../store/actions/data'
+import { getActiveUsers, clearActiveUsers } from '../../store/actions/user'
 import { getCookie } from '../../helpers/cookie'
 
 const columns = [{
@@ -17,7 +18,7 @@ const columns = [{
   sorter: (a, b) => a.id - b.id,
 },{
   title: 'First name',
-  dataIndex: 'firstName',
+  dataIndex: 'name',
   sorter: (a,b) => String(a.firstName).localeCompare(b.firstName),
 },{
   title: 'Last name',
@@ -83,64 +84,19 @@ class ActiveUsers extends Component{
 			isFiltered: false,
 			filteredData: [],
 			selectedUser: null,
-			data: [{
-				id: '11245',
-				firstName: 'Barry',
-				lastName: 'Brown',
-				email: '',
-				status: 'Started Pro Appl',
-				lastActive: '',
-				creditCard: 'yes',
-				registrationDate: '',
-				bankAccount: 'no',
-				totalEarning: 22,
-			}, {
-				id: '2',
-				firstName: 'Adam',
-				lastName: 'Green',
-				email: '',
-				status: 'Approved as Pro',
-				lastActive: '',
-				creditCard: 'no',
-				registrationDate: '',
-				bankAccount: 'yes',
-				totalEarning: 2,
-			}, {
-				id: '3',
-				firstName: 'Jack',
-				lastName: 'Black',
-				email: 'klimen1997@gmail/com',
-				status: 'Approved as Pro',
-				lastActive: '',
-				creditCard: 'yes',
-				registrationDate: '',
-				bankAccount: 'yes',
-				totalEarning: 11,
-			}, {
-				id: '4',
-				firstName: 'Jim',
-				lastName: 'Red',
-				email: '',
-				status: 'Registered',
-				lastActive: '',
-				creditCard: 'no',
-				registrationDate: '',
-				bankAccount: 'yes',
-				totalEarning: 0,
-			}]
 		}
 	}
 
 	onChange = (checkedValues) => this.setState({statusFilter: [...checkedValues]});
 
 	onFilter = () => {
-		const {data = [], statusFilter} = this.state;
+		/*const {data = [], statusFilter} = this.state;
 		if (statusFilter.length === statusArr.length){
 			this.setState({ filteredData: [], isFiltered: false });
 		} else {
 			let newData = data.filter(el => statusFilter.indexOf(el.status) != -1 );
 			this.setState({ filteredData: newData, isFiltered: true });
-		}
+		}*/
 	}
 
 	onRow = (record) => ({
@@ -152,24 +108,30 @@ class ActiveUsers extends Component{
 	componentDidMount(){
 		let userAuth = this.props.userData.userAuth || getCookie('USER_AUTH');
 		userAuth && this.props.getCategories(userAuth);
+		userAuth && this.props.getActiveUsers(userAuth);
 	};
 
+	componentWillUnmount(){
+		this.props.clearActiveUsers();
+	}
+
 	render(){
-		const {statusFilter, data, isFiltered, filteredData, selectedUser} = this.state;
+		const {statusFilter, isFiltered, filteredData, selectedUser} = this.state;
+		const {isLoaded = false, isError = false, errorMsg = '', activeUsers = []} = this.props;
 
-		const dataSource = isFiltered ? filteredData : data;
+		const dataSource = /*isFiltered ? filteredData :*/ activeUsers;
 
-		console.log(...this.props);
 		return (
 			<Card cardClass='route-content'>
-					{
+				{isLoaded ? 
+					!isError ? (
 						selectedUser ? 
 							<UserInfo user={selectedUser}
 								serverData={this.props.serverData}
 								backToList={this.onBackToList}/>
 								:
 							[
-								(<div class={style.filterGroup}>
+								/*(<div class={style.filterGroup}>
 									<div class={style.filterGroupLabel}> Status filter: </div>
 									
 									<Checkbox.Group onChange={this.onChange} value={statusFilter}	>
@@ -178,14 +140,23 @@ class ActiveUsers extends Component{
 									</Checkbox.Group>
 									
 									<Button size='small' onClick={this.onFilter} className={style.filterBtn}>Filter</Button>
-								</div>) ,
+								</div>) ,*/
 								(<Table columns={columns} 
 									rowKey={(record) => record.id} 
 									onRow={this.onRow}
+									pagination={{pageSize: 20}}
 									dataSource={dataSource} />)
 							]
+					) : (
+					<div class={style.errorContainer}>
+						Error! 
+						<div class={style.errorMsg}>{errorMsg}</div>
+					</div>) 
+					: (<div class={style.spinContainer}><Spin size='large'/></div>)}
+					{/*
+						
 													
-					}
+						*/}
 				
 			</Card>
 		)
@@ -196,10 +167,16 @@ class ActiveUsers extends Component{
 const mapStateToProps = (state) => ({
 	userData: state.loggedInUser,
 	serverData: state.serverData,
+	activeUsers: state.usersArrays.activeUsers,
+	isLoaded: state.usersArrays.load,
+	isError: state.usersArrays.error,
+	errorMsg: state.usersArrays.message,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
 	getCategories,
+	getActiveUsers,
+	clearActiveUsers,
 }, dispatch);
 
 export default connect(
