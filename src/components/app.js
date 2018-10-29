@@ -3,7 +3,7 @@ import { Router } from 'preact-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'preact-redux';
 
-import { Table, Checkbox, Button } from 'antd';
+import { Table, Checkbox, Button, Spin } from 'antd';
 
 import Header from './header';
 import SideNav from './side-nav'

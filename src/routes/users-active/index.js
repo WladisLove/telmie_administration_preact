@@ -2,60 +2,18 @@ import { h, Component } from 'preact';
 import { bindActionCreators } from 'redux';
 import { connect } from 'preact-redux';
 import Card from '../../components/card'
-import { Table, Checkbox, Button } from 'antd';
+import { Table, Checkbox, Button, Spin } from 'antd';
 import UserInfo from '../../components/user-info'
 import 'antd/dist/antd.css';
 import style from './style'
 
 import { getCategories } from '../../store/actions/data'
-import { getCookie } from '../../helpers/cookie'
+import { getActiveUsers, clearActiveUsers, getSelectedUser, clearSelectedUser, editUser } from '../../store/actions/user'
 
-const columns = [{
-  title: 'Id',
-  dataIndex: 'id',
-  defaultSortOrder: 'ascend',
-  sorter: (a, b) => a.id - b.id,
-},{
-  title: 'First name',
-  dataIndex: 'firstName',
-  sorter: (a,b) => String(a.firstName).localeCompare(b.firstName),
-},{
-  title: 'Last name',
-  dataIndex: 'lastName',
-  sorter: (a,b) => String(a.lastName).localeCompare(b.lastName),
-}, {
-  title: 'Email',
-  dataIndex: 'email',
-  sorter: (a,b) => String(a.email).localeCompare(b.email),
-},{
-	title: 'Status',
-	dataIndex: 'status',
-	sorter: (a,b) => String(a.status).localeCompare(b.status),
-},{
-  title: 'Last active',
-  dataIndex: 'lastActive',
-  // compare date
-  sorter: (a, b) => a.lastActive.length - b.lastActive.length,
-},{
-  title: 'Credit card',
-  dataIndex: 'creditCard',
-  // are kinds only 'yes'/'no' ???
-  sorter: (a, b) => a.creditCard.length - b.creditCard.length,
-},{
-  title: 'Registration date',
-  dataIndex: 'registrationDate',
-  // compare date
-  sorter: (a, b) => a.registrationDate.length - b.registrationDate.length,
-},{
-  title: 'Bank account',
-  dataIndex: 'bankAccount',
-  // are kinds only 'yes'/'no' ???
-  sorter: (a, b) => a.bankAccount.length - b.bankAccount.length,
-},{
-  title: 'Total earning',
-  dataIndex: 'totalEarning',
-  sorter: (a, b) => a.totalEarning - b.totalEarning,
-},];
+import { getCookie } from '../../helpers/cookie'
+import { PAGE_SIZE } from '../../helpers/consts'
+import { tableColumns as columns } from '../../helpers/table-data'
+
 
 const statusArr = [{
 	name: 'Registered',
@@ -82,94 +40,75 @@ class ActiveUsers extends Component{
 			statusFilter: getDefaultStatuses() || [],
 			isFiltered: false,
 			filteredData: [],
-			selectedUser: null,
-			data: [{
-				id: '11245',
-				firstName: 'Barry',
-				lastName: 'Brown',
-				email: '',
-				status: 'Started Pro Appl',
-				lastActive: '',
-				creditCard: 'yes',
-				registrationDate: '',
-				bankAccount: 'no',
-				totalEarning: 22,
-			}, {
-				id: '2',
-				firstName: 'Adam',
-				lastName: 'Green',
-				email: '',
-				status: 'Approved as Pro',
-				lastActive: '',
-				creditCard: 'no',
-				registrationDate: '',
-				bankAccount: 'yes',
-				totalEarning: 2,
-			}, {
-				id: '3',
-				firstName: 'Jack',
-				lastName: 'Black',
-				email: 'klimen1997@gmail/com',
-				status: 'Approved as Pro',
-				lastActive: '',
-				creditCard: 'yes',
-				registrationDate: '',
-				bankAccount: 'yes',
-				totalEarning: 11,
-			}, {
-				id: '4',
-				firstName: 'Jim',
-				lastName: 'Red',
-				email: '',
-				status: 'Registered',
-				lastActive: '',
-				creditCard: 'no',
-				registrationDate: '',
-				bankAccount: 'yes',
-				totalEarning: 0,
-			}]
+
+			selected: false,
 		}
 	}
 
 	onChange = (checkedValues) => this.setState({statusFilter: [...checkedValues]});
 
 	onFilter = () => {
-		const {data = [], statusFilter} = this.state;
+		/*const {data = [], statusFilter} = this.state;
 		if (statusFilter.length === statusArr.length){
 			this.setState({ filteredData: [], isFiltered: false });
 		} else {
 			let newData = data.filter(el => statusFilter.indexOf(el.status) != -1 );
 			this.setState({ filteredData: newData, isFiltered: true });
-		}
+		}*/
 	}
 
 	onRow = (record) => ({
-		onClick: () => this.setState({ selectedUser: record }),
+		onClick: () => {
+			this.setState({ selected : true });
+			this.props.getSelectedUser(record.id, this.userAuth);
+		},
 	});
 
-	onBackToList = () => this.setState({ selectedUser: null });
-
-	componentDidMount(){
-		let userAuth = this.props.userData.userAuth || getCookie('USER_AUTH');
-		userAuth && this.props.getCategories(userAuth);
+	onBackToList = () => {
+		this.props.clearSelectedUser();
+		this.setState({ selected: false });
 	};
 
+	componentDidMount(){
+		this.userAuth = this.props.userData.userAuth || getCookie('USER_AUTH');
+		this.userAuth && (
+			Object.keys(this.props.serverData).length || this.props.getCategories(this.userAuth)
+		);
+		this.userAuth && this.props.getActiveUsers(this.userAuth);
+	};
+
+	componentWillUnmount(){
+		this.props.clearActiveUsers();
+		this.props.clearSelectedUser();
+	}
+
+	onEditUser = (newData) => {
+		this.props.editUser(newData, newData.id, this.userAuth);
+	}
+
 	render(){
-		const {statusFilter, data, isFiltered, filteredData, selectedUser} = this.state;
+		const {statusFilter, isFiltered, filteredData, selected} = this.state;
+		const {isLoaded = false, isError = false, errorMsg = '', activeUsers = []} = this.props;
+		const {selectedUser = null, error: isUserError, message : errorMessage} = this.props.selectedUser;
 
-		const dataSource = isFiltered ? filteredData : data;
+		const dataSource = /*isFiltered ? filteredData :*/ activeUsers;
 
-		console.log(...this.props);
 		return (
 			<Card cardClass='route-content'>
-					{
-						selectedUser ? 
+				{isLoaded ? 
+					!isError ? (
+						selected ? 
 							<UserInfo user={selectedUser}
+								isError={isUserError}
+								errorMessage={errorMessage}
 								serverData={this.props.serverData}
-								backToList={this.onBackToList}/>
+								backToList={this.onBackToList}
+								isIndividual={false}
+								isPending={false}
+								editUserFunc={this.onEditUser}/>
 								:
 							[
-								(<div class={style.filterGroup}>
+								/*(<div class={style.filterGroup}>
 									<div class={style.filterGroupLabel}> Status filter: </div>
 									
 									<Checkbox.Group onChange={this.onChange} value={statusFilter}	>
@@ -178,14 +117,23 @@ class ActiveUsers extends Component{
 									</Checkbox.Group>
 									
 									<Button size='small' onClick={this.onFilter} className={style.filterBtn}>Filter</Button>
-								</div>) ,
+								</div>) ,*/
 								(<Table columns={columns} 
 									rowKey={(record) => record.id} 
 									onRow={this.onRow}
+									pagination={{pageSize: PAGE_SIZE}}
 									dataSource={dataSource} />)
 							]
+					) : (
+					<div class="errorContainer">
+						Error! 
+						<div class="errorMsg">{errorMsg}</div>
+					</div>) 
+					: (<div class='spinContainer'><Spin size='large'/></div>)}
+					{/*
+						
 													
-					}
+						*/}
 				
 			</Card>
 		)
@@ -196,10 +144,20 @@ class ActiveUsers extends Component{
 const mapStateToProps = (state) => ({
 	userData: state.loggedInUser,
 	serverData: state.serverData,
+	activeUsers: state.usersArrays.activeUsers,
+	isLoaded: state.usersArrays.load,
+	isError: state.usersArrays.error,
+	errorMsg: state.usersArrays.message,
+	selectedUser: state.selectedUser,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
 	getCategories,
+	getActiveUsers,
+	clearActiveUsers,
+	getSelectedUser,
+	clearSelectedUser,
+	editUser,
 }, dispatch);
 
 export default connect(

@@ -27,3 +27,78 @@ export const logInError = (state = {}, action) => {
 			return false;
 	}
 };
+
+export const usersArrays = (state = {error: false, load: false}, action) => {
+	const setFields = {
+		error: false,
+		load: true,
+	},
+		clearFields = {
+			error: false,
+			load: false,
+		}
+	switch (action.type) {
+		case actionTypes.SET_ACTIVE_USERS:
+			return {
+				...state,
+				...setFields,
+				activeUsers: action.users,
+			}
+		case actionTypes.CLEAR_ACTIVE_USERS:
+			return {
+				...state,
+				...clearFields,
+				activeUsers: [],
+			}
+		case actionTypes.ERROR_GETTING_USERS:
+			return {
+				...state,
+				error: true,
+				load: true,
+				message: action.message,
+			}
+		default:
+			return state;
+	}
+};
+
+export const selectedUserReducer = (state = {error: false}, action) => {
+	switch (action.type) {
+		case actionTypes.USER_GETTING_FAILURE:
+			return {
+				...state,
+				error: true,
+				message: action.message,
+			}
+			
+        case actionTypes.SELECT_USER: 
+            return {
+                ...state,
+                selectedUser: action.user,
+				error: false,
+				message: '',
+			}
+		case actionTypes.CLEAR_USER:
+			return {
+				...state,
+				error: false,
+				selectedUser: null,
+				message: '',
+			}
+		case actionTypes.EDIT_USER_SUCCESS:
+			return {
+				...state,
+				selectedUser: action.user,
+				error: false,
+				message: '',
+			}
+		case actionTypes.EDIT_USER_FAILURE:
+			return {
+				...state,
+				error: true,
+				message: `${action.message ? action.message : ''} in editing user`,
+			}
+		default:
+			return state;
+	}
+};

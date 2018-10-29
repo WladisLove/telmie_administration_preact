@@ -1,0 +1,50 @@
+.proDetailsCard{
+    background-color: #f6f6f6;
+}
+
+.cardContent{
+    display: flex;
+    flex-wrap: wrap;
+    
+}
+
+.detailsArea{
+    width: 70%;
+    max-width: 900px;
+}
+.approveArea{
+    width: 30%;
+    padding: 25px;
+    text-align: right;
+}
+
+.approveArea button{
+    display: block;
+    margin: 0 0 15px auto;
+}
+
+.approveArea .approveBtn{
+    background-color: green;
+}
+.approveArea .declineBtn{
+    background-color: red;
+}
+
+.approveArea > .messageContainer{
+    width: 100%;
+    font-size: 20px !important;
+    margin: 15px 0 !important;
+    color: green;
+}
+
+@media (max-width: 1400px) {
+    .detailsArea{
+        width: 100%;
+    }
+    .approveArea{
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+}

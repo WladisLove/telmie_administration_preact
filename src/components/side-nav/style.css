@@ -34,3 +34,12 @@
 .menuWrapper .active, .menuWrapper .active:hover {
     color: #e3002b;
 }
+
+.subMenu{
+    position: relative;
+}
+.subMenu:before { 
+    position: absolute;
+    content: "•";
+    left: -10px;
+}

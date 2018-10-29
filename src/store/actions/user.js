@@ -25,6 +25,32 @@ const logInFailure = () => ({
 const loggedOff = (response) => ({
 	type: actionTypes.LOGGED_OFF
 });
+const getUsersFailure = (message) =>({
+	type: actionTypes.ERROR_GETTING_USERS,
+	message,
+})
+const setActiveU = (users) => ({
+	type: actionTypes.SET_ACTIVE_USERS,
+	users
+});
+const clearActiveU = () => ({
+	type: actionTypes.CLEAR_ACTIVE_USERS,
+});
+const getSelectedUserFailure = (message) =>({
+	type: actionTypes.USER_GETTING_FAILURE,
+	message,
+});
+const selectUser = (user) => ({
+	type: actionTypes.SELECT_USER,
+	user
+});
+const editUserSuccess = (user) => ({
+	type: actionTypes.EDIT_USER_SUCCESS,
+	user,
+});
+const editUserFailure = () => ({
+	type: actionTypes.EDIT_USER_FAILURE,
+});
 
 export const logIn = (authData) => async (dispatch) => {
 	const response = await user.logIn(authData);
@@ -42,3 +68,31 @@ export const logOff = () => (dispatch) => {
 };
 
 export const checkIfLoggedIn = () =>  /(^|;)\s*USER_AUTH=/.test(document.cookie);
+
+export const getActiveUsers = (authData) => async (dispatch) => {
+	const response = await user.getActiveUsers(authData);
+	response.error ? 
+		dispatch(getUsersFailure(response.message))
+		: dispatch(setActiveU(response));
+};
+export const clearActiveUsers = () => (dispatch) => {
+	dispatch(clearActiveU());
+};
+
+export const getSelectedUser = (id, authData) => async (dispatch) => {
+	const response = await user.getUser(id, authData);
+	response.error ? 
+		dispatch(getSelectedUserFailure(response.message))
+		: dispatch(selectUser(response));
+};
+export const clearSelectedUser = () => (dispatch) => {
+	dispatch(selectUser(null));
+};
+
+export const editUser = (data, id, authData) => async (dispatch) => {
+	dispatch(selectUser(null)); // when updating starts (for spinner)
+	const response = await user.editUser(data, id, authData);
+	response.error ? 
+		dispatch(editUserFailure(response.message))
+		: dispatch(editUserSuccess(response));
+};
