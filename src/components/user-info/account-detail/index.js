@@ -3,6 +3,8 @@ import style from './style.css';
 import Input from '../../input'
 import ImageUploader from 'react-images-upload';
 
+import { apiRoot } from '../../../store/api/index'
+
 const AccountDetail = props =>  {
     const { user = {} } = props;
     const {name, lastName, email, avatar} = user;
@@ -25,19 +27,19 @@ const AccountDetail = props =>  {
             <div class={style.imageContainer}>
 
                 <div className={style.image}>
-					{/* (userData.avatar != null) ? (
-						<img src={apiRoot + 'image/' + userData.avatar.id} alt={userData.name + ' ' + userData.lastName} />
+					{(user.avatar != null) ? (
+						<img src={apiRoot + 'image/' + user.avatar.id} alt={user.name + ' ' + user.lastName} />
 					) : (
 						<img src="/assets/nouserimage.jpg" alt={''} />
-					)*/}
+					)}
 				</div>
 
-                <ImageUploader
+                {/*<ImageUploader
 					withIcon={false}
 					buttonText='Upload new'
 					onChange={onDrop}
 					imgExtension={['.jpg', '.png', '.gif']}
-					maxFileSize={5242880} />
+                maxFileSize={5242880} />*/}
             </div>
             
         </div>

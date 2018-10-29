@@ -9,7 +9,7 @@ const SubMenu = (props) => {
         isSelected = props.menuKey === props.selectedMenuKey;
 
 	return isSelected ? (
-        <li class={isActive && style.active}>
+        <li class={`${style.subMenu} ${isActive && style.active}`}>
             <div style={{marginBottom: 10, cursor: 'default'}}>{props.children}</div>
             <ul class = {style.subList}>
                 {props.links.map(link => (
@@ -17,7 +17,7 @@ const SubMenu = (props) => {
             </ul>
         </li>
 	) : (
-        <li class={isActive && style.active} style={{cursor: 'default'}} onClick={selectHandler} >{props.children}</li>
+        <li class={`${style.subMenu} ${isActive && style.active}`} style={{cursor: 'default'}} onClick={selectHandler} >{props.children}</li>
     )
 };
 
