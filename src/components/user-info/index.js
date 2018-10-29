@@ -18,8 +18,15 @@ const timeArr = [{
 }];
 
 const UserInfo = props =>  {
-    const {user = {}, backToList, serverData = {}, isApproving, isIndividual, activateUser, controlsFunc } = props;
+    const {user = {}, backToList, serverData = {}, isPending, isIndividual, activateUser, controlsFunc, isError } = props;
     const {categories = [],subCategories=[]} = serverData;
+
+    const saveUserInfo = (fields = {}) => {
+        console.log('save:', {
+            ...user,
+            ...fields,
+        })
+    }
 
     return (
         <div class={``}>
@@ -32,27 +39,33 @@ const UserInfo = props =>  {
             <Delimeter statusText={user ? user.status : ''}/>
 
             {
-                user ? ([
-                    <div class={style.topBtnsArea}>
-                        <button disabled={true} >Activities</button>
-                        <button disabled={true} >Money</button>
-                        <button disabled={true} >Clients</button>
-                        <button disabled={true} >List of Pros</button>
-                        <button disabled={true} >Change Status</button>
-                    </div>,
+                isError ? (
+                    <div class="errorContainer">
+						Error! 
+					</div>
+                ) : (
+                    user ? ([
+                        <div class={style.topBtnsArea}>
+                            <button disabled={true} >Activities</button>
+                            <button disabled={true} >Money</button>
+                            <button disabled={true} >Clients</button>
+                            <button disabled={true} >List of Pros</button>
+                            <button disabled={true} >Change Status</button>
+                        </div>,
 
-                    <AccountDetail isApproving = {isApproving} user={user}/>,
-                    /*(isIndividual ? 
-                        <IndividualProDetail categories={categories} subCategories={subCategories} isApproving={isApproving} user={user} activateUser={activateUser}/>
-                        :*/( <BusinessProDetail categories={categories} 
-                                subCategories={subCategories} 
-                                isApproving={isApproving} 
-                                user={user} 
-                                controlsFunc={controlsFunc} 
-                                activateUser={activateUser}/>),
-                    <AdminNotes saveNote={(note) => console.log('save note:', note)}/>,
-                ]) : (
-                    <div class="spinContainer"><Spin size='large'/></div>
+                        <AccountDetail isPending = {isPending} user={user} saveUserInfo={saveUserInfo}/>,
+                        /*(isIndividual ? 
+                            <IndividualProDetail categories={categories} subCategories={subCategories} isPending={isPending} user={user} activateUser={activateUser}/>
+                            :*/( <BusinessProDetail categories={categories} 
+                                    subCategories={subCategories} 
+                                    isPending={isPending} 
+                                    user={user} 
+                                    controlsFunc={controlsFunc} 
+                                    activateUser={activateUser}/>),
+                        <AdminNotes saveNote={(note) => console.log('save note:', note)}/>,
+                    ]) : (
+                        <div class="spinContainer"><Spin size='large'/></div>
+                    )
                 )
             }
             

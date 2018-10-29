@@ -35,3 +35,11 @@
     top: 1px;
     left: 1px;
 }
+
+.controls{
+    text-align: right;
+    min-height: 38px;
+}
+.controls button:not(:last-child){
+    margin-right: 10px;
+}

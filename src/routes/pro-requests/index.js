@@ -8,7 +8,8 @@ import { Table, Spin } from 'antd';
 import 'antd/dist/antd.css';
 
 import { getCategories } from '../../store/actions/data'
-import { getPendings, clearPendings, getSelectedPending, clearSelectedPending, activateUser } from '../../store/actions/pending'
+import { getSelectedUser, clearSelectedUser } from '../../store/actions/user'
+import { getPendings, clearPendings, activateUser } from '../../store/actions/pending'
 
 import { getCookie } from '../../helpers/cookie'
 import { PAGE_SIZE } from '../../helpers/consts'
@@ -37,16 +38,17 @@ class Requests extends Component{
 	onRow = (record) => ({
 		onClick: () => {
 			this.setState({selected : true});
-			this.props.getSelectedPending(record.id, this.userAuth);
+			this.props.getSelectedUser(record.id, this.userAuth);
 		},
 	});
 	onBackToList = () => {
-		this.props.clearSelectedPending();
+		this.props.clearSelectedUser();
 		this.setState({ selected: false });
 	};
 
 	render(){
-		const {message = '', error: isError, load: isLoaded, pendings = [], selectedPending = null} = this.props.pending;
+		const {message = '', error: isError, load: isLoaded, pendings = []} = this.props.pending;
+		const {selectedUser = null, error: isUserError} = this.props.selectedUser;
 		const {selected} = this.state;
 		const userAuth = this.userAuth;
 		const controlsFunc = {
@@ -57,11 +59,12 @@ class Requests extends Component{
 				{isLoaded ? (
 					!isError ? (
 						selected ? (
-							<UserInfo user={selectedPending}
+							<UserInfo user={selectedUser}
+								isError={isUserError}
 								serverData={this.props.serverData}
 								backToList={this.onBackToList}
 								isIndividual={false}
-								isApproving={true}
+								isPending={true}
 								controlsFunc={controlsFunc}
 								activateUser={this.props.activateUser}/>
 						) : (
@@ -88,14 +91,15 @@ const mapStateToProps = (state) => ({
 	serverData: state.serverData,
 	pending: state.pending,
 	activateUser: state.activateUser,
+	selectedUser: state.selectedUser,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
 	getCategories,
 	getPendings,
 	clearPendings,
-	getSelectedPending,
-	clearSelectedPending,
+	getSelectedUser,
+	clearSelectedUser,
 	activateUserFunc: activateUser,
 }, dispatch);
 

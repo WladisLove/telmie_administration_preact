@@ -13,10 +13,6 @@ const setPendings = (pendings) => ({
 const clearPendingsArr = () => ({
 	type: actionTypes.CLEAR_PENDINGS,
 });
-const selectPending = (pending) => ({
-	type: actionTypes.SELECT_PENDING,
-	pending
-});
 
 
 const activateUserStart = () => ({
@@ -37,16 +33,6 @@ export const getPendings = (authData) => async (dispatch) => {
 };
 export const clearPendings = () => (dispatch) => {
 	dispatch(clearPendingsArr());
-};
-
-export const getSelectedPending = (id, authData) => async (dispatch) => {
-	const response = await pending.getPending(id, authData);
-	response.error ? 
-		dispatch(getPendingsFailure(response.message))
-		: dispatch(selectPending(response));
-};
-export const clearSelectedPending = () => (dispatch) => {
-	dispatch(selectPending(null));
 };
 
 export const activateUser = (id, authData) => async (dispatch) => {
