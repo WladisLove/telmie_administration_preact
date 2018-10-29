@@ -40,13 +40,14 @@ class BusinessProDetail extends Component {
     render(){
         //const {category, subCategory} = this.state;
         const {categories, subCategories, isPending = false, user = {}, activateUser, controlsFunc } = this.props;
-        const {location = null,mobile,video, pro={}} = user;
-        const {category, subCategory,profession,professionDescription, costPerMinute = 0} = pro;
+        const {location = null, mobile, video, pro={}} = user;
+        const {category, subCategory,profession,professionDescription, costPerMinute = 0} = pro ? pro : {};
         const {country,city,line1,postCode} = JSON.parse(location) ? JSON.parse(location) : {};
 
         return (
             <div class={''}>
                 <div class='headline'>Business Pro details</div>
+                {!pro && <div style={{marginBottom:10}}>(not a Pro)</div>}
                 <Card cardClass={style.proDetailsCard} class={style.cardContent}>
                     <div class={style.detailsArea}>
                         <Input label='Business name:' name='' disabled={isPending}/>
@@ -66,14 +67,14 @@ class BusinessProDetail extends Component {
                         <Textarea label='Service description:' value={professionDescription} disabled={isPending}/>
     
                         <div style={{display: 'inline-block',width: '20%'}}>
-                            <Input value={'£'} disabled={true}/>
+                            <Input value={'£'} disabled={true} inputStyle={{textAlign: 'center'}}/>
                             {/*<Select isArrayData value={'£'}/>*/}
                         </div>
                         <div style={{display: 'inline-block',width: '47%', marginLeft: '3%'}}>
-                            <Input name='5' value={costPerMinute} disabled={isPending}/>
+                            <Input name='5' value={costPerMinute} disabled={isPending} inputStyle={{textAlign: 'center'}}/>
                         </div>
                         <div style={{display: 'inline-block',width: '27%', marginLeft: '3%'}}>
-                            <Input value={'min'} disabled={true}/>
+                            <Input value={'min'} disabled={true} inputStyle={{textAlign: 'center'}}/>
                             {/*<Select data={['test','test2']} isArrayData value={'min'}/>*/}
                         </div>
 

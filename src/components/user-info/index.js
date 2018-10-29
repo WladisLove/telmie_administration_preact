@@ -18,15 +18,18 @@ const timeArr = [{
 }];
 
 const UserInfo = props =>  {
-    const {user = {}, backToList, serverData = {}, isPending, isIndividual, activateUser, controlsFunc, isError } = props;
+    const {user = {}, backToList, serverData = {}, isPending, isIndividual, activateUser, controlsFunc, isError, editUserFunc, errorMessage ='' } = props;
     const {categories = [],subCategories=[]} = serverData;
 
     const saveUserInfo = (fields = {}) => {
-        console.log('save:', {
+        let data = {
             ...user,
             ...fields,
-        })
+        }
+        editUserFunc(data)
     }
+
+    console.log(user)
 
     return (
         <div class={``}>
@@ -41,7 +44,7 @@ const UserInfo = props =>  {
             {
                 isError ? (
                     <div class="errorContainer">
-						Error! 
+						Error! {errorMessage}
 					</div>
                 ) : (
                     user ? ([

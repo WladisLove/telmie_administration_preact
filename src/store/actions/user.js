@@ -44,6 +44,13 @@ const selectUser = (user) => ({
 	type: actionTypes.SELECT_USER,
 	user
 });
+const editUserSuccess = (user) => ({
+	type: actionTypes.EDIT_USER_SUCCESS,
+	user,
+});
+const editUserFailure = () => ({
+	type: actionTypes.EDIT_USER_FAILURE,
+});
 
 export const logIn = (authData) => async (dispatch) => {
 	const response = await user.logIn(authData);
@@ -80,4 +87,12 @@ export const getSelectedUser = (id, authData) => async (dispatch) => {
 };
 export const clearSelectedUser = () => (dispatch) => {
 	dispatch(selectUser(null));
+};
+
+export const editUser = (data, id, authData) => async (dispatch) => {
+	dispatch(selectUser(null)); // when updating starts (for spinner)
+	const response = await user.editUser(data, id, authData);
+	response.error ? 
+		dispatch(editUserFailure(response.message))
+		: dispatch(editUserSuccess(response));
 };

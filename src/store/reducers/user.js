@@ -75,26 +75,29 @@ export const selectedUserReducer = (state = {error: false}, action) => {
             return {
                 ...state,
                 selectedUser: action.user,
-                error: false,
+				error: false,
+				message: '',
 			}
 		case actionTypes.CLEAR_USER:
 			return {
 				...state,
 				error: false,
 				selectedUser: null,
-			}
-		/*case actionTypes.EDIT_USER:
-			return {
-				...state,
-				selectedUser: null,
-				error: false,
+				message: '',
 			}
 		case actionTypes.EDIT_USER_SUCCESS:
 			return {
 				...state,
-				selectedUser: message.user,
+				selectedUser: action.user,
 				error: false,
-			}*/
+				message: '',
+			}
+		case actionTypes.EDIT_USER_FAILURE:
+			return {
+				...state,
+				error: true,
+				message: `${action.message ? action.message : ''} in editing user`,
+			}
 		default:
 			return state;
 	}

@@ -8,7 +8,8 @@ import 'antd/dist/antd.css';
 import style from './style'
 
 import { getCategories } from '../../store/actions/data'
-import { getActiveUsers, clearActiveUsers } from '../../store/actions/user'
+import { getActiveUsers, clearActiveUsers, getSelectedUser, clearSelectedUser, editUser } from '../../store/actions/user'
+
 import { getCookie } from '../../helpers/cookie'
 import { PAGE_SIZE } from '../../helpers/consts'
 import { tableColumns as columns } from '../../helpers/table-data'
@@ -39,7 +40,8 @@ class ActiveUsers extends Component{
 			statusFilter: getDefaultStatuses() || [],
 			isFiltered: false,
 			filteredData: [],
-			selectedUser: null,
+
+			selected: false,
 		}
 	}
 
@@ -56,24 +58,38 @@ class ActiveUsers extends Component{
 	}
 
 	onRow = (record) => ({
-		onClick: () => this.setState({ selectedUser: record }),
+		onClick: () => {
+			this.setState({ selected : true });
+			this.props.getSelectedUser(record.id, this.userAuth);
+		},
 	});
 
-	onBackToList = () => this.setState({ selectedUser: null });
+	onBackToList = () => {
+		this.props.clearSelectedUser();
+		this.setState({ selected: false });
+	};
 
 	componentDidMount(){
-		let userAuth = this.props.userData.userAuth || getCookie('USER_AUTH');
-		userAuth && this.props.getCategories(userAuth);
-		userAuth && this.props.getActiveUsers(userAuth);
+		this.userAuth = this.props.userData.userAuth || getCookie('USER_AUTH');
+		this.userAuth && (
+			Object.keys(this.props.serverData).length || this.props.getCategories(this.userAuth)
+		);
+		this.userAuth && this.props.getActiveUsers(this.userAuth);
 	};
 
 	componentWillUnmount(){
 		this.props.clearActiveUsers();
+		this.props.clearSelectedUser();
+	}
+
+	onEditUser = (newData) => {
+		this.props.editUser(newData, newData.id, this.userAuth);
 	}
 
 	render(){
-		const {statusFilter, isFiltered, filteredData, selectedUser} = this.state;
+		const {statusFilter, isFiltered, filteredData, selected} = this.state;
 		const {isLoaded = false, isError = false, errorMsg = '', activeUsers = []} = this.props;
+		const {selectedUser = null, error: isUserError, message : errorMessage} = this.props.selectedUser;
 
 		const dataSource = /*isFiltered ? filteredData :*/ activeUsers;
 
@@ -81,10 +97,15 @@ class ActiveUsers extends Component{
 			<Card cardClass='route-content'>
 				{isLoaded ? 
 					!isError ? (
-						selectedUser ? 
+						selected ? 
 							<UserInfo user={selectedUser}
+								isError={isUserError}
+								errorMessage={errorMessage}
 								serverData={this.props.serverData}
-								backToList={this.onBackToList}/>
+								backToList={this.onBackToList}
+								isIndividual={false}
+								isPending={false}
+								editUserFunc={this.onEditUser}/>
 								:
 							[
 								/*(<div class={style.filterGroup}>
@@ -127,12 +148,16 @@ const mapStateToProps = (state) => ({
 	isLoaded: state.usersArrays.load,
 	isError: state.usersArrays.error,
 	errorMsg: state.usersArrays.message,
+	selectedUser: state.selectedUser,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
 	getCategories,
 	getActiveUsers,
 	clearActiveUsers,
+	getSelectedUser,
+	clearSelectedUser,
+	editUser,
 }, dispatch);
 
 export default connect(

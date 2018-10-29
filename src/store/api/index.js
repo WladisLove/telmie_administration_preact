@@ -8,4 +8,5 @@ export const apiUrls = {
   GET_PENDINGS: apiAdminRoot + 'pending',
   GET_PENDING: (id) => (apiAdminRoot + 'pending/' + id),
   ACTIVATE_USER: (id) => (apiAdminRoot + 'pending/' + id + '/activate'),
+  EDIT_ACTIVE_USER: (id) => (apiAdminRoot + 'users/active/' + id),
 }

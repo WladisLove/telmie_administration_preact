@@ -33,6 +33,7 @@ class Requests extends Component{
 	};
 	componentWillUnmount(){
 		this.props.clearPendings();
+		this.props.clearSelectedUser()
 	};
 
 	onRow = (record) => ({
