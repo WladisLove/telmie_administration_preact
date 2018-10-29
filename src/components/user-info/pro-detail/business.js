@@ -42,7 +42,7 @@ class BusinessProDetail extends Component {
         const {categories, subCategories, isPending = false, user = {}, activateUser, controlsFunc } = this.props;
         const {location = null, mobile, video, pro={}} = user;
         const {category, subCategory,profession,professionDescription, costPerMinute = 0} = pro ? pro : {};
-        const {country,city,line1,postCode} = JSON.parse(location) ? JSON.parse(location) : {};
+        const {country,city,line1,postCode} = /*JSON.parse(location) ? JSON.parse(location) :*/ {};
 
         return (
             <div class={''}>
