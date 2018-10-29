@@ -11,6 +11,7 @@ const rootReducer = combineReducers({
     serverData: data.serverData,
     usersArrays: user.usersArrays,
     pending: pending.pendingReducer,
+    activateUser: pending.activateUser,
 });
 
 export default rootReducer;

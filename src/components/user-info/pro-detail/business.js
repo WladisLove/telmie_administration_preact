@@ -39,7 +39,7 @@ class BusinessProDetail extends Component {
 
     render(){
         //const {category, subCategory} = this.state;
-        const {categories, subCategories, isApproving = false, user = {}} = this.props;
+        const {categories, subCategories, isApproving = false, user = {}, activateUser, controlsFunc } = this.props;
         const {location = null,mobile,video, pro={}} = user;
         const {category, subCategory,profession,professionDescription, costPerMinute = 0} = pro;
         const {country,city,line1,postCode} = JSON.parse(location) ? JSON.parse(location) : {};
@@ -81,7 +81,7 @@ class BusinessProDetail extends Component {
                         <Input label='YouTube ID:' name='' value={video}/>
                     </div>
 
-                    {isApproving && <ApproveArea />}
+                    {isApproving && <ApproveArea activateUser={activateUser} controlsFunc={controlsFunc} userId = {user.id}/>}
                 </Card>
             </div>
         )

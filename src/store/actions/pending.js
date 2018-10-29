@@ -18,6 +18,17 @@ const selectPending = (pending) => ({
 	pending
 });
 
+
+const activateUserStart = () => ({
+	type: actionTypes.START_ACTIVATE_USER,
+});
+const activateUserFailure = () => ({
+	type: actionTypes.ACTIVATE_USER_FAILURE,
+});
+const activateUserSuccess = () => ({
+	type: actionTypes.ACTIVATE_USER_SUCCESS,
+});
+
 export const getPendings = (authData) => async (dispatch) => {
 	const response = await pending.getPendings(authData);
 	response.error ? 
@@ -37,3 +48,14 @@ export const getSelectedPending = (id, authData) => async (dispatch) => {
 export const clearSelectedPending = () => (dispatch) => {
 	dispatch(selectPending(null));
 };
+
+export const activateUser = (id, authData) => async (dispatch) => {
+	dispatch(activateUserStart());
+	const response = await pending.activateUser(id, authData);
+	response.error ? 
+		dispatch(activateUserFailure(response.message))
+		: (
+			dispatch(activateUserSuccess()),
+			dispatch(getPendings(authData))
+		);
+}

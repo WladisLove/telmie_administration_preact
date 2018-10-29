@@ -8,7 +8,7 @@ import { Table, Spin } from 'antd';
 import 'antd/dist/antd.css';
 
 import { getCategories } from '../../store/actions/data'
-import { getPendings, clearPendings, getSelectedPending, clearSelectedPending } from '../../store/actions/pending'
+import { getPendings, clearPendings, getSelectedPending, clearSelectedPending, activateUser } from '../../store/actions/pending'
 
 import { getCookie } from '../../helpers/cookie'
 import { PAGE_SIZE } from '../../helpers/consts'
@@ -48,6 +48,10 @@ class Requests extends Component{
 	render(){
 		const {message = '', error: isError, load: isLoaded, pendings = [], selectedPending = null} = this.props.pending;
 		const {selected} = this.state;
+		const userAuth = this.userAuth;
+		const controlsFunc = {
+			activate: (id) => this.props.activateUserFunc(id, userAuth),
+		}
 		return (
 			<Card cardClass='route-content' headerText="Pro applications">
 				{isLoaded ? (
@@ -57,7 +61,9 @@ class Requests extends Component{
 								serverData={this.props.serverData}
 								backToList={this.onBackToList}
 								isIndividual={false}
-								isApproving={true}/>
+								isApproving={true}
+								controlsFunc={controlsFunc}
+								activateUser={this.props.activateUser}/>
 						) : (
 							<Table columns={columns} 
 								rowKey={(record) => record.id} 
@@ -81,6 +87,7 @@ const mapStateToProps = (state) => ({
 	userData: state.loggedInUser,
 	serverData: state.serverData,
 	pending: state.pending,
+	activateUser: state.activateUser,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -89,6 +96,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	clearPendings,
 	getSelectedPending,
 	clearSelectedPending,
+	activateUserFunc: activateUser,
 }, dispatch);
 
 export default connect(

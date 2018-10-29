@@ -18,7 +18,7 @@ const timeArr = [{
 }];
 
 const UserInfo = props =>  {
-    const {user = {}, backToList, serverData = {}, isApproving, isIndividual } = props;
+    const {user = {}, backToList, serverData = {}, isApproving, isIndividual, activateUser, controlsFunc } = props;
     const {categories = [],subCategories=[]} = serverData;
 
     return (
@@ -42,9 +42,14 @@ const UserInfo = props =>  {
                     </div>,
 
                     <AccountDetail isApproving = {isApproving} user={user}/>,
-                    (isIndividual ? 
-                        <IndividualProDetail categories={categories} subCategories={subCategories} isApproving={isApproving} user={user}/>
-                        : <BusinessProDetail categories={categories} subCategories={subCategories} isApproving={isApproving} user={user}/>),
+                    /*(isIndividual ? 
+                        <IndividualProDetail categories={categories} subCategories={subCategories} isApproving={isApproving} user={user} activateUser={activateUser}/>
+                        :*/( <BusinessProDetail categories={categories} 
+                                subCategories={subCategories} 
+                                isApproving={isApproving} 
+                                user={user} 
+                                controlsFunc={controlsFunc} 
+                                activateUser={activateUser}/>),
                     <AdminNotes saveNote={(note) => console.log('save note:', note)}/>,
                 ]) : (
                     <div class="spinContainer"><Spin size='large'/></div>
