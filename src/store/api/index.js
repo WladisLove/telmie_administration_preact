@@ -1,5 +1,9 @@
-export const apiRoot = 'http://sr461.2dayhost.com/api/';
-export const apiAdminRoot = 'http://sr461.2dayhost.com/api/admin/';
+//export const apiRoot = 'http://sr461.2dayhost.com/api/';
+//export const apiAdminRoot = 'http://sr461.2dayhost.com/api/admin/';
+
+// for main server
+export const apiRoot = 'http://sr1075.2dayhost.com/api/';
+export const apiAdminRoot = 'http://sr1075.2dayhost.com/api/admin/';
 
 export const apiUrls = {
   LOG_IN: apiRoot + 'auth',
