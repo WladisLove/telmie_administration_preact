@@ -39,6 +39,10 @@ class ActiveUsers extends Component{
 		}
 	}
 
+	onSearch = () => {
+		
+	}
+
 	onRow = (record) => ({
 		onClick: () => {
 			this.setState({ selected : true });
