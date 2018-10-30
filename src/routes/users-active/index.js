@@ -2,8 +2,9 @@ import { h, Component } from 'preact';
 import { bindActionCreators } from 'redux';
 import { connect } from 'preact-redux';
 import Card from '../../components/card'
-import { Table, Checkbox, Button, Spin } from 'antd';
-import UserInfo from '../../components/user-info'
+import { Table, Spin } from 'antd';
+import UserInfo from '../../components/user-info';
+import FilterArea from '../../components/user-table-controls/filter-area'
 import 'antd/dist/antd.css';
 import style from './style'
 
@@ -15,29 +16,11 @@ import { PAGE_SIZE } from '../../helpers/consts'
 import { tableColumns as columns } from '../../helpers/table-data'
 
 
-const statusArr = [{
-	name: 'Registered',
-}, {
-	name: 'Suspended',
-}, {
-	name: 'Started Pro Appl',
-}, {
-	name: 'Pending Approval',
-}, {
-	name: 'Approved as Pro',
-}, {
-	name: 'Suspended as Pro',
-}];
-
-const getDefaultStatuses = () => statusArr.map(el => el.name);
-
-
 class ActiveUsers extends Component{
 	constructor(props){
 		super(props);
 
 		this.state = {
-			statusFilter: getDefaultStatuses() || [],
 			isFiltered: false,
 			filteredData: [],
 
@@ -45,16 +28,15 @@ class ActiveUsers extends Component{
 		}
 	}
 
-	onChange = (checkedValues) => this.setState({statusFilter: [...checkedValues]});
 
-	onFilter = () => {
-		/*const {data = [], statusFilter} = this.state;
-		if (statusFilter.length === statusArr.length){
+	onFilter = (statusFilter, generalLength) => {
+		const {activeUsers = []} = this.props;
+		if (statusFilter.length === generalLength){
 			this.setState({ filteredData: [], isFiltered: false });
 		} else {
-			let newData = data.filter(el => statusFilter.indexOf(el.status) != -1 );
+			let newData = activeUsers.filter(el => statusFilter.indexOf(el.status) != -1 );
 			this.setState({ filteredData: newData, isFiltered: true });
-		}*/
+		}
 	}
 
 	onRow = (record) => ({
@@ -87,11 +69,11 @@ class ActiveUsers extends Component{
 	}
 
 	render(){
-		const {statusFilter, isFiltered, filteredData, selected} = this.state;
+		const {isFiltered, filteredData, selected} = this.state;
 		const {isLoaded = false, isError = false, errorMsg = '', activeUsers = []} = this.props;
 		const {selectedUser = null, error: isUserError, message : errorMessage} = this.props.selectedUser;
 
-		const dataSource = /*isFiltered ? filteredData :*/ activeUsers;
+		const dataSource = isFiltered ? filteredData : activeUsers;
 
 		return (
 			<Card cardClass='route-content'>
@@ -108,16 +90,7 @@ class ActiveUsers extends Component{
 								editUserFunc={this.onEditUser}/>
 								:
 							[
-								/*(<div class={style.filterGroup}>
-									<div class={style.filterGroupLabel}> Status filter: </div>
-									
-									<Checkbox.Group onChange={this.onChange} value={statusFilter}	>
-										{statusArr.map(({name}) => (<Checkbox className={statusFilter.indexOf(name) != -1 && style.checked} 
-																						key={name} value={name}>{name}</Checkbox>))}
-									</Checkbox.Group>
-									
-									<Button size='small' onClick={this.onFilter} className={style.filterBtn}>Filter</Button>
-								</div>) ,*/
+								(<FilterArea onFilter={this.onFilter}/>) ,
 								(<Table columns={columns} 
 									rowKey={(record) => record.id} 
 									onRow={this.onRow}
