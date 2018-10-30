@@ -9,19 +9,37 @@ const Input = props => {
     ) : (
         {value, placeholder} = props
     )
-    
+
+    let isChanged = props.changedFields ? props.changedFields.hasOwnProperty(props.name) : false;
+
     return (
         <div style={{marginBottom: 15}}>
-            <div class={style.formInput}>
+            <div class={`${style.formInput} ${isChanged && style.formInputChanged}`}>
                 {props.label && <label>{props.label}</label>}
-                <input
-                    style={props.inputStyle ? props.inputStyle : {}}
-                    type="text"
-                    disabled={props.disabled}
-                    placeholder = {placeholder}
-                    name={props.name}
-                    onChange={props.onChange}
-                    value = {value}/>
+                <div class={style.inputContainer}>
+                    {
+                        isChanged ? [
+                            <div class={style.prevValue} style={props.inputStyle ? props.inputStyle : {}}>{props.changedFields[props.name]}</div>,
+                            <input
+                                style={props.inputStyle ? props.inputStyle : {}}
+                                type="text"
+                                disabled={props.disabled}
+                                placeholder = {placeholder}
+                                name={props.name}
+                                onChange={props.onChange}
+                                value = {value}/>
+                        ] : (
+                            <input
+                                style={props.inputStyle ? props.inputStyle : {}}
+                                type="text"
+                                disabled={props.disabled}
+                                placeholder = {placeholder}
+                                name={props.name}
+                                onChange={props.onChange}
+                                value = {value}/>
+                        )
+                    }
+                </div>
             </div>
             {props.info && <div class={style.info}>{props.info}</div>}
         </div>

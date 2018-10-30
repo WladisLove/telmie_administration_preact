@@ -1,9 +1,13 @@
 .formSelect {
     display: flex;
+    align-items: center;
     position: relative;
     font-size: 18px;
     color: #3d5273;
     margin-bottom: 10px;
+}
+.formSelectChanged{
+    color: #e3002b !important;
 }
 
 .formSelect:after {
@@ -23,6 +27,9 @@
     font-size: 18px;
     white-space: nowrap;
     width: auto;
+}
+.formSelectChanged select{
+    border-bottom-color: #e3002b !important;
 }
 
 .formSelect select {
@@ -48,3 +55,9 @@
     cursor: default;
 }
 
+.selectContainer{
+    width: 100%;
+}
+.prevValue{
+    font-size: 14px;
+}

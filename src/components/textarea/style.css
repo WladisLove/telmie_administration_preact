@@ -1,9 +1,13 @@
 .formTextarea{
     display: flex;
+    align-items: center;
 	position: relative;
     font-size: 18px;
     color: #3d5273;
     margin-bottom: 10px;
+}
+.formTaChanged{
+    color: #e3002b !important;
 }
 
 .formTextarea label {
@@ -13,7 +17,9 @@
     white-space: nowrap;
     width: auto;
 }
-
+.formTaChanged textarea{
+    border-bottom-color: #e3002b !important;
+}
 .formTextarea textarea {
     width: 100%;
     box-sizing: border-box;
@@ -28,4 +34,11 @@
     line-height: 1.2;
     border: none;
     border-bottom: 1px solid #e0e0e0;
+}
+
+.taConteiner{
+    width: 100%;
+}
+.prevValue{
+    font-size: 14px;
 }

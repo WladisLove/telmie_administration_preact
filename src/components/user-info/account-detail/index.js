@@ -50,7 +50,7 @@ class AccountDetail extends Component {
     }
 
     render(){
-        const { user = {}, isPending = false } = this.props;
+        const { user = {}, isPending, changedFields } = this.props;
         const { avatar } = user;
         const { isEdited, userInfo = {}} = this.state;
         const {name, lastName, email} = userInfo;
@@ -60,10 +60,10 @@ class AccountDetail extends Component {
                 <div style={{width: '100%'}}>
                     <div class='headline'>Account details</div>
                     <div class='doubleInput'>
-                        <Input label='First Name:' name='name' value={name} onChange={this.onChange} disabled={isPending}/>
-                        <Input label='Last Name:' name='lastName' value={lastName} onChange={this.onChange} disabled={isPending}/>
+                        <Input label='First Name:' name='name' value={name} onChange={this.onChange} disabled={isPending} changedFields={changedFields}/>
+                        <Input label='Last Name:' name='lastName' value={lastName} onChange={this.onChange} disabled={isPending} changedFields={changedFields}/>
                     </div>
-                    <Input label='Email:' name='email' value={email} onChange={this.onChange} disabled={isPending}/>
+                    <Input label='Email:' name='email' value={email} onChange={this.onChange} disabled={isPending} changedFields={changedFields}/>
     
                     <div class={style.controls}>
                         {
