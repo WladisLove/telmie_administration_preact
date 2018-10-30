@@ -81,7 +81,6 @@ const UserInfo = props =>  {
     )
 
     let changedFields = user.pro ? checkPro(user, changedInfo) : checkNotPro(user, changedInfo);
-    changedFields = { ...changedFields, category: 'lol'};
     /*for (let key in changedInfo){
         console.log(key, user.hasOwnProperty(key) || user.pro.hasOwnProperty(key));
         console.log(user.pro.hasOwnProperty(key) ? user.pro[key] === changedInfo[key] : user[key] === changedInfo[key])
