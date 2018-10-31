@@ -37,7 +37,8 @@ class BusinessProDetail extends Component {
     }
 
     componentWillUnmount(){
-        this.props.controlsFunc.clearStatus && this.props.controlsFunc.clearStatus();
+        this.props.controlsFunc && this.props.controlsFunc.clearStatus
+            && this.props.controlsFunc.clearStatus();
     }
 
     render(){

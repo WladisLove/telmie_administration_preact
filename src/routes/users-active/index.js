@@ -48,15 +48,42 @@ class ActiveUsers extends Component{
 
 	onSearch = (searchFields) => {
 		let activeUsers = this.state.isFiltered ? [...this.state.filteredData] : [...this.props.activeUsers];
+
 		if (!Object.keys(searchFields).length){
 			this.setState({ searchedData: [], isSearched: false, searchFields: {} });
 		} else {
 			let newData = activeUsers.filter(user => {
-				for(let key in searchFields){
-					if(user[key] ? !(user[key].toLowerCase().indexOf(searchFields[key]) + 1) : true) return false;
+				const {name = '', lastName = '', email = '', pro,
+					mobile = "", 
+					dateOfBirth = ""} = user;
+				const { category = '', profession = '', professionDescription = '', subCategory = ''} = pro ? pro : {};
+				
+				if(searchFields.general)
+					if ( (name ? !(name.toLowerCase().indexOf(searchFields.general) + 1) : true)
+						&& (lastName ? !(lastName.toLowerCase().indexOf(searchFields.general) + 1) : true)
+						&& (email ? !(email.toLowerCase().indexOf(searchFields.general) + 1) : true)
+						&& (category ? !(category.toLowerCase().indexOf(searchFields.general) + 1) : true)
+						&& (profession ? !(profession.toLowerCase().indexOf(searchFields.general) + 1) : true)
+						&& (professionDescription ? !(professionDescription.toLowerCase().indexOf(searchFields.general) + 1) : true)
+						&& (subCategory ? !(subCategory.toLowerCase().indexOf(searchFields.general) + 1) : true) ) return false;
+				
+				if(searchFields.mobile)
+					if (mobile ? !(mobile.toLowerCase().indexOf(searchFields.mobile) + 1) : true ) return false;
+				
+				if(searchFields.dateOfBirth){
+					let d = null, s_d = null;
+					dateOfBirth && (
+						d = new Date(dateOfBirth),
+						s_d = new Date(searchFields.dateOfBirth)
+					)
+					if (dateOfBirth ? 
+						!( d.getDate() === s_d.getDate() && d.getFullYear() === s_d.getFullYear() && d.getMonth() === s_d.getMonth() ) 
+						: true ) return false;
 				}
+
 				return true;
 			});
+			
 			this.setState({ searchedData: newData, isSearched: true, searchFields: {...searchFields} });
 		}
 	}
