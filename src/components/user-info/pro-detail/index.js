@@ -42,9 +42,8 @@ class BusinessProDetail extends Component {
         const {categories, subCategories, isPending, user = {}, activateUser, controlsFunc, changedFields } = this.props;
         const {location = null, mobile, video, pro={}} = user;
         const {category, subCategory,profession,professionDescription, costPerMinute = 0} = pro ? pro : {};
-        const {country,city,line1,postCode} = /*JSON.parse(location) ? JSON.parse(location) :*/ {};
+        const {country,city,line1,postCode} = JSON.parse(location) ? JSON.parse(location) : {};
 
-        console.log('changedFields',changedFields);
         return (
             <div class={''}>
                 <div class='headline'>Individual Pro details</div>

@@ -16,6 +16,7 @@ const cloneUser = (user = {}) => {
 } 
 
 const checkPro = (user, changedInfo) => {
+    if (!changedInfo) return;
     console.log('[checkPro]');
     let changedFields = {};
     for (let key in changedInfo){
@@ -38,6 +39,7 @@ const checkPro = (user, changedInfo) => {
     return changedFields;
 }
 const checkNotPro = (user, changedInfo) => {
+    if (!changedInfo) return;
     console.log('[checkNotPro]');
     let changedFields = {};
     user.pro = {};
@@ -56,6 +58,18 @@ const checkNotPro = (user, changedInfo) => {
     }
 
     return changedFields;
+}
+const checkForLocation = (user, changedFields) => {
+    const {location = null} = user;
+
+    if (changedFields.hasOwnProperty('location')){
+        let prevLocation = JSON.parse(location) ? JSON.parse(location) : {};
+        for (let key in prevLocation){
+            changedFields.location 
+                ? (changedFields.location[key] !== prevLocation[key] && (changedFields[key] = prevLocation[key]) )
+                : ( changedFields[key] = "" )
+        }
+    }
 }
 
 const UserInfo = props =>  {
@@ -80,15 +94,10 @@ const UserInfo = props =>  {
         {user} = props
     )
 
+    console.log(props.user)
     let changedFields = user.pro ? checkPro(user, changedInfo) : checkNotPro(user, changedInfo);
-    /*for (let key in changedInfo){
-        console.log(key, user.hasOwnProperty(key) || user.pro.hasOwnProperty(key));
-        console.log(user.pro.hasOwnProperty(key) ? user.pro[key] === changedInfo[key] : user[key] === changedInfo[key])
-    }
-    console.log(user.location, user.location === changedInfo.location);*/
-
-    // check for user with pro === null
-    // check for pro user
+    changedInfo && checkForLocation(user, changedFields);
+    
 
     return (
         <div class={``}>
