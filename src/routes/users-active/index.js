@@ -84,7 +84,8 @@ class ActiveUsers extends Component{
 		return (
 			<Card cardClass='route-content'>
 				{isLoaded ? 
-					!isError ? (
+					!isError ? [
+						<FilterArea onFilter={this.onFilter} isShown={selected}/>,
 						selected ? 
 							<UserInfo user={selectedUser}
 								isError={isUserError}
@@ -95,15 +96,12 @@ class ActiveUsers extends Component{
 								isPending={false}
 								editUserFunc={this.onEditUser}/>
 								:
-							[
-								(<FilterArea onFilter={this.onFilter}/>) ,
-								(<Table columns={columns} 
+							<Table columns={columns} 
 									rowKey={(record) => record.id} 
 									onRow={this.onRow}
 									pagination={{pageSize: PAGE_SIZE}}
-									dataSource={dataSource} />)
-							]
-					) : (
+									dataSource={dataSource} />
+					] : (
 					<div class="errorContainer">
 						Error! 
 						<div class="errorMsg">{errorMsg}</div>

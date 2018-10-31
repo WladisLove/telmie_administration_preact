@@ -41,17 +41,18 @@ class FilterArea extends Component {
     render(){
         const {statusFilter} = this.state;
 
-        return (
-            <div class={style.filterGroup}>
-                <div class={style.filterGroupLabel}> Status filter: </div>
-                
-                <Checkbox.Group onChange={this.onChange} value={statusFilter}	>
-                    {statusArr.map(({name, value}) => (<Checkbox className={statusFilter.indexOf(value) != -1 && style.checked} 
-                                                                    key={name} value={value}>{name}</Checkbox>))}
-                </Checkbox.Group>
-                
-                <button onClick={this.onFilter} class={`${style.filterBtn} saveBtn`}>Filter</button>
-            </div>
+        return this.props.isShown ? 
+            null : ( 
+                <div class={style.filterGroup}>
+                    <div class={style.filterGroupLabel}> Status filter: </div>
+                    
+                    <Checkbox.Group onChange={this.onChange} value={statusFilter}	>
+                        {statusArr.map(({name, value}) => (<Checkbox className={statusFilter.indexOf(value) != -1 && style.checked} 
+                                                                        key={name} value={value}>{name}</Checkbox>))}
+                    </Checkbox.Group>
+                    
+                    <button onClick={this.onFilter} class={`${style.filterBtn} saveBtn`}>Filter</button>
+                </div>
         )
     }
     
