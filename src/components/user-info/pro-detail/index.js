@@ -35,7 +35,10 @@ class BusinessProDetail extends Component {
             })
         )
     }
-	
+
+    componentWillUnmount(){
+        this.props.controlsFunc.clearStatus && this.props.controlsFunc.clearStatus();
+    }
 
     render(){
         //const {category, subCategory} = this.state;

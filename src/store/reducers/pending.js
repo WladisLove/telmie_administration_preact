@@ -40,13 +40,17 @@ export const activateUser = (state = {error: false, isComplete: true}, action) =
 		case actionTypes.START_ACTIVATE_USER:
 			return {
 				...state,
+				error: false,
 				isComplete: false,
+				isSuccess: false,
 				message: '',
 			}
 		case actionTypes.ACTIVATE_USER_SUCCESS:
 			return {
 				...state,
+				error: false,
 				isComplete: true,
+				isSuccess: true,
 				message: 'Approved',
 			}
 		case actionTypes.ACTIVATE_USER_FAILURE:
@@ -54,7 +58,16 @@ export const activateUser = (state = {error: false, isComplete: true}, action) =
 				...state,
 				error: true,
 				isComplete: true,
+				isSuccess: false,
 				message: action.message,
+			}
+		case actionTypes.CLEAR_ACTIVATE_USER_STATUS:
+			return {
+				...state,
+				error: false,
+				isComplete: true,
+				isSuccess: false,
+				message: '',
 			}
 		default:
 			return state;
