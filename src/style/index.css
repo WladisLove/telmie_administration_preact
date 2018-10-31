@@ -72,7 +72,7 @@ html, body {
     margin: 30px 0;
 }
 .errorContainer{
-    color: #e3002b;
+    color: #e3002b !important;
     text-align: center;
     font-size: 28px;
     margin: 30px 10px;
@@ -108,7 +108,7 @@ button.saveBtn {
 }
 
 button:disabled{
-    background-color: #4d4c4c;
+    background-color: #4d4c4c !important;
     cursor: default;
 }
 

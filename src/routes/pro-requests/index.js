@@ -8,7 +8,7 @@ import { Table, Spin } from 'antd';
 import 'antd/dist/antd.css';
 
 import { getCategories } from '../../store/actions/data'
-import { getPendings, clearPendings, activateUser } from '../../store/actions/pending'
+import { getPendings, clearPendings, activateUser, clearActivateUserStatus } from '../../store/actions/pending'
 
 import { getCookie } from '../../helpers/cookie'
 import { PAGE_SIZE } from '../../helpers/consts'
@@ -50,6 +50,7 @@ class Requests extends Component{
 		const userAuth = this.userAuth;
 		const controlsFunc = {
 			activate: (id) => this.props.activateUserFunc(id, userAuth),
+			clearStatus: this.props.clearActivateUserStatus,
 		}
 		return (
 			<Card cardClass='route-content' headerText="Pro applications">
@@ -94,6 +95,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	getPendings,
 	clearPendings,
 	activateUserFunc: activateUser,
+	clearActivateUserStatus,
 }, dispatch);
 
 export default connect(

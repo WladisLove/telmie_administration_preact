@@ -24,6 +24,9 @@ const activateUserFailure = () => ({
 const activateUserSuccess = () => ({
 	type: actionTypes.ACTIVATE_USER_SUCCESS,
 });
+const clearActivateStatus = () => ({
+	type: actionTypes.CLEAR_ACTIVATE_USER_STATUS,
+});
 
 export const getPendings = (authData) => async (dispatch) => {
 	const response = await pending.getPendings(authData);
@@ -45,3 +48,4 @@ export const activateUser = (id, authData) => async (dispatch) => {
 			dispatch(getPendings(authData))
 		);
 }
+export const clearActivateUserStatus = () => (dispatch) => dispatch(clearActivateStatus());
