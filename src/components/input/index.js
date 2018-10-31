@@ -2,13 +2,32 @@ import { h, Component } from 'preact';
 import style from './style.css';
 
 const Input = props => {
-    let value = '', placeholder = '';
+    
+    let value = '', placeholder = '', tmp;
     props.isToPlaceholder ? (
         value = '',
         placeholder = props.value
     ) : (
         {value, placeholder} = props
-    )
+    );
+
+    /* date coditions */
+    const {type = 'text'} = props;
+    type === 'date' && (
+        tmp = new Date(value),
+        value = `${tmp.getFullYear()}-${tmp.getMonth() + 1}-${tmp.getDate()}`
+    );
+    const onChangeDate = (e) => {
+        console.log(e.target.value);
+
+        props.onChange({
+            ...e,
+            target: {
+                ...e.target,
+                value: e.target.value
+            }
+        })
+    };
 
     let isChanged = props.changedFields ? props.changedFields.hasOwnProperty(props.name) : false;
 
@@ -22,20 +41,20 @@ const Input = props => {
                             <div class={style.prevValue} style={props.inputStyle ? props.inputStyle : {}}>{props.changedFields[props.name]}</div>,
                             <input
                                 style={props.inputStyle ? props.inputStyle : {}}
-                                type="text"
+                                type={type}
                                 disabled={props.disabled}
                                 placeholder = {placeholder}
                                 name={props.name}
-                                onChange={props.onChange}
+                                onChange={type === 'date' ? onChangeDate : props.onChange}
                                 value = {value}/>
                         ] : (
                             <input
                                 style={props.inputStyle ? props.inputStyle : {}}
-                                type="text"
+                                type={type}
                                 disabled={props.disabled}
                                 placeholder = {placeholder}
                                 name={props.name}
-                                onChange={props.onChange}
+                                onChange={type === 'date' ? onChangeDate : props.onChange}
                                 value = {value}/>
                         )
                     }
