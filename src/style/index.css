@@ -111,3 +111,7 @@ button:disabled{
     background-color: #4d4c4c;
     cursor: default;
 }
+
+input, button {
+	outline: none;
+}

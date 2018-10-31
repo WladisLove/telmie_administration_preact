@@ -36,10 +36,6 @@ const setActiveU = (users) => ({
 const clearActiveU = () => ({
 	type: actionTypes.CLEAR_ACTIVE_USERS,
 });
-const getSelectedUserFailure = (message) =>({
-	type: actionTypes.USER_GETTING_FAILURE,
-	message,
-});
 const selectUser = (user) => ({
 	type: actionTypes.SELECT_USER,
 	user
@@ -70,6 +66,7 @@ export const logOff = () => (dispatch) => {
 export const checkIfLoggedIn = () =>  /(^|;)\s*USER_AUTH=/.test(document.cookie);
 
 export const getActiveUsers = (authData) => async (dispatch) => {
+	dispatch(clearActiveU()); // when updating starts (for spinner)
 	const response = await user.getActiveUsers(authData);
 	response.error ? 
 		dispatch(getUsersFailure(response.message))
@@ -79,14 +76,11 @@ export const clearActiveUsers = () => (dispatch) => {
 	dispatch(clearActiveU());
 };
 
-export const getSelectedUser = (id, authData) => async (dispatch) => {
-	const response = await user.getUser(id, authData);
-	response.error ? 
-		dispatch(getSelectedUserFailure(response.message))
-		: dispatch(selectUser(response));
-};
 export const clearSelectedUser = () => (dispatch) => {
 	dispatch(selectUser(null));
+};
+export const chooseSelectedUser = (user) => (dispatch) => {
+	dispatch(selectUser(user));
 };
 
 export const editUser = (data, id, authData) => async (dispatch) => {

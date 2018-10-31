@@ -8,12 +8,11 @@ import { Table, Spin } from 'antd';
 import 'antd/dist/antd.css';
 
 import { getCategories } from '../../store/actions/data'
-import { getSelectedUser, clearSelectedUser } from '../../store/actions/user'
 import { getPendings, clearPendings, activateUser } from '../../store/actions/pending'
 
 import { getCookie } from '../../helpers/cookie'
 import { PAGE_SIZE } from '../../helpers/consts'
-import { tableColumns as columns } from '../../helpers/table-data'
+import { pendingTableColumns as columns } from '../../helpers/table-data'
 
 class Requests extends Component{
 	constructor(props){
@@ -21,6 +20,7 @@ class Requests extends Component{
 
 		this.state = {
 			selected: false,
+			selectedUser: null,
 		}
 	}
 
@@ -33,24 +33,20 @@ class Requests extends Component{
 	};
 	componentWillUnmount(){
 		this.props.clearPendings();
-		this.props.clearSelectedUser()
 	};
 
 	onRow = (record) => ({
 		onClick: () => {
-			this.setState({selected : true});
-			this.props.getSelectedUser(record.id, this.userAuth);
+			this.setState({selected : true, selectedUser: record});
 		},
 	});
 	onBackToList = () => {
-		this.props.clearSelectedUser();
-		this.setState({ selected: false });
+		this.setState({ selected: false, selectedUser: null });
 	};
 
 	render(){
 		const {message = '', error: isError, load: isLoaded, pendings = []} = this.props.pending;
-		const {selectedUser = null, error: isUserError} = this.props.selectedUser;
-		const {selected} = this.state;
+		const {selected, selectedUser} = this.state;
 		const userAuth = this.userAuth;
 		const controlsFunc = {
 			activate: (id) => this.props.activateUserFunc(id, userAuth),
@@ -61,7 +57,6 @@ class Requests extends Component{
 					!isError ? (
 						selected ? (
 							<UserInfo user={selectedUser}
-								isError={isUserError}
 								serverData={this.props.serverData}
 								backToList={this.onBackToList}
 								isIndividual={false}
@@ -70,7 +65,7 @@ class Requests extends Component{
 								activateUser={this.props.activateUser}/>
 						) : (
 							<Table columns={columns} 
-								rowKey={(record) => record.id} 
+								rowKey={(record) => record.owner.id} 
 								onRow={this.onRow}
 								pagination={{pageSize: PAGE_SIZE}}
 								dataSource={pendings} />
@@ -92,15 +87,12 @@ const mapStateToProps = (state) => ({
 	serverData: state.serverData,
 	pending: state.pending,
 	activateUser: state.activateUser,
-	selectedUser: state.selectedUser,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
 	getCategories,
 	getPendings,
 	clearPendings,
-	getSelectedUser,
-	clearSelectedUser,
 	activateUserFunc: activateUser,
 }, dispatch);
 
