@@ -5,8 +5,26 @@
 .searchGroup{
     margin-bottom: 20px;
 }
+.searchItems{
+    display: flex;
+    flex-wrap: wrap;
+}
+.searchItems > .searchItem:not(:last-child){
+    margin-right: 20px;
+}
 .searchBtn{
     display: block;
     margin: 10px 0 0 30px;
     padding: 2px 15px !important;
+    font-size: 14px;
+}
+.searchItem label{
+    font-size: 14px;
+    color: black;
+    margin-right: 5px;
+}
+
+.searchItem input{
+    font-size: 14px;
+    color: black;
 }

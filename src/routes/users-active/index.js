@@ -5,6 +5,7 @@ import Card from '../../components/card'
 import { Table, Spin } from 'antd';
 import UserInfo from '../../components/user-info';
 import FilterArea from '../../components/user-table-controls/filter-area'
+import SearchArea from '../../components/user-table-controls/search-area'
 import 'antd/dist/antd.css';
 import style from './style'
 
@@ -24,6 +25,10 @@ class ActiveUsers extends Component{
 			isFiltered: false,
 			filteredData: [],
 
+			isSearched: false,
+			searchedData: [],
+			searchFields: {},
+
 			selected: false,
 		}
 	}
@@ -33,14 +38,27 @@ class ActiveUsers extends Component{
 		const {activeUsers = []} = this.props;
 		if (statusFilter.length === generalLength){
 			this.setState({ filteredData: [], isFiltered: false });
+			Object.keys(this.state.searchFields).length && this.onSearch({...this.state.searchFields});
 		} else {
 			let newData = activeUsers.filter(el => statusFilter.indexOf(el.status) != -1 );
 			this.setState({ filteredData: newData, isFiltered: true });
+			Object.keys(this.state.searchFields).length && this.onSearch({...this.state.searchFields});
 		}
 	}
 
-	onSearch = () => {
-		
+	onSearch = (searchFields) => {
+		let activeUsers = this.state.isFiltered ? [...this.state.filteredData] : [...this.props.activeUsers];
+		if (!Object.keys(searchFields).length){
+			this.setState({ searchedData: [], isSearched: false, searchFields: {} });
+		} else {
+			let newData = activeUsers.filter(user => {
+				for(let key in searchFields){
+					if(user[key] ? !(user[key].toLowerCase().indexOf(searchFields[key]) + 1) : true) return false;
+				}
+				return true;
+			});
+			this.setState({ searchedData: newData, isSearched: true, searchFields: {...searchFields} });
+		}
 	}
 
 	onRow = (record) => ({
@@ -75,17 +93,20 @@ class ActiveUsers extends Component{
 	}
 
 	render(){
-		const {isFiltered, filteredData, selected} = this.state;
+		const {isFiltered, filteredData, isSearched, searchedData, selected} = this.state;
 		const {isLoaded = false, isError = false, errorMsg = '', activeUsers = []} = this.props;
 		const {selectedUser = null, error: isUserError, message : errorMessage} = this.props.selectedUser;
 
-		const dataSource = isFiltered ? filteredData : activeUsers;
+		const dataSource = isSearched ? 
+			searchedData : isFiltered 
+				? filteredData : activeUsers;
 
 		return (
 			<Card cardClass='route-content'>
 				{isLoaded ? 
 					!isError ? [
 						<FilterArea onFilter={this.onFilter} isShown={selected}/>,
+						<SearchArea onSearch={this.onSearch} isShown={selected}/>,
 						selected ? 
 							<UserInfo user={selectedUser}
 								isError={isUserError}
