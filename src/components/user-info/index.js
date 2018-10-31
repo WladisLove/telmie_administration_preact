@@ -95,7 +95,7 @@ const UserInfo = props =>  {
     )
 
     console.log(props.user)
-    let changedFields = user.pro ? checkPro(user, changedInfo) : checkNotPro(user, changedInfo);
+    let changedFields = (user && user.pro) ? checkPro(user, changedInfo) : checkNotPro(user, changedInfo);
     changedInfo && checkForLocation(user, changedFields);
     
 

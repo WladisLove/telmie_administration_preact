@@ -63,14 +63,7 @@ export const usersArrays = (state = {error: false, load: false}, action) => {
 };
 
 export const selectedUserReducer = (state = {error: false}, action) => {
-	switch (action.type) {
-		case actionTypes.USER_GETTING_FAILURE:
-			return {
-				...state,
-				error: true,
-				message: action.message,
-			}
-			
+	switch (action.type) {	
         case actionTypes.SELECT_USER: 
             return {
                 ...state,
@@ -84,6 +77,7 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 				error: false,
 				selectedUser: null,
 				message: '',
+				isEdited: false,
 			}
 		case actionTypes.EDIT_USER_SUCCESS:
 			return {
@@ -91,6 +85,7 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 				selectedUser: action.user,
 				error: false,
 				message: '',
+				isEdited: true,
 			}
 		case actionTypes.EDIT_USER_FAILURE:
 			return {

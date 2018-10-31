@@ -9,7 +9,7 @@ import 'antd/dist/antd.css';
 import style from './style'
 
 import { getCategories } from '../../store/actions/data'
-import { getActiveUsers, clearActiveUsers, getSelectedUser, clearSelectedUser, editUser } from '../../store/actions/user'
+import { getActiveUsers, chooseSelectedUser, clearActiveUsers, clearSelectedUser, editUser } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { PAGE_SIZE } from '../../helpers/consts'
@@ -46,11 +46,13 @@ class ActiveUsers extends Component{
 	onRow = (record) => ({
 		onClick: () => {
 			this.setState({ selected : true });
-			this.props.getSelectedUser(record.id, this.userAuth);
+			this.props.chooseSelectedUser(record);
 		},
 	});
 
 	onBackToList = () => {
+		this.props.selectedUser.isEdited && 
+			this.userAuth && this.props.getActiveUsers(this.userAuth);
 		this.props.clearSelectedUser();
 		this.setState({ selected: false });
 	};
@@ -132,8 +134,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	getCategories,
 	getActiveUsers,
 	clearActiveUsers,
-	getSelectedUser,
 	clearSelectedUser,
+	chooseSelectedUser,
 	editUser,
 }, dispatch);
 
