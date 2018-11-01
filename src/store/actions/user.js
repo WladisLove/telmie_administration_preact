@@ -47,6 +47,17 @@ const editUserSuccess = (user) => ({
 const editUserFailure = () => ({
 	type: actionTypes.EDIT_USER_FAILURE,
 });
+const changeAUStatusSuccess = (user) => ({
+	type: actionTypes.CHANGE_A_U_STATUS_SUCCESS,
+	user,
+});
+const changeAUStatusFailure = (message) =>({
+	type: actionTypes.CHANGE_A_U_STATUS_FAILURE,
+	message,
+});
+const modifyU = () =>({
+	type: actionTypes.START_MODIFY_USER,
+});
 
 export const logIn = (authData) => async (dispatch) => {
 	const response = await user.logIn(authData);
@@ -84,9 +95,17 @@ export const chooseSelectedUser = (user) => (dispatch) => {
 };
 
 export const editUser = (data, id, authData) => async (dispatch) => {
-	dispatch(selectUser(null)); // when updating starts (for spinner)
+	dispatch(selectUser(null)); // when updating starts (for spinner) !!!check it when error
 	const response = await user.editUser(data, id, authData);
 	response.error ? 
 		dispatch(editUserFailure(response.message))
 		: dispatch(editUserSuccess(response));
 };
+
+export const changeActiveUserStatus = (id, authData) => async (dispatch) => {
+	dispatch(modifyU())
+	const response = await user.changeActiveUserStatus(id, authData);
+	response.error ?
+		dispatch(changeAUStatusFailure(response.message))
+		: dispatch(changeAUStatusSuccess(response));
+}

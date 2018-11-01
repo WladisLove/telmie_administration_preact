@@ -58,3 +58,25 @@ export function editUser(data, id, authData){
 		throw new Error(error.message);
 	});
 }
+
+export function changeActiveUserStatus(id, authData){
+	let headers = new Headers();
+	headers.append("Authorization", "Basic " + authData);
+
+	return fetch(apiUrls.CHANGE_ACTIVE_USER_STATUS(id), { method: 'PUT', headers }).then(response => {
+		return (response.status === 403) ? 
+			{
+				error: true,
+				message: 'Current user is not Admin',
+			} 
+				: 
+				response.status !== 200  ? {
+					error: true,
+				}
+					:
+				response.json().then(json => json);
+
+	}, error => {
+		throw new Error(error.message);
+	});
+}

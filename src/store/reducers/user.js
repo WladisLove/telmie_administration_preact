@@ -75,9 +75,18 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 			return {
 				...state,
 				error: false,
+				errorChangeStatus: false,
 				selectedUser: null,
 				message: '',
+				msgChangeStatus: '',
 				isEdited: false,
+			}
+		case actionTypes.START_MODIFY_USER:
+			return {
+				...state,
+				errorChangeStatus: false,
+				msgChangeStatus: ``,
+				isModifying: true,
 			}
 		case actionTypes.EDIT_USER_SUCCESS:
 			return {
@@ -92,6 +101,20 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 				...state,
 				error: true,
 				message: `${action.message ? action.message : ''} in editing user`,
+			}
+		case actionTypes.CHANGE_A_U_STATUS_FAILURE:
+			return {
+				...state,
+				errorChangeStatus: true,
+				msgChangeStatus: `${action.message ? action.message : ''} (Error in changing user status)`,
+				isModifying: false,
+			}
+		case actionTypes.CHANGE_A_U_STATUS_SUCCESS:
+			return {
+				...state,
+				selectedUser: action.user,
+				isEdited: true,
+				isModifying: false,
 			}
 		default:
 			return state;
