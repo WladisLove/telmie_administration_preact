@@ -44,8 +44,8 @@ class BusinessProDetail extends Component {
     render(){
         //const {category, subCategory} = this.state;
         const {categories, subCategories, isPending, user = {}, activateUser, controlsFunc, changedFields } = this.props;
-        const {location = null, mobile, video, pro={}, dateOfBirth} = user;
-        const {category, subCategory,profession,professionDescription, costPerMinute = 0} = pro ? pro : {};
+        const {location = null, mobile, pro={}, dateOfBirth} = user;
+        const {category, subCategory,profession,professionDescription, costPerMinute = 0, video} = pro ? pro : {};
         const {country,city,line1,postCode} = JSON.parse(location) ? JSON.parse(location) : {};
 
         return (

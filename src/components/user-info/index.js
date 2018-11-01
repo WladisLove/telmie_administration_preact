@@ -19,6 +19,7 @@ const checkPro = (user, changedInfo) => {
     if (!changedInfo) return;
     console.log('[checkPro]');
     let changedFields = {};
+    let d, new_d;
     for (let key in changedInfo){
         
         user.pro.hasOwnProperty(key) ? (
@@ -28,14 +29,25 @@ const checkPro = (user, changedInfo) => {
             )
         ) : user.hasOwnProperty(key) 
             && (
-                user[key] !== changedInfo[key] && (
-                    changedFields[key] = user[key],
-                    user[key] = changedInfo[key]
+                key === 'dateOfBirth' ? (
+                    d = new Date(user[key]),
+                    new_d = new Date(changedInfo[key]),
+                    d.getDate() !== new_d.getDate() 
+                        && d.getFullYear() !== new_d.getFullYear() 
+                        && d.getMonth() !== new_d.getMonth() 
+                            && (
+                                changedFields[key] = user[key],
+                                user[key] = changedInfo[key]
+                            )
+                ) : (
+                    user[key] !== changedInfo[key] && (
+                        changedFields[key] = user[key],
+                        user[key] = changedInfo[key]
+                    )
                 )
             )
         
     }
-
     return changedFields;
 }
 const checkNotPro = (user, changedInfo) => {
