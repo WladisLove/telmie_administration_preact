@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
 import Delimeter from './delimeter'
+import AccountControlsArea from './acc-controls-area'
 import AccountDetail from './account-detail'
 import ProDetails from './pro-detail/'
 import AdminNotes from './admin-notes'
@@ -85,7 +86,11 @@ const checkForLocation = (user, changedFields) => {
 }
 
 const UserInfo = props =>  {
-    const {backToList, serverData = {}, isPending = false, isIndividual, activateUser, controlsFunc, isError, editUserFunc, errorMessage ='' } = props;
+    const {
+        backToList, serverData = {}, isPending = false, isIndividual, activateUser, pendingControlsFunc, accControlsFunc, editUserFunc, 
+    } = props;
+    const {error: isError, message : errorMessage = '', isModifying} = props.selectedUser;
+
     const {categories = [],subCategories=[]} = serverData;
 
     const saveUserInfo = (fields = {}) => {
@@ -103,10 +108,9 @@ const UserInfo = props =>  {
         delete changedInfo.owner,
         delete changedInfo.id
     ) : (
-        {user} = props
+        {selectedUser : user = null} = props.selectedUser
     )
 
-    console.log(props.user)
     let changedFields = (user && user.pro) ? checkPro(user, changedInfo) : checkNotPro(user, changedInfo);
     changedInfo && checkForLocation(user, changedFields);
     
@@ -127,21 +131,15 @@ const UserInfo = props =>  {
 						Error! {errorMessage}
 					</div>
                 ) : (
-                    user ? ([
-                        !isPending && <div class={style.topBtnsArea}>
-                            <button disabled={true} >Activities</button>
-                            <button disabled={true} >Money</button>
-                            <button disabled={true} >Clients</button>
-                            <button disabled={true} >List of Pros</button>
-                            <button disabled={true} >Change Status</button>
-                        </div>,
+                    !isModifying && user ? ([
+                        !isPending && <AccountControlsArea accControlsFunc={accControlsFunc} selectedUser = {props.selectedUser}/>,
 
                         <AccountDetail isPending = {isPending} user={user} saveUserInfo={saveUserInfo} changedFields={changedFields}/>,
                         <ProDetails categories={categories} 
                                     subCategories={subCategories} 
                                     isPending={isPending} 
                                     user={user} 
-                                    controlsFunc={controlsFunc} 
+                                    controlsFunc={pendingControlsFunc} 
                                     activateUser={activateUser}
                                     changedFields={changedFields}/>,
                         <AdminNotes saveNote={(note) => console.log('save note:', note)}/>,

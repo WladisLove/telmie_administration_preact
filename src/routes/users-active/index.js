@@ -10,7 +10,7 @@ import 'antd/dist/antd.css';
 import style from './style'
 
 import { getCategories } from '../../store/actions/data'
-import { getActiveUsers, chooseSelectedUser, clearActiveUsers, clearSelectedUser, editUser } from '../../store/actions/user'
+import { getActiveUsers, chooseSelectedUser, clearActiveUsers, clearSelectedUser, editUser, changeActiveUserStatus } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { PAGE_SIZE } from '../../helpers/consts'
@@ -122,11 +122,14 @@ class ActiveUsers extends Component{
 	render(){
 		const {isFiltered, filteredData, isSearched, searchedData, selected} = this.state;
 		const {isLoaded = false, isError = false, errorMsg = '', activeUsers = []} = this.props;
-		const {selectedUser = null, error: isUserError, message : errorMessage} = this.props.selectedUser;
 
 		const dataSource = isSearched ? 
 			searchedData : isFiltered 
 				? filteredData : activeUsers;
+		
+		const accControlsFunc = {
+			changeStatus: (id) => this.props.changeActiveUserStatus(id, this.userAuth),
+		};
 
 		return (
 			<Card cardClass='route-content'>
@@ -135,13 +138,12 @@ class ActiveUsers extends Component{
 						<FilterArea onFilter={this.onFilter} isShown={selected}/>,
 						<SearchArea onSearch={this.onSearch} isShown={selected}/>,
 						selected ? 
-							<UserInfo user={selectedUser}
-								isError={isUserError}
-								errorMessage={errorMessage}
+							<UserInfo selectedUser={this.props.selectedUser}
 								serverData={this.props.serverData}
 								backToList={this.onBackToList}
 								isIndividual={false}
 								isPending={false}
+								accControlsFunc={accControlsFunc}
 								editUserFunc={this.onEditUser}/>
 								:
 							<Table columns={columns} 
@@ -183,6 +185,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	clearSelectedUser,
 	chooseSelectedUser,
 	editUser,
+	changeActiveUserStatus,
 }, dispatch);
 
 export default connect(

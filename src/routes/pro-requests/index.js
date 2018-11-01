@@ -48,7 +48,7 @@ class Requests extends Component{
 		const {message = '', error: isError, load: isLoaded, pendings = []} = this.props.pending;
 		const {selected, selectedUser} = this.state;
 		const userAuth = this.userAuth;
-		const controlsFunc = {
+		const pendingControlsFunc = {
 			activate: (id) => this.props.activateUserFunc(id, userAuth),
 			clearStatus: this.props.clearActivateUserStatus,
 		}
@@ -62,7 +62,7 @@ class Requests extends Component{
 								backToList={this.onBackToList}
 								isIndividual={false}
 								isPending={true}
-								controlsFunc={controlsFunc}
+								pendingControlsFunc={pendingControlsFunc}
 								activateUser={this.props.activateUser}/>
 						) : (
 							<Table columns={columns} 
