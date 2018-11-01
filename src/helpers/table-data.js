@@ -1,7 +1,12 @@
 import {convertDate} from './index'
 
 export const pendingTableColumns = [{
-  title: 'Id',
+  title: 'Appl ID',
+  dataIndex: 'id',
+  defaultSortOrder: 'ascend',
+  sorter: (a, b) => a.id - b.id,
+},{
+  title: 'User ID',
   dataIndex: 'owner.id',
   defaultSortOrder: 'ascend',
   sorter: (a, b) => a.owner.id - b.owner.id,
