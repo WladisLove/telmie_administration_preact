@@ -89,7 +89,7 @@ const UserInfo = props =>  {
     const {
         backToList, serverData = {}, isPending = false, isIndividual, activateUser, pendingControlsFunc, accControlsFunc, editUserFunc, 
     } = props;
-    const {error: isError, message : errorMessage = '', isModifying} = props.selectedUser;
+    const {error: isError, message : errorMessage = '', isModifying} = props.selectedUser ? props.selectedUser : {};
 
     const {categories = [],subCategories=[]} = serverData;
 
@@ -113,7 +113,7 @@ const UserInfo = props =>  {
 
     let changedFields = (user && user.pro) ? checkPro(user, changedInfo) : checkNotPro(user, changedInfo);
     changedInfo && checkForLocation(user, changedFields);
-    
+
 
     return (
         <div class={``}>
