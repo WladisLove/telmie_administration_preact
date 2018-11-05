@@ -20,6 +20,8 @@ class UsersRouteWrapper extends Component{
 			searchedData: [],
 			searchFields: {},
 
+			sortedInfo: {},
+
 			selected: false,
 		}
 	}
@@ -91,14 +93,18 @@ class UsersRouteWrapper extends Component{
 		this.setState({ selected: false });
 	};
 
+	onChange = (pagination, filters, sorter) => {
+		this.setState({ sortedInfo: sorter, });
+	}
+
 	render(){
-        const {isFiltered, filteredData, isSearched, searchedData, selected} = this.state;
+        const {isFiltered, filteredData, isSearched, searchedData, selected, sortedInfo = {}} = this.state;
         const {
 			accControlsFunc, serverData, isIndividual, isPending, isForDelete, selectedUser, columns, onEditUser
 		} = this.props;
         const {load : isLoaded = false, error : isError = false, message : errorMsg = ''} = this.props.uArrays;
-        const {usersArr = [], withFilter = false} = this.props;
-
+		const {usersArr = [], withFilter = false} = this.props;
+		
 		const dataSource = isSearched ? 
 			searchedData : isFiltered 
 				? filteredData : usersArr;
@@ -119,8 +125,9 @@ class UsersRouteWrapper extends Component{
 								accControlsFunc={accControlsFunc}
 								editUserFunc={onEditUser}/>
 								:
-							<Table columns={columns} 
+							<Table columns={columns(sortedInfo)} 
 									rowKey={(record) => record.id} 
+									onChange={this.onChange}
 									onRow={this.onRow}
 									pagination={{pageSize: PAGE_SIZE}}
 									dataSource={dataSource} />
