@@ -29,7 +29,31 @@ export function getActiveUsers(authData){
 				message: 'Current user is not Admin',
 			} 
 				: 
-			response.json().then(json => json);
+				response.status !== 200  ? 
+					response.json().then(json => ({ ...json, error: true, }))
+						.catch(err => ({ error: true, message: err.message, }))
+					: response.json().then(json => json);
+
+	}, error => {
+		throw new Error(error.message);
+	});
+}
+
+export function getArchivedUsers(authData){
+	let headers = new Headers();
+	headers.append("Authorization", "Basic " + authData);
+
+	return fetch(apiUrls.GET_ARCHIVED_USERS, { method: 'GET', headers}).then(response => {
+		return (response.status === 403) ? 
+			{
+				error: true,
+				message: 'Current user is not Admin',
+			} 
+				: 
+				response.status !== 200  ? 
+					response.json().then(json => ({ ...json, error: true, }))
+						.catch(err => ({ error: true, message: err.message, }))
+					: response.json().then(json => json);
 
 	}, error => {
 		throw new Error(error.message);

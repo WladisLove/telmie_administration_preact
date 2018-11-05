@@ -36,6 +36,13 @@ const setActiveU = (users) => ({
 const clearActiveU = () => ({
 	type: actionTypes.CLEAR_ACTIVE_USERS,
 });
+const setArchivedU = (users) => ({
+	type: actionTypes.SET_ARCHIVED_USERS,
+	users
+});
+const clearArchivedU = () => ({
+	type: actionTypes.CLEAR_ARCHIVED_USERS,
+});
 const selectUser = (user) => ({
 	type: actionTypes.SELECT_USER,
 	user
@@ -85,6 +92,17 @@ export const getActiveUsers = (authData) => async (dispatch) => {
 };
 export const clearActiveUsers = () => (dispatch) => {
 	dispatch(clearActiveU());
+};
+
+export const getArchivedUsers = (authData) => async (dispatch) => {
+	dispatch(clearArchivedU());
+	const response = await user.getArchivedUsers(authData);
+	response.error ? 
+		dispatch(getUsersFailure(response.message))
+		: dispatch(setArchivedU(response));
+};
+export const clearArchivedUsers = () => (dispatch) => {
+	dispatch(clearArchivedU());
 };
 
 export const clearSelectedUser = () => (dispatch) => {

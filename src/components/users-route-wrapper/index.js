@@ -1,27 +1,17 @@
 import { h, Component } from 'preact';
-import { bindActionCreators } from 'redux';
-import { connect } from 'preact-redux';
-import Card from '../../components/card'
+import Card from '../card'
 import { Table, Spin } from 'antd';
-import UserInfo from '../../components/user-info';
-import FilterArea from '../../components/user-table-controls/filter-area'
-import SearchArea from '../../components/user-table-controls/search-area'
-
-import UsersRouteWrapper from '../../components/users-route-wrapper'
-
+import UserInfo from '../user-info';
+import FilterArea from '../user-table-controls/filter-area'
+import SearchArea from '../user-table-controls/search-area'
 import 'antd/dist/antd.css';
-import style from './style'
-
-import { getCategories } from '../../store/actions/data'
-import { getActiveUsers, chooseSelectedUser, clearActiveUsers, clearSelectedUser, editUser, changeActiveUserStatus } from '../../store/actions/user'
+//import style from './style'
 
 import { getCookie } from '../../helpers/cookie'
 import { PAGE_SIZE } from '../../helpers/consts'
-import { tableColumns as columns } from '../../helpers/table-data'
 
-
-class ActiveUsers extends Component{
-	/*constructor(props){
+class UsersRouteWrapper extends Component{
+	constructor(props){
 		super(props);
 
 		this.state = {
@@ -36,26 +26,25 @@ class ActiveUsers extends Component{
 		}
 	}
 
-
 	onFilter = (statusFilter, generalLength) => {
-		const {activeUsers = []} = this.props;
+		const {usersArr = []} = this.props;
 		if (statusFilter.length === generalLength){
 			this.setState({ filteredData: [], isFiltered: false });
 			Object.keys(this.state.searchFields).length && this.onSearch({...this.state.searchFields});
 		} else {
-			let newData = activeUsers.filter(el => statusFilter.indexOf(el.status) != -1 );
+			let newData = usersArr.filter(el => statusFilter.indexOf(el.status) != -1 );
 			this.setState({ filteredData: newData, isFiltered: true });
 			Object.keys(this.state.searchFields).length && this.onSearch({...this.state.searchFields});
 		}
 	}
 
 	onSearch = (searchFields) => {
-		let activeUsers = this.state.isFiltered ? [...this.state.filteredData] : [...this.props.activeUsers];
+		let usersArr = this.state.isFiltered ? [...this.state.filteredData] : [...this.props.usersArr];
 
 		if (!Object.keys(searchFields).length){
 			this.setState({ searchedData: [], isSearched: false, searchFields: {} });
 		} else {
-			let newData = activeUsers.filter(user => {
+			let newData = usersArr.filter(user => {
 				const {name = '', lastName = '', email = '', pro,
 					mobile = "", 
 					dateOfBirth = ""} = user;
@@ -99,40 +88,21 @@ class ActiveUsers extends Component{
 	});
 
 	onBackToList = () => {
-		this.props.selectedUser.isEdited && 
-			this.userAuth && this.props.getActiveUsers(this.userAuth);
+		this.props.selectedUser.isEdited && this.props.onGetUsersArr();
 		this.props.clearSelectedUser();
 		this.setState({ selected: false });
 	};
 
-	componentDidMount(){
-		this.userAuth = this.props.userData.userAuth || getCookie('USER_AUTH');
-		this.userAuth && (
-			Object.keys(this.props.serverData).length || this.props.getCategories(this.userAuth)
-		);
-		this.userAuth && this.props.getActiveUsers(this.userAuth);
-	};
-
-	componentWillUnmount(){
-		this.props.clearActiveUsers();
-		this.props.clearSelectedUser();
-	}
-
-	onEditUser = (newData) => {
-		this.props.editUser(newData, newData.id, this.userAuth);
-	}
-
 	render(){
-		const {isFiltered, filteredData, isSearched, searchedData, selected} = this.state;
-		const {load : isLoaded = false, error : isError = false, message : errorMsg = '', activeUsers = []} = this.props.uArrays;
+        const {isFiltered, filteredData, isSearched, searchedData, selected} = this.state;
+        const {accControlsFunc, serverData, isIndividual, isPending, selectedUser, columns, onEditUser} = this.props;
+        const {load : isLoaded = false, error : isError = false, message : errorMsg = ''} = this.props.uArrays;
+        const {usersArr = []} = this.props.usersArr;
 
 		const dataSource = isSearched ? 
 			searchedData : isFiltered 
-				? filteredData : activeUsers;
+				? filteredData : usersArr;
 		
-		const accControlsFunc = {
-			changeStatus: (id) => this.props.changeActiveUserStatus(id, this.userAuth),
-		};
 		return (
 			<Card cardClass='route-content'>
 				{isLoaded ? 
@@ -140,13 +110,13 @@ class ActiveUsers extends Component{
 						<FilterArea onFilter={this.onFilter} isShown={selected}/>,
 						<SearchArea onSearch={this.onSearch} isShown={selected}/>,
 						selected ? 
-							<UserInfo selectedUser={this.props.selectedUser}
-								serverData={this.props.serverData}
+							<UserInfo selectedUser={selectedUser}
+								serverData={serverData}
 								backToList={this.onBackToList}
-								isIndividual={false}
-								isPending={false}
+								isIndividual={isIndividual}
+								isPending={isPending}
 								accControlsFunc={accControlsFunc}
-								editUserFunc={this.onEditUser}/>
+								editUserFunc={onEditUser}/>
 								:
 							<Table columns={columns} 
 									rowKey={(record) => record.id} 
@@ -158,59 +128,19 @@ class ActiveUsers extends Component{
 						Error! 
 						<div class="errorMsg">{errorMsg}</div>
 					</div>) 
-					: (<div class='spinContainer'><Spin size='large'/></div>)}				
+					: (<div class='spinContainer'><Spin size='large'/></div>)}
+					{/*
+						
+													
+						*/}
+				
 			</Card>
 		)
-	}*/
-
-	//getUsersArr (getActiveUsers), 
-	//clearUsersArr (clearActiveUsers), 
-
-	componentDidMount(){
-		this.userAuth = this.props.userData.userAuth || getCookie('USER_AUTH');
-		this.userAuth && (
-			Object.keys(this.props.serverData).length || this.props.getCategories(this.userAuth)
-		);
-		this.userAuth && this.props.getActiveUsers(this.userAuth);
-	};
-
-	componentWillUnmount(){
-		this.props.clearActiveUsers();
-		this.props.clearSelectedUser();
-	}
-
-	onEditUser = (newData) => this.props.editUser(newData, newData.id, this.userAuth);
-
-	onGetUsersArr = () => this.props.onGetUsersArr(this.userAuth);
-
-	render() {
-		const {activeUsers = []} = this.props.uArrays;
-		const accControlsFunc = {
-			changeStatus: (id) => this.props.changeActiveUserStatus(id, this.userAuth),
-		};
-
-		return <UsersRouteWrapper 
-			chooseSelectedUser={this.props.chooseSelectedUser}
-			clearSelectedUser={this.props.clearSelectedUser}
-			selectedUser={this.props.selectedUser}
-
-			serverData={this.props.serverData}
-			
-			usersArr={activeUsers}
-			uArrays={this.props.uArrays}
-			onGetUsersArr={this.onGetUsersArr}
-
-			isIndividual={false}
-
-			columns={columns}
-
-			onEditUser={this.onEditUser}
-			accControlsFunc={accControlsFunc}/>
 	}
 	
 };
 
-const mapStateToProps = (state) => ({
+/*const mapStateToProps = (state) => ({
 	userData: state.loggedInUser,
 	serverData: state.serverData,
 	uArrays: state.usersArrays,
@@ -230,4 +160,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(ActiveUsers);
+)(ActiveUsers);*/
+
+export default UsersRouteWrapper;

@@ -50,6 +50,18 @@ export const usersArrays = (state = {error: false, load: false}, action) => {
 				...clearFields,
 				activeUsers: [],
 			}
+		case actionTypes.SET_ARCHIVED_USERS:
+			return {
+				...state,
+				...setFields,
+				archivedUsers: action.users,
+			}
+		case actionTypes.CLEAR_ARCHIVED_USERS:
+			return {
+				...state,
+				...clearFields,
+				archivedUsers: [],
+			}
 		case actionTypes.ERROR_GETTING_USERS:
 			return {
 				...state,
