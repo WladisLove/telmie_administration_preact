@@ -181,7 +181,7 @@ class ActiveUsers extends Component{
 
 	onEditUser = (newData) => this.props.editUser(newData, newData.id, this.userAuth);
 
-	onGetUsersArr = () => this.props.onGetUsersArr(this.userAuth);
+	onGetUsersArr = () => this.props.getActiveUsers(this.userAuth);
 
 	render() {
 		const {activeUsers = []} = this.props.uArrays;
