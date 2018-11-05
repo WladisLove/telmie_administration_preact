@@ -87,7 +87,8 @@ const checkForLocation = (user, changedFields) => {
 
 const UserInfo = props =>  {
     const {
-        backToList, serverData = {}, isPending = false, isIndividual, activateUser, pendingControlsFunc, accControlsFunc, editUserFunc, 
+        backToList, serverData = {}, isPending = false, isIndividual, isForDelete, activateUser, 
+        pendingControlsFunc, accControlsFunc, editUserFunc, 
     } = props;
     const {error: isError, message : errorMessage = '', isModifying} = props.selectedUser ? props.selectedUser : {};
 
@@ -132,7 +133,9 @@ const UserInfo = props =>  {
 					</div>
                 ) : (
                     !isModifying && user ? ([
-                        !isPending && <AccountControlsArea accControlsFunc={accControlsFunc} selectedUser = {props.selectedUser}/>,
+                        !isPending && <AccountControlsArea selectedUser = {props.selectedUser}
+                            isForDelete={isForDelete}
+                            accControlsFunc={accControlsFunc} />,
 
                         <AccountDetail isPending = {isPending} user={user} saveUserInfo={saveUserInfo} changedFields={changedFields}/>,
                         <ProDetails categories={categories} 

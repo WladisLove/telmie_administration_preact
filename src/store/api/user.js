@@ -72,33 +72,57 @@ export function editUser(data, id, authData){
 				message: 'Current user is not Admin',
 			} 
 				: 
-				response.status !== 200  ? {
-					error: true,
-				}
-					:
-				response.json().then(json => json);
+				response.status !== 200  ? 
+					response.json().then(json => ({ ...json, error: true, }))
+						.catch(err => ({ error: true, message: err.message, }))
+					: response.json().then(json => json);
 
 	}, error => {
 		throw new Error(error.message);
 	});
 }
 
-export function changeActiveUserStatus(id, authData){
+
+function changeUserStatus(url, authData){
 	let headers = new Headers();
 	headers.append("Authorization", "Basic " + authData);
 
-	return fetch(apiUrls.CHANGE_ACTIVE_USER_STATUS(id), { method: 'PUT', headers }).then(response => {
+	return fetch(url, { method: 'PUT', headers }).then(response => {
 		return (response.status === 403) ? 
 			{
 				error: true,
 				message: 'Current user is not Admin',
 			} 
 				: 
-				response.status !== 200  ? {
-					error: true,
-				}
-					:
-				response.json().then(json => json);
+				response.status !== 200  ? 
+					response.json().then(json => ({ ...json, error: true, }))
+						.catch(err => ({ error: true, message: err.message, }))
+					: response.json().then(json => json);
+
+	}, error => {
+		throw new Error(error.message);
+	});
+}
+
+export function changeActiveUserStatus(id, authData){		
+	return changeUserStatus(apiUrls.CHANGE_ACTIVE_USER_STATUS(id), authData);
+}
+
+export function restoreArchivedUser(id, authData){
+	let headers = new Headers();
+	headers.append("Authorization", "Basic " + authData);
+
+	return fetch(apiUrls.RESTORE_ARCHIVED_USER(id), { method: 'PUT', headers }).then(response => {
+		return (response.status === 403) ? 
+			{
+				error: true,
+				message: 'Current user is not Admin',
+			} 
+				: 
+				response.status !== 200  ? 
+					response.json().then(json => ({ ...json, error: true, }))
+						.catch(err => ({ error: true, message: err.message, }))
+					: response.json().then(json => json);
 
 	}, error => {
 		throw new Error(error.message);

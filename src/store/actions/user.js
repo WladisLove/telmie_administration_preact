@@ -47,6 +47,9 @@ const selectUser = (user) => ({
 	type: actionTypes.SELECT_USER,
 	user
 });
+const clearUser = () => ({
+	type: actionTypes.CLEAR_USER,
+});
 const editUserSuccess = (user) => ({
 	type: actionTypes.EDIT_USER_SUCCESS,
 	user,
@@ -64,6 +67,14 @@ const changeAUStatusFailure = (message) =>({
 });
 const modifyU = () =>({
 	type: actionTypes.START_MODIFY_USER,
+});
+const restoreAUSuccess = (user) => ({
+	type: actionTypes.RESTORE_USER_SUCCESS,
+	user,
+})
+const restoreAUFailure = (message) => ({
+	type: actionTypes.RESTORE_USER_FAILURE,
+	message,
 });
 
 export const logIn = (authData) => async (dispatch) => {
@@ -106,7 +117,7 @@ export const clearArchivedUsers = () => (dispatch) => {
 };
 
 export const clearSelectedUser = () => (dispatch) => {
-	dispatch(selectUser(null));
+	dispatch(clearUser());
 };
 export const chooseSelectedUser = (user) => (dispatch) => {
 	dispatch(selectUser(user));
@@ -126,4 +137,12 @@ export const changeActiveUserStatus = (id, authData) => async (dispatch) => {
 	response.error ?
 		dispatch(changeAUStatusFailure(response.message))
 		: dispatch(changeAUStatusSuccess(response));
+}
+
+export const restoreArchivedUser = (id, authData) => async (dispatch) => {
+	dispatch(modifyU())
+	const response = await user.restoreArchivedUser(id, authData);
+	response.error ?
+		dispatch(restoreAUFailure(response.message))
+		: dispatch(restoreAUSuccess(response));
 }

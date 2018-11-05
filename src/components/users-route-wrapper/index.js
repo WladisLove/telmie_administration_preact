@@ -5,9 +5,7 @@ import UserInfo from '../user-info';
 import FilterArea from '../user-table-controls/filter-area'
 import SearchArea from '../user-table-controls/search-area'
 import 'antd/dist/antd.css';
-//import style from './style'
 
-import { getCookie } from '../../helpers/cookie'
 import { PAGE_SIZE } from '../../helpers/consts'
 
 class UsersRouteWrapper extends Component{
@@ -95,9 +93,11 @@ class UsersRouteWrapper extends Component{
 
 	render(){
         const {isFiltered, filteredData, isSearched, searchedData, selected} = this.state;
-        const {accControlsFunc, serverData, isIndividual, isPending, selectedUser, columns, onEditUser} = this.props;
+        const {
+			accControlsFunc, serverData, isIndividual, isPending, isForDelete, selectedUser, columns, onEditUser
+		} = this.props;
         const {load : isLoaded = false, error : isError = false, message : errorMsg = ''} = this.props.uArrays;
-        const {usersArr = []} = this.props.usersArr;
+        const {usersArr = [], withFilter = false} = this.props;
 
 		const dataSource = isSearched ? 
 			searchedData : isFiltered 
@@ -107,7 +107,7 @@ class UsersRouteWrapper extends Component{
 			<Card cardClass='route-content'>
 				{isLoaded ? 
 					!isError ? [
-						<FilterArea onFilter={this.onFilter} isShown={selected}/>,
+						withFilter && <FilterArea onFilter={this.onFilter} isShown={selected}/>,
 						<SearchArea onSearch={this.onSearch} isShown={selected}/>,
 						selected ? 
 							<UserInfo selectedUser={selectedUser}
@@ -115,6 +115,7 @@ class UsersRouteWrapper extends Component{
 								backToList={this.onBackToList}
 								isIndividual={isIndividual}
 								isPending={isPending}
+								isForDelete={isForDelete}
 								accControlsFunc={accControlsFunc}
 								editUserFunc={onEditUser}/>
 								:
@@ -139,27 +140,5 @@ class UsersRouteWrapper extends Component{
 	}
 	
 };
-
-/*const mapStateToProps = (state) => ({
-	userData: state.loggedInUser,
-	serverData: state.serverData,
-	uArrays: state.usersArrays,
-	selectedUser: state.selectedUser,
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-	getCategories,
-	getActiveUsers,
-	clearActiveUsers,
-	clearSelectedUser,
-	chooseSelectedUser,
-	editUser,
-	changeActiveUserStatus,
-}, dispatch);
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ActiveUsers);*/
 
 export default UsersRouteWrapper;
