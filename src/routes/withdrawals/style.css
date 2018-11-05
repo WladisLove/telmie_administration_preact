@@ -1,0 +1,15 @@
+.rowBtn{
+    width: auto !important;
+    padding: 2px 10px !important;
+}
+
+.rowBtn:not(:last-child){
+    margin-right: 10px;
+}
+
+.approveBtn {
+    background-color: green !important;
+}
+.declineBtn {
+    background-color: #e3002b !important;
+}

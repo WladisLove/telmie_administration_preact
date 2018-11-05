@@ -13,6 +13,14 @@ const setPendings = (pendings) => ({
 const clearPendingsArr = () => ({
 	type: actionTypes.CLEAR_PENDINGS,
 });
+const getWithdrawalsFailure = (message) => ({
+	type: actionTypes.GET_WITHDRAWALS_FAILURE,
+	message,
+});
+const setWithdrawals = (withdrawals) =>({
+	type: actionTypes.SET_WITHDRAWALS,
+	withdrawals,
+});
 
 
 const activateUserStart = () => ({
@@ -49,3 +57,10 @@ export const activateUser = (id, authData) => async (dispatch) => {
 		);
 }
 export const clearActivateUserStatus = () => (dispatch) => dispatch(clearActivateStatus());
+
+export const getWithdrawals = (authData) => async (dispatch) => {
+	const response = await pending.getWithdrawals(authData);
+	response.error ? 
+		dispatch(getWithdrawalsFailure(response.message))
+		: dispatch(setWithdrawals(response));
+};

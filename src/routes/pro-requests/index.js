@@ -45,8 +45,8 @@ class Requests extends Component{
 	onBackToList = () => {
 		this.setState({ selected: false, selectedUser: null });
 	};
-	onChange = (pagination, filters, sorter) => {
-		this.setState({ sortedInfo: sorter, });
+	onChange = (pagination, filters, sortedInfo) => {
+		this.setState({ sortedInfo, });
 	}
 
 	render(){

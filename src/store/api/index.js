@@ -15,4 +15,5 @@ export const apiUrls = {
   EDIT_ACTIVE_USER: (id) => (apiAdminRoot + 'users/active/' + id),
   CHANGE_ACTIVE_USER_STATUS: (id) => (apiAdminRoot + 'users/active/' + id + '/enabledStatus'),
   RESTORE_ARCHIVED_USER: (id) => (apiAdminRoot + 'users/archived/' + id + '/restore'),
+  GET_WITHDRAW: apiAdminRoot + 'withdraw',
 }

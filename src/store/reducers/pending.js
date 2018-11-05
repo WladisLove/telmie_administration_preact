@@ -21,13 +21,23 @@ export const pendingReducer = (state = {error: false, load: false}, action) => {
 				...state,
 				...clearFields,
 				pendings: [],
+				withdrawals: [],
             }
 		case actionTypes.PENDINGS_GETTING_FAILURE:
+		case actionTypes.GET_WITHDRAWALS_FAILURE:
 			return {
 				...state,
 				error: true,
 				load: true,
 				message: action.message,
+				pendings: [],
+				withdrawals: [],
+			}
+		case actionTypes.SET_WITHDRAWALS:
+			return {
+				...state,
+				...setFields,
+				withdrawals: action.withdrawals,
 			}
 		default:
 			return state;
