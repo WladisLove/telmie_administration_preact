@@ -1,27 +1,32 @@
 import {convertDate} from './index'
 
-export const pendingTableColumns = [{
+export const pendingTableColumns = (sInfo = {}) => ([{
   title: 'Appl ID',
   dataIndex: 'id',
   defaultSortOrder: 'ascend',
   sorter: (a, b) => a.id - b.id,
+  sortOrder: sInfo.columnKey === 'id' && sInfo.order,
 },{
   title: 'User ID',
   dataIndex: 'owner.id',
   defaultSortOrder: 'ascend',
   sorter: (a, b) => a.owner.id - b.owner.id,
+  sortOrder: sInfo.columnKey === 'owner.id' && sInfo.order,
 },{
   title: 'First name',
   dataIndex: 'owner.name',
   sorter: (a,b) => String(a.owner.name).localeCompare(b.owner.name),
+  sortOrder: sInfo.columnKey === 'owner.name' && sInfo.order,
 },{
   title: 'Last name',
   dataIndex: 'owner.lastName',
   sorter: (a,b) => String(a.owner.lastName).localeCompare(b.owner.lastName),
+  sortOrder: sInfo.columnKey === 'owner.lastName' && sInfo.order,
 }, {
   title: 'Email',
   dataIndex: 'owner.email',
   sorter: (a,b) => String(a.owner.email).localeCompare(b.owner.email),
+  sortOrder: sInfo.columnKey === 'owner.email' && sInfo.order,
 },{
     title: 'Status',
     dataIndex: 'owner.status',
@@ -42,6 +47,7 @@ export const pendingTableColumns = [{
   render: (text) => convertDate(text),
   // compare date
   sorter: (a, b) => new Date(a.owner.registrationDate).getTime() - new Date(b.owner.registrationDate).getTime(),
+  sortOrder: sInfo.columnKey === 'owner.registrationDate' && sInfo.order,
 },{
   title: 'Bank account',
   dataIndex: 'owner.bankAccount',
@@ -51,25 +57,29 @@ export const pendingTableColumns = [{
   title: 'Total earning',
   dataIndex: 'owner.totalEarning',
   //sorter: (a, b) => a.totalEarning - b.totalEarning,
-},];
+},]);
 
-export const tableColumns = [{
+export const tableColumns = (sInfo = {}) => ([{
     title: 'Id',
     dataIndex: 'id',
     defaultSortOrder: 'ascend',
     sorter: (a, b) => a.id - b.id,
+    sortOrder: sInfo.columnKey === 'id' && sInfo.order,
   },{
     title: 'First name',
     dataIndex: 'name',
     sorter: (a,b) => String(a.firstName).localeCompare(b.firstName),
+    sortOrder: sInfo.columnKey === 'name' && sInfo.order,
   },{
     title: 'Last name',
     dataIndex: 'lastName',
     sorter: (a,b) => String(a.lastName).localeCompare(b.lastName),
+    sortOrder: sInfo.columnKey === 'lastName' && sInfo.order,
   }, {
     title: 'Email',
     dataIndex: 'email',
     sorter: (a,b) => String(a.email).localeCompare(b.email),
+    sortOrder: sInfo.columnKey === 'email' && sInfo.order,
   },{
       title: 'Status',
       dataIndex: 'status',
@@ -99,4 +109,4 @@ export const tableColumns = [{
     title: 'Total earning',
     dataIndex: 'totalEarning',
     //sorter: (a, b) => a.totalEarning - b.totalEarning,
-  },];
+  },]);

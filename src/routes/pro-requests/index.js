@@ -21,6 +21,8 @@ class Requests extends Component{
 		this.state = {
 			selected: false,
 			selectedUser: null,
+
+			sortedInfo: {},
 		}
 	}
 
@@ -43,10 +45,13 @@ class Requests extends Component{
 	onBackToList = () => {
 		this.setState({ selected: false, selectedUser: null });
 	};
+	onChange = (pagination, filters, sorter) => {
+		this.setState({ sortedInfo: sorter, });
+	}
 
 	render(){
 		const {message = '', error: isError, load: isLoaded, pendings = []} = this.props.pending;
-		const {selected, selectedUser} = this.state;
+		const {selected, selectedUser, sortedInfo} = this.state;
 		const userAuth = this.userAuth;
 		const pendingControlsFunc = {
 			activate: (id) => this.props.activateUserFunc(id, userAuth),
@@ -65,8 +70,9 @@ class Requests extends Component{
 								pendingControlsFunc={pendingControlsFunc}
 								activateUser={this.props.activateUser}/>
 						) : (
-							<Table columns={columns} 
-								rowKey={(record) => record.owner.id} 
+							<Table columns={columns(sortedInfo)} 
+								rowKey={(record) => record.owner.id}
+								onChange={this.onChange} 
 								onRow={this.onRow}
 								pagination={{pageSize: PAGE_SIZE}}
 								dataSource={pendings} />
