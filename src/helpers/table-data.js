@@ -77,6 +77,7 @@ export const withdrawalsTableColumns = (sInfo = {}, btnsRender) => ([{
 },{
   title: 'Withdrawal Amount',
   dataIndex: 'amount',
+  render: text => (<div style={{textAlign: 'center'}}>{text}</div>),
   sorter: (a, b) => a.amount - b.amount,
   sortOrder: sInfo.columnKey === 'amount' && sInfo.order,
 },{

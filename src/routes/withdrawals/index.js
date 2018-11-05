@@ -7,8 +7,7 @@ import { Table, Spin } from 'antd';
 import 'antd/dist/antd.css';
 import style from './style.css'
 
-import { clearPendings, getWithdrawals } from '../../store/actions/pending'
-
+import { clearPendings, getWithdrawals, getWithdrawalDetails, approveWithdrawal, declineWithdrawal } from '../../store/actions/pending'
 
 import { getCookie } from '../../helpers/cookie'
 import { PAGE_SIZE } from '../../helpers/consts'
@@ -38,33 +37,38 @@ class Withdrawals extends Component{
 		this.setState({ sortedInfo, });
 	}
 
+	wDetails = (id) => () => this.props.getWithdrawalDetails(id, this.userAuth);
+	wApprove = (id) => () => this.props.approveWithdrawal(id, this.userAuth);
+	wDecline = (id) => () => this.props.declineWithdrawal(id, this.userAuth);
+
 	renderBtns = (text, record) => ([
-		<button class={`${style.rowBtn} ${style.approveBtn}`}>Approve</button>,
-		<button class={`${style.rowBtn} ${style.declineBtn}`}>Decline</button>,
-		<button class={`${style.rowBtn}`}>Ask for more info</button>
+		<button class={`${style.rowBtn} ${style.approveBtn}`} 
+			onClick={this.wApprove(record.id)}>Approve</button>,
+		<button class={`${style.rowBtn} ${style.declineBtn}`} 
+			onClick={this.wDecline(record.id)}>Decline</button>,
+		<button class={`${style.rowBtn}`} 
+			onClick={this.wDetails(record.id)}>Ask for more info</button>
 	]);	  
 
 	render(){
 		const {sortedInfo} =this.state;
 		const {message = '', error: isError, load: isLoaded, withdrawals = []} = this.props.pending;
 
+		console.log('isError', isError, 'message', message)
+
 		return (
 			<Card cardClass='route-content' headerText="Withdrawals">
 				{
-					isLoaded ? (
-						!isError ? (
+					isLoaded ? ([
+							((isError || message) && <div class="errorContainer">
+								<div class={isError ? "errorMsg" : "notifMsg"}>{isError && 'Error! '} {message}</div>
+							</div>),
 							<Table columns={columns(sortedInfo, this.renderBtns)} 
 								rowKey={(record) => record.id}
 								onChange={this.onChange} 
 								pagination={{pageSize: PAGE_SIZE}}
 								dataSource={withdrawals} />
-						) : (
-							<div class="errorContainer">
-								Error! 
-								<div class="errorMsg">{message}</div>
-							</div>
-						)
-					) : (<div class="spinContainer"><Spin size='large'/></div>)
+					]) : (<div class="spinContainer"><Spin size='large'/></div>)
 				}
 			</Card>
 		)
@@ -78,7 +82,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
 	clearPendings,
-	getWithdrawals
+	getWithdrawals,
+	getWithdrawalDetails,
+	approveWithdrawal,
+	declineWithdrawal,
 }, dispatch);
 
 export default connect(

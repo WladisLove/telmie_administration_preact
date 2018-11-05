@@ -136,12 +136,7 @@ class UsersRouteWrapper extends Component{
 						Error! 
 						<div class="errorMsg">{errorMsg}</div>
 					</div>) 
-					: (<div class='spinContainer'><Spin size='large'/></div>)}
-					{/*
-						
-													
-						*/}
-				
+					: (<div class='spinContainer'><Spin size='large'/></div>)}				
 			</Card>
 		)
 	}

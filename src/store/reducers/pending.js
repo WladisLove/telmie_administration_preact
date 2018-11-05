@@ -29,9 +29,30 @@ export const pendingReducer = (state = {error: false, load: false}, action) => {
 				...state,
 				error: true,
 				load: true,
-				message: action.message,
+				message: `${action.message} (error in getting list of requests)`,
 				pendings: [],
 				withdrawals: [],
+			}
+		case actionTypes.WITHDRAWAL_MANIPULATE_START:
+			return {
+				...state,
+				error: false,
+				load: false,
+				message: ``,
+			}
+		case actionTypes.WITHDRAWAL_MANIPULATE_SUCCESS:
+			return {
+				...state,
+				error: false,
+				load: true,
+				message: `${action.manipulation} successfully`,
+			}
+		case actionTypes.WITHDRAWAL_MANIPULATE_FAILURE:
+			return {
+				...state,
+				error: true,
+				load: true,
+				message: `${action.message} (not ${action.manipulation})`,
 			}
 		case actionTypes.SET_WITHDRAWALS:
 			return {
