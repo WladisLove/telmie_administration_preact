@@ -5,6 +5,9 @@
     flex-wrap: wrap;
     margin-bottom: 25px;
 }
+.wideBtnsArea > button{
+    min-width: 300px !important;
+}
 .smallText{
     font-size: 14px;
 }

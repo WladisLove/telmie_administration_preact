@@ -9,8 +9,10 @@ export const apiUrls = {
   LOG_IN: apiRoot + 'auth',
   GET_CATEGORIES: apiRoot + 'categories',
   GET_ACTIVE_USERS: apiAdminRoot + 'users/active',
+  GET_ARCHIVED_USERS: apiAdminRoot + 'users/archived',
   GET_PENDINGS: apiAdminRoot + 'pending',
   ACTIVATE_USER: (id) => (apiAdminRoot + 'pending/' + id + '/activate'),
   EDIT_ACTIVE_USER: (id) => (apiAdminRoot + 'users/active/' + id),
   CHANGE_ACTIVE_USER_STATUS: (id) => (apiAdminRoot + 'users/active/' + id + '/enabledStatus'),
+  RESTORE_ARCHIVED_USER: (id) => (apiAdminRoot + 'users/archived/' + id + '/restore'),
 }

@@ -36,9 +36,19 @@ const setActiveU = (users) => ({
 const clearActiveU = () => ({
 	type: actionTypes.CLEAR_ACTIVE_USERS,
 });
+const setArchivedU = (users) => ({
+	type: actionTypes.SET_ARCHIVED_USERS,
+	users
+});
+const clearArchivedU = () => ({
+	type: actionTypes.CLEAR_ARCHIVED_USERS,
+});
 const selectUser = (user) => ({
 	type: actionTypes.SELECT_USER,
 	user
+});
+const clearUser = () => ({
+	type: actionTypes.CLEAR_USER,
 });
 const editUserSuccess = (user) => ({
 	type: actionTypes.EDIT_USER_SUCCESS,
@@ -57,6 +67,14 @@ const changeAUStatusFailure = (message) =>({
 });
 const modifyU = () =>({
 	type: actionTypes.START_MODIFY_USER,
+});
+const restoreAUSuccess = (user) => ({
+	type: actionTypes.RESTORE_USER_SUCCESS,
+	user,
+})
+const restoreAUFailure = (message) => ({
+	type: actionTypes.RESTORE_USER_FAILURE,
+	message,
 });
 
 export const logIn = (authData) => async (dispatch) => {
@@ -87,8 +105,19 @@ export const clearActiveUsers = () => (dispatch) => {
 	dispatch(clearActiveU());
 };
 
+export const getArchivedUsers = (authData) => async (dispatch) => {
+	dispatch(clearArchivedU());
+	const response = await user.getArchivedUsers(authData);
+	response.error ? 
+		dispatch(getUsersFailure(response.message))
+		: dispatch(setArchivedU(response));
+};
+export const clearArchivedUsers = () => (dispatch) => {
+	dispatch(clearArchivedU());
+};
+
 export const clearSelectedUser = () => (dispatch) => {
-	dispatch(selectUser(null));
+	dispatch(clearUser());
 };
 export const chooseSelectedUser = (user) => (dispatch) => {
 	dispatch(selectUser(user));
@@ -108,4 +137,12 @@ export const changeActiveUserStatus = (id, authData) => async (dispatch) => {
 	response.error ?
 		dispatch(changeAUStatusFailure(response.message))
 		: dispatch(changeAUStatusSuccess(response));
+}
+
+export const restoreArchivedUser = (id, authData) => async (dispatch) => {
+	dispatch(modifyU())
+	const response = await user.restoreArchivedUser(id, authData);
+	response.error ?
+		dispatch(restoreAUFailure(response.message))
+		: dispatch(restoreAUSuccess(response));
 }

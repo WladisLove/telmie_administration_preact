@@ -50,6 +50,18 @@ export const usersArrays = (state = {error: false, load: false}, action) => {
 				...clearFields,
 				activeUsers: [],
 			}
+		case actionTypes.SET_ARCHIVED_USERS:
+			return {
+				...state,
+				...setFields,
+				archivedUsers: action.users,
+			}
+		case actionTypes.CLEAR_ARCHIVED_USERS:
+			return {
+				...state,
+				...clearFields,
+				archivedUsers: [],
+			}
 		case actionTypes.ERROR_GETTING_USERS:
 			return {
 				...state,
@@ -75,17 +87,17 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 			return {
 				...state,
 				error: false,
-				errorChangeStatus: false,
+				modifyErr: false,
 				selectedUser: null,
 				message: '',
-				msgChangeStatus: '',
+				modifyMsg: '',
 				isEdited: false,
 			}
 		case actionTypes.START_MODIFY_USER:
 			return {
 				...state,
-				errorChangeStatus: false,
-				msgChangeStatus: ``,
+				modifyErr: false,
+				modifyMsg: ``,
 				isModifying: true,
 			}
 		case actionTypes.EDIT_USER_SUCCESS:
@@ -105,8 +117,8 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 		case actionTypes.CHANGE_A_U_STATUS_FAILURE:
 			return {
 				...state,
-				errorChangeStatus: true,
-				msgChangeStatus: `${action.message ? action.message : ''} (Error in changing user status)`,
+				modifyErr: true,
+				modifyMsg: `${action.message ? action.message : ''} (Error in changing user status)`,
 				isModifying: false,
 			}
 		case actionTypes.CHANGE_A_U_STATUS_SUCCESS:
@@ -115,6 +127,22 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 				selectedUser: action.user,
 				isEdited: true,
 				isModifying: false,
+				modifyMsg: `User status is changed`,
+			}
+		case actionTypes.RESTORE_USER_FAILURE:
+			return {
+				...state,
+				modifyErr: true,
+				modifyMsg: `${action.message ? action.message : ''} (Error in restoring user)`,
+				isModifying: false,
+			}
+		case actionTypes.RESTORE_USER_SUCCESS:
+			return {
+				...state,
+				selectedUser: action.user,
+				isEdited: true,
+				isModifying: false,
+				modifyMsg: `User is restored`,
 			}
 		default:
 			return state;
