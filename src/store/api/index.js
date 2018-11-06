@@ -15,4 +15,9 @@ export const apiUrls = {
   EDIT_ACTIVE_USER: (id) => (apiAdminRoot + 'users/active/' + id),
   CHANGE_ACTIVE_USER_STATUS: (id) => (apiAdminRoot + 'users/active/' + id + '/enabledStatus'),
   RESTORE_ARCHIVED_USER: (id) => (apiAdminRoot + 'users/archived/' + id + '/restore'),
+
+  GET_ACTIVE_USER_ACTIVITY: (id) => (apiAdminRoot + 'users/active/' + id + '/activity'),
+  GET_ACTIVE_USER_LIST: (id) => (apiAdminRoot + 'users/active/' + id + '/list'),
+  GET_ARCHIVED_USER_ACTIVITY: (id) => (apiAdminRoot + 'users/archived/' + id + '/activity'),
+  GET_ARCHIVED_USER_LIST: (id) => (apiAdminRoot + 'users/archived/' + id + '/list'),
 }

@@ -128,3 +128,37 @@ export function restoreArchivedUser(id, authData){
 		throw new Error(error.message);
 	});
 }
+
+function getUserActivity(url, authData){
+	let headers = new Headers();
+	headers.append("Authorization", "Basic " + authData);
+
+	return fetch(url, { method: 'GET', headers }).then(response => {
+		return (response.status === 403) ? 
+			{
+				error: true,
+				message: 'Current user is not Admin',
+			} 
+				: 
+				(response.status === 200 || response.status === 201) ? 
+					response.json().then(json => json)
+					: response.json().then(json => ({ ...json, error: true, }))
+						.catch(err => ({ error: true, message: err.message, }));
+
+	}, error => {
+		throw new Error(error.message);
+	});
+}
+
+export function getActiveUsActivities(id, authData){
+	return getUserActivity(apiUrls.GET_ACTIVE_USER_ACTIVITY(id), authData);
+}
+export function getActiveUsProsList(id, authData){
+	return getUserActivity(apiUrls.GET_ACTIVE_USER_LIST(id), authData);
+}
+export function getArchivedUsActivities(id, authData){
+	return getUserActivity(apiUrls.GET_ARCHIVED_USER_ACTIVITY(id), authData);
+}
+export function getArchivedUsProsList(id, authData){
+	return getUserActivity(apiUrls.GET_ARCHIVED_USER_LIST(id), authData);
+}

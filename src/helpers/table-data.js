@@ -1,4 +1,5 @@
 import {convertDate} from './index'
+import { INFO_TYPES } from './consts'
 
 export const pendingTableColumns = (sInfo = {}) => ([{
   title: 'Appl ID',
@@ -110,3 +111,54 @@ export const tableColumns = (sInfo = {}) => ([{
     dataIndex: 'totalEarning',
     //sorter: (a, b) => a.totalEarning - b.totalEarning,
   },]);
+
+export const infoColumns = (infoType) => {
+  switch (infoType){
+    case INFO_TYPES.ACTIVITIES:
+      return ([{
+        title: 'Activity',
+        dataIndex: 'activity',
+        sorter: (a,b) => String(a.activity).localeCompare(b.activity),
+      },{
+        title: 'Activity Count',
+        dataIndex: 'activityCount',
+        sorter: (a,b) => a.activityCount - b.activityCount,
+      },{
+        title: 'Activity Date',
+        dataIndex: 'activityDate',
+        render: (text) => convertDate(text),
+        // compare date
+        sorter: (a, b) => new Date(a.activityDate).getTime() - new Date(b.activityDate).getTime(),
+      },{
+        title: 'First name',
+        dataIndex: 'name',
+        sorter: (a,b) => String(a.name).localeCompare(b.name),
+      },{
+        title: 'Last name',
+        dataIndex: 'lastName',
+        sorter: (a,b) => String(a.lastName).localeCompare(b.lastName),
+      },{
+        title: 'Email',
+        dataIndex: 'email',
+        sorter: (a,b) => String(a.email).localeCompare(b.email),
+      },])
+    case INFO_TYPES.LIST_OF_PROS:
+      return ([{
+        title: 'ID',
+        dataIndex: 'id',
+        sorter: (a,b) => a.id - b.id,
+      },{
+        title: 'First name',
+        dataIndex: 'name',
+        sorter: (a,b) => String(a.name).localeCompare(b.name),
+      },{
+        title: 'Last name',
+        dataIndex: 'lastName',
+        sorter: (a,b) => String(a.lastName).localeCompare(b.lastName),
+      },{
+        title: 'Email',
+        dataIndex: 'email',
+        sorter: (a,b) => String(a.email).localeCompare(b.email),
+      },])
+  }
+}
