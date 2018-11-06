@@ -1,5 +1,6 @@
 import * as user from '../api/user';
 import { actionTypes } from './index';
+import { INFO_TYPES } from '../../helpers/consts'
 
 const setCookie = (name,value,days) => {
     var expires = "";
@@ -61,8 +62,8 @@ const changeAUStatusSuccess = (user) => ({
 	type: actionTypes.CHANGE_A_U_STATUS_SUCCESS,
 	user,
 });
-const changeAUStatusFailure = (message) =>({
-	type: actionTypes.CHANGE_A_U_STATUS_FAILURE,
+const modifyUserFailure = (message) =>({
+	type: actionTypes.MODIFY_USER_FAILURE,
 	message,
 });
 const modifyU = () =>({
@@ -71,10 +72,11 @@ const modifyU = () =>({
 const restoreAUSuccess = (user) => ({
 	type: actionTypes.RESTORE_USER_SUCCESS,
 	user,
-})
-const restoreAUFailure = (message) => ({
-	type: actionTypes.RESTORE_USER_FAILURE,
-	message,
+});
+const setUserInfoList = (infoList, infoType) => ({
+	type: actionTypes.SET_USER_INFO_LIST,
+	infoList,
+	infoType,
 });
 
 export const logIn = (authData) => async (dispatch) => {
@@ -135,7 +137,7 @@ export const changeActiveUserStatus = (id, authData) => async (dispatch) => {
 	dispatch(modifyU())
 	const response = await user.changeActiveUserStatus(id, authData);
 	response.error ?
-		dispatch(changeAUStatusFailure(response.message))
+		dispatch(modifyUserFailure(`${response.message} (Error in changing user status)`))
 		: dispatch(changeAUStatusSuccess(response));
 }
 
@@ -143,27 +145,36 @@ export const restoreArchivedUser = (id, authData) => async (dispatch) => {
 	dispatch(modifyU())
 	const response = await user.restoreArchivedUser(id, authData);
 	response.error ?
-		dispatch(restoreAUFailure(response.message))
+		dispatch(modifyUserFailure(`${response.message} (Error in restoring user)`))
 		: dispatch(restoreAUSuccess(response));
 }
 
 export const getActiveUsActivities = (id, authData) => async (dispatch) => {
-	//dispatch(modifyU())
+	dispatch(modifyU())
 	const response = await user.getActiveUsActivities(id, authData);
-	console.log('[getActiveUsActivities]',response);
+	response.error ?
+		dispatch(modifyUserFailure(`${response.message} (Error in getting ${INFO_TYPES.ACTIVITIES.toLowerCase()})`))
+		: dispatch(setUserInfoList(response.results, INFO_TYPES.ACTIVITIES));
+	
 }
 export const getActiveUsProsList = (id, authData) => async (dispatch) => {
-	//dispatch(modifyU())
+	dispatch(modifyU())
 	const response = await user.getActiveUsProsList(id, authData);
-	console.log('[getActiveUsProsList]',response);
+	response.error ?
+		dispatch(modifyUserFailure(`${response.message} (Error in getting list of pros)`))
+		: dispatch(setUserInfoList(response, INFO_TYPES.LIST_OF_PROS));
 }
 export const getArchivedUsActivities = (id, authData) => async (dispatch) => {
-	//dispatch(modifyU())
+	dispatch(modifyU())
 	const response = await user.getArchivedUsActivities(id, authData);
-	console.log('[getArchivedUsActivities]',response);
+	response.error ?
+		dispatch(modifyUserFailure(`${response.message} (Error in getting activities)`))
+		: dispatch(setUserInfoList(response.results, INFO_TYPES.ACTIVITIES));
 }
 export const getArchivedUsProsList = (id, authData) => async (dispatch) => {
-	//dispatch(modifyU())
+	dispatch(modifyU())
 	const response = await user.getArchivedUsProsList(id, authData);
-	console.log('[getArchivedUsProsList]',response);
+	response.error ?
+		dispatch(modifyUserFailure(`${response.message} (Error in getting list of pros)`))
+		: dispatch(setUserInfoList(response, INFO_TYPES.LIST_OF_PROS));
 }
