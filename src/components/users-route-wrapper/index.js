@@ -20,7 +20,7 @@ class UsersRouteWrapper extends Component{
 			searchedData: [],
 			searchFields: {},
 
-			sortedInfo: {},
+			sortedInfo: {order: "descend", field: "id", columnKey: "id"},
 
 			selected: false,
 		}

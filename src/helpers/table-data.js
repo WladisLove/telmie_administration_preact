@@ -4,13 +4,11 @@ import { INFO_TYPES } from './consts'
 export const pendingTableColumns = (sInfo = {}) => ([{
   title: 'Appl ID',
   dataIndex: 'id',
-  defaultSortOrder: 'ascend',
   sorter: (a, b) => a.id - b.id,
   sortOrder: sInfo.columnKey === 'id' && sInfo.order,
 },{
   title: 'User ID',
   dataIndex: 'owner.id',
-  defaultSortOrder: 'ascend',
   sorter: (a, b) => a.owner.id - b.owner.id,
   sortOrder: sInfo.columnKey === 'owner.id' && sInfo.order,
 },{
@@ -63,7 +61,6 @@ export const pendingTableColumns = (sInfo = {}) => ([{
 export const tableColumns = (sInfo = {}) => ([{
     title: 'Id',
     dataIndex: 'id',
-    defaultSortOrder: 'ascend',
     sorter: (a, b) => a.id - b.id,
     sortOrder: sInfo.columnKey === 'id' && sInfo.order,
   },{

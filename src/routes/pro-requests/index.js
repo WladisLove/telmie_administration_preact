@@ -22,7 +22,7 @@ class Requests extends Component{
 			selected: false,
 			selectedUser: null,
 
-			sortedInfo: {},
+			sortedInfo: {order: "descend", field: "id", columnKey: "id"},
 		}
 	}
 
