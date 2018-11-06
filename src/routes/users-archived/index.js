@@ -28,8 +28,6 @@ class ArchivedUsers extends Component{
 		this.props.clearSelectedUser();
 	}
 
-	onGetUsersArr = () => this.props.getArchivedUsers(this.userAuth);
-
 	render(){
 		const {archivedUsers = []} = this.props.uArrays;
 
@@ -49,7 +47,6 @@ class ArchivedUsers extends Component{
 			
 			usersArr={archivedUsers}
 			uArrays={this.props.uArrays}
-			onGetUsersArr={this.onGetUsersArr}
 
 			isIndividual={false}
 			isForDelete={true}

@@ -126,19 +126,25 @@ export const chooseSelectedUser = (user) => (dispatch) => {
 };
 
 export const editUser = (data, id, authData) => async (dispatch) => {
-	dispatch(selectUser(null)); // when updating starts (for spinner) !!!check it when error
+	dispatch(modifyU());
 	const response = await user.editUser(data, id, authData);
 	response.error ? 
 		dispatch(editUserFailure(response.message))
-		: dispatch(editUserSuccess(response));
+		: (
+			dispatch(editUserSuccess(response)),
+			dispatch(getActiveUsers(authData))
+		);
 };
 
 export const changeActiveUserStatus = (id, authData) => async (dispatch) => {
-	dispatch(modifyU())
+	dispatch(modifyU());
 	const response = await user.changeActiveUserStatus(id, authData);
 	response.error ?
 		dispatch(modifyUserFailure(`${response.message} (Error in changing user status)`))
-		: dispatch(changeAUStatusSuccess(response));
+		: (
+			dispatch(changeAUStatusSuccess(response)),
+			dispatch(getActiveUsers(authData))
+		);
 }
 
 export const restoreArchivedUser = (id, authData) => async (dispatch) => {
@@ -146,7 +152,10 @@ export const restoreArchivedUser = (id, authData) => async (dispatch) => {
 	const response = await user.restoreArchivedUser(id, authData);
 	response.error ?
 		dispatch(modifyUserFailure(`${response.message} (Error in restoring user)`))
-		: dispatch(restoreAUSuccess(response));
+		: (
+			dispatch(restoreAUSuccess(response)),
+			dispatch(getArchivedUsers(authData))
+		);
 }
 
 export const getActiveUsActivities = (id, authData) => async (dispatch) => {

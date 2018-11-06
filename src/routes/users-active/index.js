@@ -34,8 +34,6 @@ class ActiveUsers extends Component{
 
 	onEditUser = (newData) => this.props.editUser(newData, newData.id, this.userAuth);
 
-	onGetUsersArr = () => this.props.getActiveUsers(this.userAuth);
-
 	render() {
 		const {activeUsers = []} = this.props.uArrays;
 		const accControlsFunc = {
@@ -53,7 +51,6 @@ class ActiveUsers extends Component{
 			
 			usersArr={activeUsers}
 			uArrays={this.props.uArrays}
-			onGetUsersArr={this.onGetUsersArr}
 
 			isIndividual={false}
 
