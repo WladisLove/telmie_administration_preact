@@ -8,7 +8,8 @@ import { Table, Spin } from 'antd';
 import 'antd/dist/antd.css';
 
 import { getCategories } from '../../store/actions/data'
-import { getPendings, clearPendings, activateUser, clearActivateUserStatus } from '../../store/actions/pending'
+import { getPendings, clearPendings, activateUser, clearActivateUserStatus,
+	selectPending, unselectPending } from '../../store/actions/pending'
 
 import { getCookie } from '../../helpers/cookie'
 import { PAGE_SIZE } from '../../helpers/consts'
@@ -22,7 +23,8 @@ class Requests extends Component{
 			selected: false,
 			selectedUser: null,
 
-			sortedInfo: {},
+			sortedInfo: {order: "descend", field: "id", columnKey: "id"},
+			pagination: { pageSize: PAGE_SIZE },
 		}
 	}
 
@@ -39,19 +41,21 @@ class Requests extends Component{
 
 	onRow = (record) => ({
 		onClick: () => {
-			this.setState({selected : true, selectedUser: record});
+			this.props.selectPending();
+			this.setState({ selectedUser: record});
 		},
 	});
 	onBackToList = () => {
-		this.setState({ selected: false, selectedUser: null });
+		this.props.unselectPending();
+		this.setState({ selectedUser: null });
 	};
 	onChange = (pagination, filters, sorter) => {
-		this.setState({ sortedInfo: sorter, });
+		this.setState({ sortedInfo: sorter, pagination });
 	}
 
 	render(){
-		const {message = '', error: isError, load: isLoaded, pendings = []} = this.props.pending;
-		const {selected, selectedUser, sortedInfo} = this.state;
+		const {message = '', error: isError, load: isLoaded, pendings = [], isPendingSelected} = this.props.pending;
+		const { selectedUser, sortedInfo, pagination} = this.state;
 		const userAuth = this.userAuth;
 		const pendingControlsFunc = {
 			activate: (id) => this.props.activateUserFunc(id, userAuth),
@@ -61,7 +65,7 @@ class Requests extends Component{
 			<Card cardClass='route-content' headerText="Pro applications">
 				{isLoaded ? (
 					!isError ? (
-						selected ? (
+						isPendingSelected ? (
 							<UserInfo user={selectedUser}
 								serverData={this.props.serverData}
 								backToList={this.onBackToList}
@@ -74,7 +78,7 @@ class Requests extends Component{
 								rowKey={(record) => record.owner.id}
 								onChange={this.onChange} 
 								onRow={this.onRow}
-								pagination={{pageSize: PAGE_SIZE}}
+								pagination={pagination}
 								dataSource={pendings} />
 						)
 					) : (
@@ -102,6 +106,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	clearPendings,
 	activateUserFunc: activateUser,
 	clearActivateUserStatus,
+	selectPending: () => dispatch(selectPending()),
+	unselectPending: () => dispatch(unselectPending()),
 }, dispatch);
 
 export default connect(

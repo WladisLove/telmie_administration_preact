@@ -19,7 +19,6 @@ class AccountControlsArea extends Component{
         const {selectedUser, isForDelete = false} = this.props;
         const {selectedUser : user = null, modifyErr = false, modifyMsg} = selectedUser;
 
-
         return (
             <div>
                 {isForDelete && <div class={`${style.topBtnsArea} ${style.wideBtnsArea}`}>

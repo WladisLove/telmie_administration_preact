@@ -91,9 +91,8 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 				selectedUser: null,
 				message: '',
 				modifyMsg: '',
-				isEdited: false,
 				infoList: [],
-				infoType: [],
+				infoType: '',
 			}
 		case actionTypes.START_MODIFY_USER:
 			return {
@@ -102,7 +101,7 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 				modifyMsg: ``,
 				isModifying: true,
 				infoList: [],
-				infoType: [],
+				infoType: '',
 			}
 		case actionTypes.EDIT_USER_SUCCESS:
 			return {
@@ -110,7 +109,7 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 				selectedUser: action.user,
 				error: false,
 				message: '',
-				isEdited: true,
+				isModifying: false,
 			}
 		case actionTypes.EDIT_USER_FAILURE:
 			return {
@@ -122,7 +121,6 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 			return {
 				...state,
 				selectedUser: action.user,
-				isEdited: true,
 				isModifying: false,
 				modifyMsg: `User status is changed`,
 			}
@@ -137,7 +135,6 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 			return {
 				...state,
 				selectedUser: action.user,
-				isEdited: true,
 				isModifying: false,
 				modifyMsg: `User is restored`,
 			}

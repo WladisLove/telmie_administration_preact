@@ -58,6 +58,8 @@ class SideNav extends Component{
     }
 
     onSelectSubMenu = (menuKey, isForActive = false) => {
+        isForActive && this.props.isUserSelected && this.props.clearSelectedUser();
+        isForActive && this.props.isPendingSelected && this.props.unselectPending();
         isForActive ? 
             this.setState({ menuKey })
             :
