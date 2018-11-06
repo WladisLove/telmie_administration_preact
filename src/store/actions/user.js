@@ -146,3 +146,24 @@ export const restoreArchivedUser = (id, authData) => async (dispatch) => {
 		dispatch(restoreAUFailure(response.message))
 		: dispatch(restoreAUSuccess(response));
 }
+
+export const getActiveUsActivities = (id, authData) => async (dispatch) => {
+	//dispatch(modifyU())
+	const response = await user.getActiveUsActivities(id, authData);
+	console.log('[getActiveUsActivities]',response);
+}
+export const getActiveUsProsList = (id, authData) => async (dispatch) => {
+	//dispatch(modifyU())
+	const response = await user.getActiveUsProsList(id, authData);
+	console.log('[getActiveUsProsList]',response);
+}
+export const getArchivedUsActivities = (id, authData) => async (dispatch) => {
+	//dispatch(modifyU())
+	const response = await user.getArchivedUsActivities(id, authData);
+	console.log('[getArchivedUsActivities]',response);
+}
+export const getArchivedUsProsList = (id, authData) => async (dispatch) => {
+	//dispatch(modifyU())
+	const response = await user.getArchivedUsProsList(id, authData);
+	console.log('[getArchivedUsProsList]',response);
+}

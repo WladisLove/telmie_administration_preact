@@ -8,7 +8,9 @@ import 'antd/dist/antd.css';
 import style from './style'
 
 import { getCategories } from '../../store/actions/data'
-import { getActiveUsers, chooseSelectedUser, clearActiveUsers, clearSelectedUser, editUser, changeActiveUserStatus } from '../../store/actions/user'
+import { getActiveUsers, clearActiveUsers, 
+	chooseSelectedUser, clearSelectedUser, editUser, 
+	changeActiveUserStatus, getActiveUsActivities, getActiveUsProsList } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { tableColumns as columns } from '../../helpers/table-data'
@@ -38,6 +40,8 @@ class ActiveUsers extends Component{
 		const {activeUsers = []} = this.props.uArrays;
 		const accControlsFunc = {
 			changeStatus: (id) => this.props.changeActiveUserStatus(id, this.userAuth),
+			getActivities: (id) => this.props.getActiveUsActivities(id, this.userAuth),
+			getProsList: (id) => this.props.getActiveUsProsList(id, this.userAuth),
 		};
 
 		return <UsersRouteWrapper 
@@ -77,6 +81,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	chooseSelectedUser,
 	editUser,
 	changeActiveUserStatus,
+	getActiveUsActivities,
+	getActiveUsProsList,
 }, dispatch);
 
 export default connect(
