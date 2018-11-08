@@ -8,7 +8,7 @@ import 'antd/dist/antd.css';
 import { getCategories } from '../../store/actions/data'
 import { getArchivedUsers, clearArchivedUsers, 
 	chooseSelectedUser, clearSelectedUser, 
-	restoreArchivedUser, getArchivedUsActivities, getArchivedUsProsList} from '../../store/actions/user'
+	restoreArchivedUser, getArchivedUsActivities, getArchivedUsProsList, getActiveUsClients } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { tableColumns as columns } from '../../helpers/table-data'
@@ -35,6 +35,7 @@ class ArchivedUsers extends Component{
 			restore: (id) => this.props.restoreArchivedUser(id, this.userAuth),
 			getActivities: (id) => this.props.getArchivedUsActivities(id, this.userAuth),
 			getProsList: (id) => this.props.getArchivedUsProsList(id, this.userAuth),
+			getClients: (id) => this.props.getActiveUsClients(id,this.userAuth),
 		};
 
 
@@ -73,6 +74,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	getCategories,
 	getArchivedUsActivities,
 	getArchivedUsProsList,
+	getActiveUsClients,
 }, dispatch);
 
 export default connect(
