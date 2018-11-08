@@ -78,7 +78,7 @@ export const pendingReducer = (state = {error: false, load: false}, action) => {
 export const activateUser = (state = {error: false, isComplete: true}, action) => {
 	
 	switch (action.type) {
-		case actionTypes.START_ACTIVATE_USER:
+		case actionTypes.START_PROCESSING_PENDING:
 			return {
 				...state,
 				error: false,
@@ -86,15 +86,15 @@ export const activateUser = (state = {error: false, isComplete: true}, action) =
 				isSuccess: false,
 				message: '',
 			}
-		case actionTypes.ACTIVATE_USER_SUCCESS:
+		case actionTypes.PROCESSING_PENDING_SUCCESS:
 			return {
 				...state,
 				error: false,
 				isComplete: true,
 				isSuccess: true,
-				message: 'Approved',
+				message: action.message,
 			}
-		case actionTypes.ACTIVATE_USER_FAILURE:
+		case actionTypes.PROCESSING_PENDING_FAILURE:
 			return {
 				...state,
 				error: true,

@@ -8,7 +8,8 @@ import { Table, Spin } from 'antd';
 import 'antd/dist/antd.css';
 
 import { getCategories } from '../../store/actions/data'
-import { getPendings, clearPendings, activateUser, clearActivateUserStatus,
+import { getPendings, clearPendings, 
+	activateUser, declineUser, clearActivateUserStatus,
 	selectPending, unselectPending } from '../../store/actions/pending'
 
 import { getCookie } from '../../helpers/cookie'
@@ -59,7 +60,8 @@ class Requests extends Component{
 		const { selectedUser, sortedInfo, pagination} = this.state;
 		const userAuth = this.userAuth;
 		const pendingControlsFunc = {
-			activate: (id) => this.props.activateUserFunc(id, userAuth),
+			approve: (id) => this.props.activateUserFunc(id, userAuth),
+			decline: (id) => this.props.declineUser(id, userAuth),
 			clearStatus: this.props.clearActivateUserStatus,
 		}
 		return (
@@ -106,6 +108,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	getPendings,
 	clearPendings,
 	activateUserFunc: activateUser,
+	declineUser,
 	clearActivateUserStatus,
 	selectPending: () => dispatch(selectPending()),
 	unselectPending: () => dispatch(unselectPending()),

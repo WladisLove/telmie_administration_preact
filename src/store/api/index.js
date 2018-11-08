@@ -12,7 +12,7 @@ export const apiUrls = {
   GET_ARCHIVED_USERS: apiAdminRoot + 'users/archived',
   GET_INCOMPLETE_USERS: apiAdminRoot + 'users/incomplete',
   GET_PENDINGS: apiAdminRoot + 'pending',
-  ACTIVATE_USER: (id) => (apiAdminRoot + 'pending/' + id + '/activate'),
+  PENDING_ID: (id) => (apiAdminRoot + 'pending/' + id),
   EDIT_ACTIVE_USER: (id) => (apiAdminRoot + 'users/active/' + id),
   CHANGE_ACTIVE_USER_STATUS: (id) => (apiAdminRoot + 'users/active/' + id + '/enabledStatus'),
   RESTORE_ARCHIVED_USER: (id) => (apiAdminRoot + 'users/archived/' + id + '/restore'),
