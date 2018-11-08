@@ -138,7 +138,7 @@ const UserInfo = props =>  {
                             accControlsFunc={accControlsFunc} />,
 
                         <AccountDetail isPending = {isPending} user={user} saveUserInfo={saveUserInfo} changedFields={changedFields}/>,
-                        <ProDetails categories={categories} 
+                        (user && user.pro) && <ProDetails categories={categories} 
                                     subCategories={subCategories} 
                                     isPending={isPending} 
                                     user={user} 
