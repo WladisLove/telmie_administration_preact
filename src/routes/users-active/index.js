@@ -10,7 +10,7 @@ import style from './style'
 import { getCategories } from '../../store/actions/data'
 import { getActiveUsers, clearActiveUsers, 
 	chooseSelectedUser, clearSelectedUser, editUser, 
-	changeActiveUserStatus, getActiveUsActivities, getActiveUsProsList } from '../../store/actions/user'
+	changeActiveUserStatus, getActiveUsActivities, getActiveUsProsList, getActiveUsClients } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { tableColumns as columns } from '../../helpers/table-data'
@@ -40,6 +40,7 @@ class ActiveUsers extends Component{
 			changeStatus: (id) => this.props.changeActiveUserStatus(id, this.userAuth),
 			getActivities: (id) => this.props.getActiveUsActivities(id, this.userAuth),
 			getProsList: (id) => this.props.getActiveUsProsList(id, this.userAuth),
+			getClients: (id) => this.props.getActiveUsClients(id,this.userAuth),
 		};
 
 		return <UsersRouteWrapper 
@@ -80,6 +81,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	changeActiveUserStatus,
 	getActiveUsActivities,
 	getActiveUsProsList,
+	getActiveUsClients,
 }, dispatch);
 
 export default connect(

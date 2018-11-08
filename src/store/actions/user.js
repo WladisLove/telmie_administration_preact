@@ -182,7 +182,13 @@ export const getActiveUsActivities = (id, authData) => async (dispatch) => {
 	response.error ?
 		dispatch(modifyUserFailure(`${response.message} (Error in getting ${INFO_TYPES.ACTIVITIES.toLowerCase()})`))
 		: dispatch(setUserInfoList(response.results, INFO_TYPES.ACTIVITIES));
-	
+}
+export const getActiveUsClients = (id, authData) => async (dispatch) => {
+	dispatch(modifyU());
+	const response = await user.getActiveUsClient(id, authData);
+	response.error ?
+		dispatch(modifyUserFailure(`${response.message} (Error in getting ${INFO_TYPES.CLIENTS.toLowerCase()})`))
+		: dispatch(setUserInfoList(response.results, INFO_TYPES.CLIENTS));
 }
 export const getActiveUsProsList = (id, authData) => async (dispatch) => {
 	dispatch(modifyU())

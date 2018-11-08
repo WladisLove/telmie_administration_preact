@@ -11,3 +11,8 @@
 .infoListArea{
     padding: 5px 30px;
 }
+
+.selectedBtn{
+    color: #ffffff !important;
+	background-color: #e3002b !important;
+}

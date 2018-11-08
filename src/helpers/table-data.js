@@ -155,14 +155,11 @@ export const incomplTableColumns = (sInfo = {}) => ([{
 export const infoColumns = (infoType) => {
   switch (infoType){
     case INFO_TYPES.ACTIVITIES:
+    case INFO_TYPES.CLIENTS:
       return ([{
         title: 'Activity',
         dataIndex: 'activity',
         sorter: (a,b) => String(a.activity).localeCompare(b.activity),
-      },{
-        title: 'Activity Count',
-        dataIndex: 'activityCount',
-        sorter: (a,b) => a.activityCount - b.activityCount,
       },{
         title: 'Activity Date',
         dataIndex: 'activityDate',
