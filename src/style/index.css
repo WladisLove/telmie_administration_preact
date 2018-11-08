@@ -80,6 +80,10 @@ html, body {
 .errorContainer .errorMsg{
     font-size: 20px;
 }
+.errorContainer .notifMsg{
+	font-size: 20px;
+	color: green !important;
+}
 
 button {
 	color: #ffffff !important;

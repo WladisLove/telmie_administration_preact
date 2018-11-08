@@ -13,7 +13,27 @@ const setPendings = (pendings) => ({
 const clearPendingsArr = () => ({
 	type: actionTypes.CLEAR_PENDINGS,
 });
-
+const getWithdrawalsFailure = (message) => ({
+	type: actionTypes.GET_WITHDRAWALS_FAILURE,
+	message,
+});
+const setWithdrawals = (withdrawals) =>({
+	type: actionTypes.SET_WITHDRAWALS,
+	withdrawals,
+});
+const withdrawalManipulateFailure = (message, manipulation) => ({
+	type: actionTypes.WITHDRAWAL_MANIPULATE_FAILURE,
+	manipulation,
+	message,
+});
+const withdrawalManipulateSuccess = (response, manipulation) => ({
+	type: actionTypes.WITHDRAWAL_MANIPULATE_SUCCESS,
+	//message,
+	manipulation,
+});
+const startManipulation = () => ({
+	type: actionTypes.WITHDRAWAL_MANIPULATE_START,
+})
 
 const activateUserStart = () => ({
 	type: actionTypes.START_ACTIVATE_USER,
@@ -56,3 +76,38 @@ export const activateUser = (id, authData) => async (dispatch) => {
 		);
 }
 export const clearActivateUserStatus = () => (dispatch) => dispatch(clearActivateStatus());
+
+export const getWithdrawals = (authData) => async (dispatch) => {
+	const response = await pending.getWithdrawals(authData);
+	response.error ? 
+		dispatch(getWithdrawalsFailure(response.message))
+		: dispatch(setWithdrawals(response));
+};
+
+export const getWithdrawalDetails = (id, authData) => async (dispatch) => {
+	const response = await pending.getWithdrawalDetails(id, authData);
+	console.log('[getWithdrawalDetails] response',response);
+	/*response.error ? 
+		dispatch(withdrawalManipulateFailure(response.message))
+		: dispatch(setWithdrawals(response));*/
+};
+export const approveWithdrawal = (id, authData) => async (dispatch) => {
+	dispatch(startManipulation());
+	const response = await pending.approveWithdrawal(id, authData);
+	response.error ? 
+		dispatch(withdrawalManipulateFailure(response.message, 'approved'))
+		: (
+			dispatch(withdrawalManipulateSuccess(response, 'approved')),
+			dispatch(getWithdrawals(authData))
+		);
+};
+export const declineWithdrawal = (id, authData) => async (dispatch) => {
+	dispatch(startManipulation());
+	const response = await pending.declineWithdrawal(id, authData);
+	response.error ? 
+		dispatch(withdrawalManipulateFailure(response.message, 'declined'))
+		: (
+			dispatch(withdrawalManipulateSuccess(response, 'declined')),
+			dispatch(getWithdrawals(authData))
+		);
+};

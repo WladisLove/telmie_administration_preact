@@ -58,6 +58,33 @@ export const pendingTableColumns = (sInfo = {}) => ([{
   //sorter: (a, b) => a.totalEarning - b.totalEarning,
 },]);
 
+export const withdrawalsTableColumns = (sInfo = {}, btnsRender) => ([{
+  title: 'ID',
+  dataIndex: 'id',
+  defaultSortOrder: 'ascend',
+  sorter: (a, b) => a.id - b.id,
+  sortOrder: sInfo.columnKey === 'id' && sInfo.order,
+},{
+  title: 'First name',
+  dataIndex: 'name',
+},{
+  title: 'Last name',
+  dataIndex: 'lastName',
+},{
+  title: 'Email',
+  dataIndex: 'email',
+},{
+  title: 'Withdrawal Amount',
+  dataIndex: 'amount',
+  render: text => (<div style={{textAlign: 'center'}}>{text}</div>),
+  sorter: (a, b) => a.amount - b.amount,
+  sortOrder: sInfo.columnKey === 'amount' && sInfo.order,
+},{
+  title: 'Action',
+  dataIndex: '',
+  render: btnsRender
+}]);
+
 export const tableColumns = (sInfo = {}) => ([{
     title: 'Id',
     dataIndex: 'id',

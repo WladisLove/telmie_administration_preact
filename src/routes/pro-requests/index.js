@@ -49,6 +49,7 @@ class Requests extends Component{
 		this.props.unselectPending();
 		this.setState({ selectedUser: null });
 	};
+
 	onChange = (pagination, filters, sorter) => {
 		this.setState({ sortedInfo: sorter, pagination });
 	}
