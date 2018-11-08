@@ -137,11 +137,6 @@ export const tableColumns = (sInfo = {}) => ([{
   },]);
 
 export const incomplTableColumns = (sInfo = {}) => ([{
-    title: 'Attempt',
-    dataIndex: 'attempt',
-    sorter: (a, b) => a.attempt - b.attempt,
-    sortOrder: sInfo.columnKey === 'attempt' && sInfo.order,
-},{
   title: 'Email',
   dataIndex: 'email',
   sorter: (a,b) => String(a.email).localeCompare(b.email),
