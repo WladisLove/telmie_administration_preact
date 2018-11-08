@@ -41,8 +41,15 @@ const setArchivedU = (users) => ({
 	type: actionTypes.SET_ARCHIVED_USERS,
 	users
 });
+const setIncompleteU = (users) => ({
+	type: actionTypes.SET_INCOMPLETE_USERS,
+	users
+});
 const clearArchivedU = () => ({
 	type: actionTypes.CLEAR_ARCHIVED_USERS,
+});
+const clearIncompleteU = () => ({
+	type: actionTypes.CLEAR_INCOMPLETE_USERS,
 });
 const selectUser = (user) => ({
 	type: actionTypes.SELECT_USER,
@@ -116,6 +123,17 @@ export const getArchivedUsers = (authData) => async (dispatch) => {
 };
 export const clearArchivedUsers = () => (dispatch) => {
 	dispatch(clearArchivedU());
+};
+
+export const getIncompleteUsers = (authData) => async (dispatch) => {
+	dispatch(clearIncompleteU());
+	const response = await user.getIncompleteUsers(authData);
+	response.error ? 
+		dispatch(getUsersFailure(response.message))
+		: dispatch(setIncompleteU(response));
+};
+export const clearIncompleteUsers = () => (dispatch) => {
+	dispatch(clearIncompleteU());
 };
 
 export const clearSelectedUser = () => (dispatch) => {
