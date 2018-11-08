@@ -31,8 +31,8 @@ class AccountControlsArea extends Component{
                     <button disabled={true} >Clients</button>
                     <button disabled={!user} onClick={this.getProsList(user.id)}>List of Pros</button>
                     {
-                        !isForDelete && <button disabled={!user} onClick={this.changeStatus(user.id)}>Change Status 
-                            {user && [<br/>, <span class={style.smallText}>(to {user.enabled ? 'disabled' : 'enabled'})</span>]}
+                        !isForDelete && <button disabled={!user} onClick={this.changeStatus(user.id)}> 
+                            {user.enabled ? 'Disable' : 'Enable'} User  
                         </button>
                     }
                 </div>
