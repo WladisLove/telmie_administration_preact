@@ -79,6 +79,7 @@ export const getWithdrawals = (authData) => async (dispatch) => {
 
 export const getWithdrawalDetails = (id, authData) => async (dispatch) => {
 	const response = await pending.getWithdrawalDetails(id, authData);
+	console.log('[getWithdrawalDetails] response',response);
 	/*response.error ? 
 		dispatch(withdrawalManipulateFailure(response.message))
 		: dispatch(setWithdrawals(response));*/

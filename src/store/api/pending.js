@@ -71,7 +71,7 @@ export function getWithdrawalDetails(id, authData){
 	let headers = new Headers();
 	headers.append("Authorization", "Basic " + authData);
 
-	return fetch(apiUrls.GET_WITHDRAW_DETAIL(id), { method: 'GET', headers}).then(response => {
+	return fetch(apiUrls.WITHDRAW_ID(id), { method: 'GET', headers}).then(response => {
 		return (response.status === 403) ? 
 			{
 				error: true,
@@ -109,9 +109,9 @@ function withdrawalManipulation(url, method, authData){
 }
 
 export function approveWithdrawal(id, authData){
-	return withdrawalManipulation(apiUrls.APPROVE_WITHDRAW(id), 'POST', authData);
+	return withdrawalManipulation(apiUrls.WITHDRAW_ID(id), 'POST', authData);
 }
 
 export function declineWithdrawal(id, authData){
-	return withdrawalManipulation(apiUrls.DECLINE_WITHDRAW(id), 'DELETE', authData);
+	return withdrawalManipulation(apiUrls.WITHDRAW_ID(id), 'DELETE', authData);
 }
