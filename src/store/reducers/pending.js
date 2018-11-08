@@ -22,7 +22,17 @@ export const pendingReducer = (state = {error: false, load: false}, action) => {
 				...clearFields,
 				pendings: [],
 				withdrawals: [],
-            }
+			}
+		case actionTypes.SELECT_PENDING:
+			return {
+				...state,
+				isPendingSelected: true,
+			}
+		case actionTypes.UNSELECT_PENDING:
+			return {
+				...state,
+				isPendingSelected: false,
+     }
 		case actionTypes.PENDINGS_GETTING_FAILURE:
 		case actionTypes.GET_WITHDRAWALS_FAILURE:
 			return {

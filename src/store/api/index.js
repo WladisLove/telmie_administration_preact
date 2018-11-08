@@ -10,6 +10,7 @@ export const apiUrls = {
   GET_CATEGORIES: apiRoot + 'categories',
   GET_ACTIVE_USERS: apiAdminRoot + 'users/active',
   GET_ARCHIVED_USERS: apiAdminRoot + 'users/archived',
+  GET_INCOMPLETE_USERS: apiAdminRoot + 'users/incomplete',
   GET_PENDINGS: apiAdminRoot + 'pending',
   ACTIVATE_USER: (id) => (apiAdminRoot + 'pending/' + id + '/activate'),
   EDIT_ACTIVE_USER: (id) => (apiAdminRoot + 'users/active/' + id),
@@ -17,4 +18,9 @@ export const apiUrls = {
   RESTORE_ARCHIVED_USER: (id) => (apiAdminRoot + 'users/archived/' + id + '/restore'),
   GET_WITHDRAWS: apiAdminRoot + 'withdraw',
   WITHDRAW_ID: (id) => (apiAdminRoot + 'withdraw/' + id),
+
+  GET_ACTIVE_USER_ACTIVITY: (id) => (apiAdminRoot + 'users/active/' + id + '/activity'),
+  GET_ACTIVE_USER_LIST: (id) => (apiAdminRoot + 'users/active/' + id + '/list'),
+  GET_ARCHIVED_USER_ACTIVITY: (id) => (apiAdminRoot + 'users/archived/' + id + '/activity'),
+  GET_ARCHIVED_USER_LIST: (id) => (apiAdminRoot + 'users/archived/' + id + '/list'),
 }

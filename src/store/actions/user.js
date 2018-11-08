@@ -1,5 +1,6 @@
 import * as user from '../api/user';
 import { actionTypes } from './index';
+import { INFO_TYPES } from '../../helpers/consts'
 
 const setCookie = (name,value,days) => {
     var expires = "";
@@ -40,8 +41,15 @@ const setArchivedU = (users) => ({
 	type: actionTypes.SET_ARCHIVED_USERS,
 	users
 });
+const setIncompleteU = (users) => ({
+	type: actionTypes.SET_INCOMPLETE_USERS,
+	users
+});
 const clearArchivedU = () => ({
 	type: actionTypes.CLEAR_ARCHIVED_USERS,
+});
+const clearIncompleteU = () => ({
+	type: actionTypes.CLEAR_INCOMPLETE_USERS,
 });
 const selectUser = (user) => ({
 	type: actionTypes.SELECT_USER,
@@ -61,8 +69,8 @@ const changeAUStatusSuccess = (user) => ({
 	type: actionTypes.CHANGE_A_U_STATUS_SUCCESS,
 	user,
 });
-const changeAUStatusFailure = (message) =>({
-	type: actionTypes.CHANGE_A_U_STATUS_FAILURE,
+const modifyUserFailure = (message) =>({
+	type: actionTypes.MODIFY_USER_FAILURE,
 	message,
 });
 const modifyU = () =>({
@@ -71,10 +79,11 @@ const modifyU = () =>({
 const restoreAUSuccess = (user) => ({
 	type: actionTypes.RESTORE_USER_SUCCESS,
 	user,
-})
-const restoreAUFailure = (message) => ({
-	type: actionTypes.RESTORE_USER_FAILURE,
-	message,
+});
+const setUserInfoList = (infoList, infoType) => ({
+	type: actionTypes.SET_USER_INFO_LIST,
+	infoList,
+	infoType,
 });
 
 export const logIn = (authData) => async (dispatch) => {
@@ -116,6 +125,17 @@ export const clearArchivedUsers = () => (dispatch) => {
 	dispatch(clearArchivedU());
 };
 
+export const getIncompleteUsers = (authData) => async (dispatch) => {
+	dispatch(clearIncompleteU());
+	const response = await user.getIncompleteUsers(authData);
+	response.error ? 
+		dispatch(getUsersFailure(response.message))
+		: dispatch(setIncompleteU(response));
+};
+export const clearIncompleteUsers = () => (dispatch) => {
+	dispatch(clearIncompleteU());
+};
+
 export const clearSelectedUser = () => (dispatch) => {
 	dispatch(clearUser());
 };
@@ -124,25 +144,64 @@ export const chooseSelectedUser = (user) => (dispatch) => {
 };
 
 export const editUser = (data, id, authData) => async (dispatch) => {
-	dispatch(selectUser(null)); // when updating starts (for spinner) !!!check it when error
+	dispatch(modifyU());
 	const response = await user.editUser(data, id, authData);
 	response.error ? 
 		dispatch(editUserFailure(response.message))
-		: dispatch(editUserSuccess(response));
+		: (
+			dispatch(editUserSuccess(response)),
+			dispatch(getActiveUsers(authData))
+		);
 };
 
 export const changeActiveUserStatus = (id, authData) => async (dispatch) => {
-	dispatch(modifyU())
+	dispatch(modifyU());
 	const response = await user.changeActiveUserStatus(id, authData);
 	response.error ?
-		dispatch(changeAUStatusFailure(response.message))
-		: dispatch(changeAUStatusSuccess(response));
+		dispatch(modifyUserFailure(`${response.message} (Error in changing user status)`))
+		: (
+			dispatch(changeAUStatusSuccess(response)),
+			dispatch(getActiveUsers(authData))
+		);
 }
 
 export const restoreArchivedUser = (id, authData) => async (dispatch) => {
 	dispatch(modifyU())
 	const response = await user.restoreArchivedUser(id, authData);
 	response.error ?
-		dispatch(restoreAUFailure(response.message))
-		: dispatch(restoreAUSuccess(response));
+		dispatch(modifyUserFailure(`${response.message} (Error in restoring user)`))
+		: (
+			dispatch(restoreAUSuccess(response)),
+			dispatch(getArchivedUsers(authData))
+		);
+}
+
+export const getActiveUsActivities = (id, authData) => async (dispatch) => {
+	dispatch(modifyU())
+	const response = await user.getActiveUsActivities(id, authData);
+	response.error ?
+		dispatch(modifyUserFailure(`${response.message} (Error in getting ${INFO_TYPES.ACTIVITIES.toLowerCase()})`))
+		: dispatch(setUserInfoList(response.results, INFO_TYPES.ACTIVITIES));
+	
+}
+export const getActiveUsProsList = (id, authData) => async (dispatch) => {
+	dispatch(modifyU())
+	const response = await user.getActiveUsProsList(id, authData);
+	response.error ?
+		dispatch(modifyUserFailure(`${response.message} (Error in getting list of pros)`))
+		: dispatch(setUserInfoList(response, INFO_TYPES.LIST_OF_PROS));
+}
+export const getArchivedUsActivities = (id, authData) => async (dispatch) => {
+	dispatch(modifyU())
+	const response = await user.getArchivedUsActivities(id, authData);
+	response.error ?
+		dispatch(modifyUserFailure(`${response.message} (Error in getting activities)`))
+		: dispatch(setUserInfoList(response.results, INFO_TYPES.ACTIVITIES));
+}
+export const getArchivedUsProsList = (id, authData) => async (dispatch) => {
+	dispatch(modifyU())
+	const response = await user.getArchivedUsProsList(id, authData);
+	response.error ?
+		dispatch(modifyUserFailure(`${response.message} (Error in getting list of pros)`))
+		: dispatch(setUserInfoList(response, INFO_TYPES.LIST_OF_PROS));
 }

@@ -6,7 +6,9 @@ import 'antd/dist/antd.css';
 
 
 import { getCategories } from '../../store/actions/data'
-import { getArchivedUsers, clearArchivedUsers, chooseSelectedUser, clearSelectedUser, restoreArchivedUser} from '../../store/actions/user'
+import { getArchivedUsers, clearArchivedUsers, 
+	chooseSelectedUser, clearSelectedUser, 
+	restoreArchivedUser, getArchivedUsActivities, getArchivedUsProsList} from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { tableColumns as columns } from '../../helpers/table-data'
@@ -26,13 +28,13 @@ class ArchivedUsers extends Component{
 		this.props.clearSelectedUser();
 	}
 
-	onGetUsersArr = () => this.props.getArchivedUsers(this.userAuth);
-
 	render(){
 		const {archivedUsers = []} = this.props.uArrays;
 
 		const accControlsFunc = {
 			restore: (id) => this.props.restoreArchivedUser(id, this.userAuth),
+			getActivities: (id) => this.props.getArchivedUsActivities(id, this.userAuth),
+			getProsList: (id) => this.props.getArchivedUsProsList(id, this.userAuth),
 		};
 
 
@@ -45,7 +47,6 @@ class ArchivedUsers extends Component{
 			
 			usersArr={archivedUsers}
 			uArrays={this.props.uArrays}
-			onGetUsersArr={this.onGetUsersArr}
 
 			isIndividual={false}
 			isForDelete={true}
@@ -70,6 +71,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	clearSelectedUser,
 	restoreArchivedUser,
 	getCategories,
+	getArchivedUsActivities,
+	getArchivedUsProsList,
 }, dispatch);
 
 export default connect(

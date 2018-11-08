@@ -48,6 +48,13 @@ const clearActivateStatus = () => ({
 	type: actionTypes.CLEAR_ACTIVATE_USER_STATUS,
 });
 
+export const selectPending = () => ({
+	type: actionTypes.SELECT_PENDING,
+});
+export const unselectPending = () => ({
+	type: actionTypes.UNSELECT_PENDING,
+});
+
 export const getPendings = (authData) => async (dispatch) => {
 	const response = await pending.getPendings(authData);
 	response.error ? 

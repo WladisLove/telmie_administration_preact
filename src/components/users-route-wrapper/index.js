@@ -20,9 +20,8 @@ class UsersRouteWrapper extends Component{
 			searchedData: [],
 			searchFields: {},
 
-			sortedInfo: {},
-
-			selected: false,
+			sortedInfo: {order: "descend", field: "id", columnKey: "id"},
+			pagination: { pageSize: PAGE_SIZE }
 		}
 	}
 
@@ -82,23 +81,20 @@ class UsersRouteWrapper extends Component{
 
 	onRow = (record) => ({
 		onClick: () => {
-			this.setState({ selected : true });
 			this.props.chooseSelectedUser(record);
 		},
 	});
 
 	onBackToList = () => {
-		this.props.selectedUser.isEdited && this.props.onGetUsersArr();
 		this.props.clearSelectedUser();
-		this.setState({ selected: false });
 	};
 
 	onChange = (pagination, filters, sorter) => {
-		this.setState({ sortedInfo: sorter, });
+		this.setState({ sortedInfo: sorter, pagination });
 	}
 
 	render(){
-        const {isFiltered, filteredData, isSearched, searchedData, selected, sortedInfo = {}} = this.state;
+        const {isFiltered, filteredData, isSearched, searchedData, sortedInfo = {}} = this.state;
         const {
 			accControlsFunc, serverData, isIndividual, isPending, isForDelete, selectedUser, columns, onEditUser
 		} = this.props;
@@ -113,9 +109,9 @@ class UsersRouteWrapper extends Component{
 			<Card cardClass='route-content'>
 				{isLoaded ? 
 					!isError ? [
-						withFilter && <FilterArea onFilter={this.onFilter} isShown={selected}/>,
-						<SearchArea onSearch={this.onSearch} isShown={selected}/>,
-						selected ? 
+						withFilter && <FilterArea onFilter={this.onFilter} isShown={!!selectedUser.selectedUser}/>,
+						<SearchArea onSearch={this.onSearch} isShown={!!selectedUser.selectedUser}/>,
+						selectedUser.selectedUser ? 
 							<UserInfo selectedUser={selectedUser}
 								serverData={serverData}
 								backToList={this.onBackToList}
@@ -129,14 +125,14 @@ class UsersRouteWrapper extends Component{
 									rowKey={(record) => record.id} 
 									onChange={this.onChange}
 									onRow={this.onRow}
-									pagination={{pageSize: PAGE_SIZE}}
+									pagination={this.state.pagination}
 									dataSource={dataSource} />
 					] : (
 					<div class="errorContainer">
 						Error! 
 						<div class="errorMsg">{errorMsg}</div>
 					</div>) 
-					: (<div class='spinContainer'><Spin size='large'/></div>)}				
+					: (<div class='spinContainer'><Spin size='large'/></div>)}
 			</Card>
 		)
 	}

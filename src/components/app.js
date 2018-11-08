@@ -22,7 +22,8 @@ import LogIn from '../routes/log-in'
 
 import Redirect from '../components/redirect'
 
-import { logIn, checkIfLoggedIn } from '../store/actions/user'
+import { logIn, checkIfLoggedIn, clearSelectedUser } from '../store/actions/user'
+import { unselectPending } from '../store/actions/pending'
 import { getCookie } from '../helpers/cookie'
 
 export const routes = {
@@ -57,7 +58,11 @@ class App extends Component {
 		return (
 			<div id="app">
 				<Header />
-				{isAuth && <SideNav />}
+				{isAuth && <SideNav 
+					isUserSelected = {this.props.isUserSelected} 
+					isPendingSelected={this.props.isPendingSelected}
+					unselectPending = {this.props.unselectPending}
+					clearSelectedUser={this.props.clearSelectedUser}/>}
 
 				<Router onChange={this.handleRoute}>
 					<Home path={routes.HOME} />
@@ -83,11 +88,15 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    userData: state.loggedInUser,
+	userData: state.loggedInUser,
+	isUserSelected: !!state.selectedUser.selectedUser,
+	isPendingSelected: state.pending.isPendingSelected,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-	logIn
+	logIn,
+	clearSelectedUser,
+	unselectPending: () => dispatch(unselectPending()),
 }, dispatch);
 
 export default connect(
