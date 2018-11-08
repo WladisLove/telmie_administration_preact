@@ -62,6 +62,18 @@ export const usersArrays = (state = {error: false, load: false}, action) => {
 				...clearFields,
 				archivedUsers: [],
 			}
+		case actionTypes.SET_INCOMPLETE_USERS:
+			return {
+				...state,
+				...setFields,
+				incomplUsers: action.users,
+			}
+		case actionTypes.CLEAR_INCOMPLETE_USERS:
+			return {
+				...state,
+				...clearFields,
+				incomplUsers: [],
+			}
 		case actionTypes.ERROR_GETTING_USERS:
 			return {
 				...state,

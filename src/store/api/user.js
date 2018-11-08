@@ -18,11 +18,11 @@ export function logIn(authData){
 	});
 }
 
-export function getActiveUsers(authData){
+function getUsers(url, authData){
 	let headers = new Headers();
 	headers.append("Authorization", "Basic " + authData);
 
-	return fetch(apiUrls.GET_ACTIVE_USERS, { method: 'GET', headers}).then(response => {
+	return fetch(url, { method: 'GET', headers}).then(response => {
 		return (response.status === 403) ? 
 			{
 				error: true,
@@ -39,25 +39,14 @@ export function getActiveUsers(authData){
 	});
 }
 
+export function getActiveUsers(authData){
+	return getUsers(apiUrls.GET_ACTIVE_USERS, authData);
+}
 export function getArchivedUsers(authData){
-	let headers = new Headers();
-	headers.append("Authorization", "Basic " + authData);
-
-	return fetch(apiUrls.GET_ARCHIVED_USERS, { method: 'GET', headers}).then(response => {
-		return (response.status === 403) ? 
-			{
-				error: true,
-				message: 'Current user is not Admin',
-			} 
-				: 
-				response.status !== 200  ? 
-					response.json().then(json => ({ ...json, error: true, }))
-						.catch(err => ({ error: true, message: err.message, }))
-					: response.json().then(json => json);
-
-	}, error => {
-		throw new Error(error.message);
-	});
+	return getUsers(apiUrls.GET_ARCHIVED_USERS, authData);
+}
+export function getIncompleteUsers(authData){
+	return getUsers(apiUrls.GET_INCOMPLETE_USERS, authData);
 }
 
 export function editUser(data, id, authData){

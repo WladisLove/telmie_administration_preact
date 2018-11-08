@@ -109,6 +109,27 @@ export const tableColumns = (sInfo = {}) => ([{
     //sorter: (a, b) => a.totalEarning - b.totalEarning,
   },]);
 
+export const incomplTableColumns = (sInfo = {}) => ([{
+    title: 'Attempt',
+    dataIndex: 'attempt',
+    sorter: (a, b) => a.attempt - b.attempt,
+    sortOrder: sInfo.columnKey === 'attempt' && sInfo.order,
+},{
+  title: 'Email',
+  dataIndex: 'email',
+  sorter: (a,b) => String(a.email).localeCompare(b.email),
+  sortOrder: sInfo.columnKey === 'email' && sInfo.order,
+},{
+  title: 'Date',
+  dataIndex: 'date',
+  render: (text) => convertDate(text),
+  sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+  sortOrder: sInfo.columnKey === 'date' && sInfo.order,
+},{
+  title: 'Mobile',
+  dataIndex: 'mobile',
+}]) 
+
 export const infoColumns = (infoType) => {
   switch (infoType){
     case INFO_TYPES.ACTIVITIES:

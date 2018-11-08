@@ -10,6 +10,7 @@ export const apiUrls = {
   GET_CATEGORIES: apiRoot + 'categories',
   GET_ACTIVE_USERS: apiAdminRoot + 'users/active',
   GET_ARCHIVED_USERS: apiAdminRoot + 'users/archived',
+  GET_INCOMPLETE_USERS: apiAdminRoot + 'users/incomplete',
   GET_PENDINGS: apiAdminRoot + 'pending',
   ACTIVATE_USER: (id) => (apiAdminRoot + 'pending/' + id + '/activate'),
   EDIT_ACTIVE_USER: (id) => (apiAdminRoot + 'users/active/' + id),
