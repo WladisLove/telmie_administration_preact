@@ -9,13 +9,13 @@ const statusArr = [{
 }, {
 	name: 'Suspended',
 	value: 'SUSPENDED',
-}, /*{
+}, {
 	name: 'Started Pro Appl',
-	value: 'REGISTERED',
+	value: 'STARTED_PRO_APP',
 }, {
 	name: 'Pending Approval',
-	value: 'REGISTERED',
-},*/ {
+	value: 'PENDING_APPROVAL',
+}, {
 	name: 'Approved as Pro',
 	value: 'APPROVED_AS_PRO',
 }, {
