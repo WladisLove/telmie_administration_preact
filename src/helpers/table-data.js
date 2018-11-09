@@ -192,6 +192,15 @@ export const incomplTableColumns = (sInfo = {}) => ([{
   dataIndex: 'mobile',
 }]);
 
+const activityTypes = {
+  c: 'CALLED',
+  mc: 'MISSED CALL',
+  fc: 'FAILED CALL',
+  im: 'READ message',
+  uim: 'NEW message',
+  om: 'OUTGOING message',
+}
+
 export const infoColumns = (infoType) => {
   switch (infoType){
     case INFO_TYPES.ACTIVITIES:
@@ -199,6 +208,7 @@ export const infoColumns = (infoType) => {
       return ([{
         title: 'Activity',
         dataIndex: 'activity',
+        render: (text) => activityTypes[text] ? activityTypes[text].toLowerCase() : `unknown (${text})`,
         sorter: (a,b) => String(a.activity).localeCompare(b.activity),
       },{
         title: 'Activity Date',

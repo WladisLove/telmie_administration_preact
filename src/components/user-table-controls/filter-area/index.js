@@ -35,9 +35,6 @@ const statusInvites = [{
 }, {
 	name: 'Get bonus',
 	value: 'GET_BONUS',
-}, {
-	name: 'Unknown',
-	value: 'UNKNOWN',
 }];
 
 const getDefaultStatuses = (isInv) => isInv ? statusInvites.map(el => el.value) : statusArr.map(el => el.value);
