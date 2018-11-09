@@ -43,7 +43,7 @@ class IncompleteRegUsers extends Component{
 				{isLoaded ? 
 					!isError ? 
 						<Table columns={columns(sortedInfo)} 
-							//rowKey={(record) => record.id} 
+							rowKey={(record) => record.email} 
 							onChange={this.onChange}
 							pagination={{ pageSize: PAGE_SIZE, }}
 							dataSource={incomplUsers} />

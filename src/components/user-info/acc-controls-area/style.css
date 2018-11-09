@@ -8,9 +8,11 @@
 .wideBtnsArea > button{
     min-width: 300px !important;
 }
-.smallText{
-    font-size: 14px;
-}
 .infoListArea{
     padding: 5px 30px;
+}
+
+.selectedBtn{
+    color: #ffffff !important;
+	background-color: #e3002b !important;
 }

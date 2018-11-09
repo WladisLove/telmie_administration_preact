@@ -13,6 +13,8 @@ class UsersRouteWrapper extends Component{
 		super(props);
 
 		this.state = {
+			selected: false,
+
 			isFiltered: false,
 			filteredData: [],
 
@@ -81,11 +83,13 @@ class UsersRouteWrapper extends Component{
 
 	onRow = (record) => ({
 		onClick: () => {
+			this.setState({ selected: true, });
 			this.props.chooseSelectedUser(record);
 		},
 	});
 
 	onBackToList = () => {
+		this.setState({ selected: false, });
 		this.props.clearSelectedUser();
 	};
 
@@ -94,7 +98,7 @@ class UsersRouteWrapper extends Component{
 	}
 
 	render(){
-        const {isFiltered, filteredData, isSearched, searchedData, sortedInfo = {}} = this.state;
+        const {isFiltered, filteredData, isSearched, searchedData, sortedInfo = {}, selected} = this.state;
         const {
 			accControlsFunc, serverData, isIndividual, isPending, isForDelete, selectedUser, columns, onEditUser
 		} = this.props;
@@ -109,9 +113,9 @@ class UsersRouteWrapper extends Component{
 			<Card cardClass='route-content'>
 				{isLoaded ? 
 					!isError ? [
-						withFilter && <FilterArea onFilter={this.onFilter} isShown={!!selectedUser.selectedUser}/>,
-						<SearchArea onSearch={this.onSearch} isShown={!!selectedUser.selectedUser}/>,
-						selectedUser.selectedUser ? 
+						withFilter && <FilterArea onFilter={this.onFilter} isShown={!!selected}/>,
+						<SearchArea onSearch={this.onSearch} isShown={!!selected}/>,
+						selected ? 
 							<UserInfo selectedUser={selectedUser}
 								serverData={serverData}
 								backToList={this.onBackToList}

@@ -35,14 +35,16 @@ const startManipulation = () => ({
 	type: actionTypes.WITHDRAWAL_MANIPULATE_START,
 })
 
-const activateUserStart = () => ({
-	type: actionTypes.START_ACTIVATE_USER,
+const processingPendingStart = () => ({
+	type: actionTypes.START_PROCESSING_PENDING,
 });
-const activateUserFailure = () => ({
-	type: actionTypes.ACTIVATE_USER_FAILURE,
+const activateUserFailure = (message) => ({
+	type: actionTypes.PROCESSING_PENDING_FAILURE,
+	message,
 });
-const activateUserSuccess = () => ({
-	type: actionTypes.ACTIVATE_USER_SUCCESS,
+const processingPendingSuccess = (message) => ({
+	type: actionTypes.PROCESSING_PENDING_SUCCESS,
+	message,
 });
 const clearActivateStatus = () => ({
 	type: actionTypes.CLEAR_ACTIVATE_USER_STATUS,
@@ -66,12 +68,22 @@ export const clearPendings = () => (dispatch) => {
 };
 
 export const activateUser = (id, authData) => async (dispatch) => {
-	dispatch(activateUserStart());
+	dispatch(processingPendingStart());
 	const response = await pending.activateUser(id, authData);
 	response.error ? 
 		dispatch(activateUserFailure(response.message))
 		: (
-			dispatch(activateUserSuccess()),
+			dispatch(processingPendingSuccess('approved')),
+			dispatch(getPendings(authData))
+		);
+}
+export const declineUser = (id, authData) => async (dispatch) => {
+	dispatch(processingPendingStart());
+	const response = await pending.declineUser(id, authData);
+	response.error ? 
+		dispatch(activateUserFailure(response.message))
+		: (
+			dispatch(processingPendingSuccess('declined')),
 			dispatch(getPendings(authData))
 		);
 }

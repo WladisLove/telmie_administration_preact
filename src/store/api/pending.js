@@ -18,23 +18,22 @@ export function getPendings(authData){
 	});
 }
 
-export function activateUser(id, authData){
+function manipulatePanding(url, method, authData){
 	let headers = new Headers();
 	headers.append("Authorization", "Basic " + authData);
 
-	return fetch(apiUrls.ACTIVATE_USER(id), { method: 'POST', headers}).then(response => {
+	return fetch(url, { method, headers}).then(response => {
 		return (response.status === 403) ? 
 			{
 				error: true,
 				message: 'Current user is not Admin',
 			} 
 				: 
-				response.status !== 200  ? {
-					error: true,
-					//message: 'Current user is not Admin',
-				}
-					:
-				response.json().then(json => json);
+				response.status !== 204  ? 
+					response.json().then(json => ({ ...json, error: true, }))
+						.catch(err => ({ error: true, message: err.message, }))
+					: response.json().then(json => ({...json, error: false}))
+						.catch(err => ({ error: false }));
 
 	}, error => {
 		console.log(error);
@@ -42,8 +41,13 @@ export function activateUser(id, authData){
 			error: true,
 			message: error.message,
 		}
-		throw new Error(error.message);
 	});
+}
+export function activateUser(id, authData){
+	return manipulatePanding(apiUrls.PENDING_ID(id), 'POST', authData);
+}
+export function declineUser(id, authData){
+	return manipulatePanding(apiUrls.PENDING_ID(id), 'DELETE', authData);
 }
 
 export function getWithdrawals(authData){

@@ -10,7 +10,7 @@ import style from './style'
 import { getCategories } from '../../store/actions/data'
 import { getActiveUsers, clearActiveUsers, 
 	chooseSelectedUser, clearSelectedUser, editUser, 
-	changeActiveUserStatus, getActiveUsActivities, getActiveUsProsList } from '../../store/actions/user'
+	changeActiveUserStatus, getUsActivities, getUsProsList, getUsClients } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { tableColumns as columns } from '../../helpers/table-data'
@@ -33,17 +33,19 @@ class ActiveUsers extends Component{
 	}
 
 	onEditUser = (newData) => this.props.editUser(newData, newData.id, this.userAuth);
+	chooseSelectedUser = (user) => this.props.chooseSelectedUser(user, this.userAuth);
 
 	render() {
 		const {activeUsers = []} = this.props.uArrays;
 		const accControlsFunc = {
 			changeStatus: (id) => this.props.changeActiveUserStatus(id, this.userAuth),
-			getActivities: (id) => this.props.getActiveUsActivities(id, this.userAuth),
-			getProsList: (id) => this.props.getActiveUsProsList(id, this.userAuth),
+			getActivities: (id) => this.props.getUsActivities(id, this.userAuth),
+			getProsList: (id) => this.props.getUsProsList(id, this.userAuth),
+			getClients: (id) => this.props.getUsClients(id,this.userAuth),
 		};
 
 		return <UsersRouteWrapper 
-			chooseSelectedUser={this.props.chooseSelectedUser}
+			chooseSelectedUser={this.chooseSelectedUser}
 			clearSelectedUser={this.props.clearSelectedUser}
 			selectedUser={this.props.selectedUser}
 
@@ -78,8 +80,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	chooseSelectedUser,
 	editUser,
 	changeActiveUserStatus,
-	getActiveUsActivities,
-	getActiveUsProsList,
+	getUsActivities,
+	getUsProsList,
+	getUsClients,
 }, dispatch);
 
 export default connect(

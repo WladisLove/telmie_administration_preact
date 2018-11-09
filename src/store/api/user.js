@@ -49,12 +49,12 @@ export function getIncompleteUsers(authData){
 	return getUsers(apiUrls.GET_INCOMPLETE_USERS, authData);
 }
 
-export function editUser(data, id, authData){
+function userManipulation(url, method, authData, data){
 	let headers = new Headers();
-	headers.append("Content-Type", "application/json ");
+	method === 'PUT' && headers.append("Content-Type", "application/json ");
 	headers.append("Authorization", "Basic " + authData);
 
-	return fetch(apiUrls.EDIT_ACTIVE_USER(id), { method: 'PUT', headers, body: JSON.stringify( data ) }).then(response => {
+	return fetch(url, { method, headers, body: JSON.stringify( data ) }).then(response => {
 		return (response.status === 403) ? 
 			{
 				error: true,
@@ -69,6 +69,13 @@ export function editUser(data, id, authData){
 	}, error => {
 		throw new Error(error.message);
 	});
+}
+
+export function getUserInfo(id, authData){
+	return userManipulation(apiUrls.USER_ID(id), 'GET', authData);
+}
+export function editUser(id, authData, data){
+	return userManipulation(apiUrls.USER_ID(id), 'PUT', authData, data);
 }
 
 
@@ -139,15 +146,12 @@ function getUserActivity(url, authData){
 	});
 }
 
-export function getActiveUsActivities(id, authData){
-	return getUserActivity(apiUrls.GET_ACTIVE_USER_ACTIVITY(id), authData);
+export function getUsActivities(id, authData){
+	return getUserActivity(apiUrls.GET_USER_ACTIVITY(id), authData);
 }
-export function getActiveUsProsList(id, authData){
-	return getUserActivity(apiUrls.GET_ACTIVE_USER_LIST(id), authData);
+export function getUsClient(id, authData){
+	return getUserActivity(apiUrls.GET_USER_ACTIVITY(id)+'?isPro=true', authData);
 }
-export function getArchivedUsActivities(id, authData){
-	return getUserActivity(apiUrls.GET_ARCHIVED_USER_ACTIVITY(id), authData);
-}
-export function getArchivedUsProsList(id, authData){
-	return getUserActivity(apiUrls.GET_ARCHIVED_USER_LIST(id), authData);
+export function getUsProsList(id, authData){
+	return getUserActivity(apiUrls.GET_USER_LIST(id), authData);
 }
