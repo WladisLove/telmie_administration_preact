@@ -123,11 +123,12 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 				message: '',
 				isModifying: false,
 			}
-		case actionTypes.EDIT_USER_FAILURE:
+		case actionTypes.MANIPULATE_USER_FAILURE:
 			return {
 				...state,
 				error: true,
-				message: `${action.message ? action.message : ''} in editing user`,
+				message: `${action.message ? action.message : ''} 
+					${action.manipType ? `(${action.manipType} user failure)` : ''}`,
 			}
 		case actionTypes.CHANGE_A_U_STATUS_SUCCESS:
 			return {

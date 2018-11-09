@@ -13,7 +13,7 @@ export const apiUrls = {
   GET_INCOMPLETE_USERS: apiAdminRoot + 'users/incomplete',
   GET_PENDINGS: apiAdminRoot + 'pending',
   PENDING_ID: (id) => (apiAdminRoot + 'pending/' + id),
-  EDIT_ACTIVE_USER: (id) => (apiAdminRoot + 'users/active/' + id),
+  USER_ID: (id) => (apiAdminRoot + 'users/' + id),
   CHANGE_ACTIVE_USER_STATUS: (id) => (apiAdminRoot + 'users/active/' + id + '/enabledStatus'),
   RESTORE_ARCHIVED_USER: (id) => (apiAdminRoot + 'users/archived/' + id + '/restore'),
   GET_WITHDRAWS: apiAdminRoot + 'withdraw',

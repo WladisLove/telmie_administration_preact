@@ -33,6 +33,7 @@ class ActiveUsers extends Component{
 	}
 
 	onEditUser = (newData) => this.props.editUser(newData, newData.id, this.userAuth);
+	chooseSelectedUser = (user) => this.props.chooseSelectedUser(user, this.userAuth);
 
 	render() {
 		const {activeUsers = []} = this.props.uArrays;
@@ -44,7 +45,7 @@ class ActiveUsers extends Component{
 		};
 
 		return <UsersRouteWrapper 
-			chooseSelectedUser={this.props.chooseSelectedUser}
+			chooseSelectedUser={this.chooseSelectedUser}
 			clearSelectedUser={this.props.clearSelectedUser}
 			selectedUser={this.props.selectedUser}
 

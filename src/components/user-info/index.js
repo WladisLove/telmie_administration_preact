@@ -30,7 +30,7 @@ class UserInfo extends Component{
         this.props.editUserFunc(data);
     }
 
-    renderContent = (user, changedFields) => {
+    renderContent = (user = {}, changedFields) => {
         switch (this.state.activeTab){
             case INFO_TYPES.ACTIVITIES:
             case INFO_TYPES.CLIENTS:

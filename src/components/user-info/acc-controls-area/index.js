@@ -46,7 +46,7 @@ const AccountControlsArea = props => {
                     onClick={getProsList}
                     class={activeTab === INFO_TYPES.LIST_OF_PROS && style.selectedBtn}>List of Pros</button>
                 { !isForDelete && <button disabled={!user} onClick={changeStatus}> 
-                       {user.enabled ? 'Disable' : 'Enable'} User  
+                       {(user && user.enabled) ? 'Disable' : 'Enable'} User  
                     </button> }
             </div>
             { modifyErr ? 

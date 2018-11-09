@@ -62,8 +62,10 @@ const editUserSuccess = (user) => ({
 	type: actionTypes.EDIT_USER_SUCCESS,
 	user,
 });
-const editUserFailure = () => ({
-	type: actionTypes.EDIT_USER_FAILURE,
+const manipulateUserFailure = (message, manipType) => ({
+	type: actionTypes.MANIPULATE_USER_FAILURE,
+	message,
+	manipType,
 });
 const changeAUStatusSuccess = (user) => ({
 	type: actionTypes.CHANGE_A_U_STATUS_SUCCESS,
@@ -139,15 +141,19 @@ export const clearIncompleteUsers = () => (dispatch) => {
 export const clearSelectedUser = () => (dispatch) => {
 	dispatch(clearUser());
 };
-export const chooseSelectedUser = (user) => (dispatch) => {
-	dispatch(selectUser(user));
+export const chooseSelectedUser = (_user, authData) => async (dispatch) => {
+	dispatch(clearUser());
+	const response = await user.getUserInfo(_user.id, authData);
+	response.error ? 
+		dispatch(manipulateUserFailure(response.message, 'get'))
+		: dispatch(selectUser(response));
 };
 
 export const editUser = (data, id, authData) => async (dispatch) => {
 	dispatch(modifyU());
 	const response = await user.editUser(data, id, authData);
 	response.error ? 
-		dispatch(editUserFailure(response.message))
+		dispatch(manipulateUserFailure(response.message, 'edit'))
 		: (
 			dispatch(editUserSuccess(response)),
 			dispatch(getActiveUsers(authData))

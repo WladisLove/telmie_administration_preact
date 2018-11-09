@@ -28,6 +28,8 @@ class ArchivedUsers extends Component{
 		this.props.clearSelectedUser();
 	}
 
+	chooseSelectedUser = (user) => this.props.chooseSelectedUser(user, this.userAuth);
+
 	render(){
 		const {archivedUsers = []} = this.props.uArrays;
 
@@ -40,7 +42,7 @@ class ArchivedUsers extends Component{
 
 
 		return <UsersRouteWrapper 
-			chooseSelectedUser={this.props.chooseSelectedUser}
+			chooseSelectedUser={this.chooseSelectedUser}
 			clearSelectedUser={this.props.clearSelectedUser}
 			selectedUser={this.props.selectedUser}
 
