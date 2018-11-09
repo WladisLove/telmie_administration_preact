@@ -48,6 +48,9 @@ export function getArchivedUsers(authData){
 export function getIncompleteUsers(authData){
 	return getUsers(apiUrls.GET_INCOMPLETE_USERS, authData);
 }
+export function getInvites(authData){
+	return getUsers(apiUrls.GET_INVITES, authData);
+}
 
 function userManipulation(url, method, authData, data){
 	let headers = new Headers();

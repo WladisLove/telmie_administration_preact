@@ -51,6 +51,13 @@ const clearArchivedU = () => ({
 const clearIncompleteU = () => ({
 	type: actionTypes.CLEAR_INCOMPLETE_USERS,
 });
+const setInvites = (invites) => ({
+	type: actionTypes.SET_INVITES,
+	invites
+});
+const clearInvitesAction = () => ({
+	type: actionTypes.CLEAR_INVITES,
+});
 const selectUser = (user) => ({
 	type: actionTypes.SELECT_USER,
 	user
@@ -136,6 +143,17 @@ export const getIncompleteUsers = (authData) => async (dispatch) => {
 };
 export const clearIncompleteUsers = () => (dispatch) => {
 	dispatch(clearIncompleteU());
+};
+
+export const getInvites = (authData) => async (dispatch) => {
+	dispatch(clearInvitesAction());
+	const response = await user.getInvites(authData);
+	response.error ? 
+		dispatch(getUsersFailure(response.message))
+		: dispatch(setInvites(response));
+};
+export const clearInvites = () => (dispatch) => {
+	dispatch(clearInvitesAction());
 };
 
 export const clearSelectedUser = () => (dispatch) => {

@@ -136,6 +136,35 @@ export const tableColumns = (sInfo = {}) => ([{
     //sorter: (a, b) => a.totalEarning - b.totalEarning,
   },]);
 
+export const invitesColumns = (sInfo = {}) => ([{
+  title: 'Date',
+  dataIndex: 'date',
+  render: (text) => convertDate(text),
+  sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+  sortOrder: sInfo.columnKey === 'date' && sInfo.order,
+},{
+  title: 'Receiver Email',
+  dataIndex: 'receiverEmail',
+},{
+  title: 'Receiver Name',
+  dataIndex: 'receiverName',
+},{
+  title: 'Receiver Role',
+  dataIndex: 'receiverRole',
+},{
+  title: 'Sender Email',
+  dataIndex: 'senderEmail',
+},{
+  title: 'Sender Full Name',
+  dataIndex: 'senderFullName',
+},{
+  title: 'Sender Role',
+  dataIndex: 'senderRole',
+},{
+  title: 'Status',
+  dataIndex: 'status',
+},]);
+
 export const incomplTableColumns = (sInfo = {}) => ([{
   title: 'Email',
   dataIndex: 'email',
@@ -150,7 +179,7 @@ export const incomplTableColumns = (sInfo = {}) => ([{
 },{
   title: 'Mobile',
   dataIndex: 'mobile',
-}]) 
+}]);
 
 export const infoColumns = (infoType) => {
   switch (infoType){
