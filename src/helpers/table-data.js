@@ -66,13 +66,13 @@ export const withdrawalsTableColumns = (sInfo = {}, btnsRender) => ([{
   sortOrder: sInfo.columnKey === 'id' && sInfo.order,
 },{
   title: 'First name',
-  dataIndex: 'name',
+  dataIndex: 'user.name',
 },{
   title: 'Last name',
-  dataIndex: 'lastName',
+  dataIndex: 'user.lastName',
 },{
   title: 'Email',
-  dataIndex: 'email',
+  dataIndex: 'user.email',
 },{
   title: 'Withdrawal Amount',
   dataIndex: 'amount',
@@ -143,20 +143,31 @@ export const invitesColumns = (sInfo = {}) => ([{
   sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   sortOrder: sInfo.columnKey === 'date' && sInfo.order,
 },{
+  title: 'Invite type',
+  dataIndex: 'type',
+},{
   title: 'Receiver Email',
   dataIndex: 'receiverEmail',
+  sorter: (a,b) => String(a.receiverEmail).localeCompare(b.receiverEmail),
+  sortOrder: sInfo.columnKey === 'receiverEmail' && sInfo.order,
 },{
   title: 'Receiver Name',
   dataIndex: 'receiverName',
+  sorter: (a,b) => String(a.receiverName).localeCompare(b.receiverName),
+  sortOrder: sInfo.columnKey === 'receiverName' && sInfo.order,
 },{
   title: 'Receiver Role',
   dataIndex: 'receiverRole',
 },{
   title: 'Sender Email',
   dataIndex: 'senderEmail',
+  sorter: (a,b) => String(a.senderEmail).localeCompare(b.senderEmail),
+  sortOrder: sInfo.columnKey === 'senderEmail' && sInfo.order,
 },{
   title: 'Sender Full Name',
   dataIndex: 'senderFullName',
+  sorter: (a,b) => String(a.senderFullName).localeCompare(b.senderFullName),
+  sortOrder: sInfo.columnKey === 'senderFullName' && sInfo.order,
 },{
   title: 'Sender Role',
   dataIndex: 'senderRole',

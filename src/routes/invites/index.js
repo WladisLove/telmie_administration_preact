@@ -55,6 +55,7 @@ class Invites extends Component{
 
 		return (
 			<Card cardClass='route-content'>
+				<p>Total number of invites: {invites.length}</p>
 				<FilterArea onFilter={this.onFilter} isInvites={true}/>
 				{isLoaded ? 
 					!isError ? (

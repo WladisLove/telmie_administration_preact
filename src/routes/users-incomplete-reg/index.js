@@ -40,6 +40,7 @@ class IncompleteRegUsers extends Component{
 		const {load : isLoaded = false, error : isError = false, message : errorMsg = '', incomplUsers = []} = uArrays;
 		return (
 			<Card cardClass='route-content'>
+				<p>Total number of incomplete users: {incomplUsers.length}</p>
 				{isLoaded ? 
 					!isError ? 
 						<Table columns={columns(sortedInfo)} 

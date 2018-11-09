@@ -113,6 +113,7 @@ class UsersRouteWrapper extends Component{
 			<Card cardClass='route-content'>
 				{isLoaded ? 
 					!isError ? [
+						<p>Total number of users: {usersArr.length}</p>,
 						withFilter && <FilterArea onFilter={this.onFilter} isShown={!!selected}/>,
 						<SearchArea onSearch={this.onSearch} isShown={!!selected}/>,
 						selected ? 
