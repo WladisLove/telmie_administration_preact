@@ -2,7 +2,6 @@ import { h, Component } from 'preact';
 import { bindActionCreators } from 'redux';
 import { connect } from 'preact-redux';
 import UsersRouteWrapper from '../../components/users-route-wrapper'
-import 'antd/dist/antd.css';
 
 
 import { getCategories } from '../../store/actions/data'

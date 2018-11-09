@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-import { Table, Checkbox, Spin } from 'antd';
+import { Checkbox } from 'antd';
 import style from './style.css';
 
 const statusArr = [{
@@ -23,20 +23,39 @@ const statusArr = [{
 	value: 'SUSPENDED_AS_PRO',
 }];
 
-const getDefaultStatuses = () => statusArr.map(el => el.value);
+const statusInvites = [{
+	name: 'Pending',
+	value: 'PENDING',
+}, {
+	name: 'Registered as User',
+	value: 'REGISTERED_AS_USER',
+}, {
+	name: 'Accepted',
+	value: 'ACCEPTED',
+}, {
+	name: 'Get bonus',
+	value: 'GET_BONUS',
+}, {
+	name: 'Unknown',
+	value: 'UNKNOWN',
+}];
+
+const getDefaultStatuses = (isInv) => isInv ? statusInvites.map(el => el.value) : statusArr.map(el => el.value);
 
 class FilterArea extends Component {
     constructor(props){
 		super(props);
 
 		this.state = {
-			statusFilter: getDefaultStatuses() || [],
+			statusFilter: getDefaultStatuses(props.isInvites) || [],
 		}
     }
     
     onChange = (checkedValues) => this.setState({statusFilter: [...checkedValues]});
     
-    onFilter = () => this.props.onFilter(this.state.statusFilter, statusArr.length);
+    onFilter = () => this.props.isInvites ? 
+        this.props.onFilter(this.state.statusFilter, statusInvites.length)
+        : this.props.onFilter(this.state.statusFilter, statusArr.length);
 
     render(){
         const {statusFilter} = this.state;
@@ -47,8 +66,13 @@ class FilterArea extends Component {
                     <div class={style.filterGroupLabel}> Status filter: </div>
                     
                     <Checkbox.Group onChange={this.onChange} value={statusFilter}	>
-                        {statusArr.map(({name, value}) => (<Checkbox className={statusFilter.indexOf(value) != -1 && style.checked} 
-                                                                        key={name} value={value}>{name}</Checkbox>))}
+                        {this.props.isInvites ? (
+                            statusInvites.map(({name, value}) => (<Checkbox key={name} value={value} 
+                                class={statusFilter.indexOf(value) != -1 && style.checked}>{name}</Checkbox>))
+                        ) : (
+                            statusArr.map(({name, value}) => (<Checkbox key={name} value={value} 
+                                class={statusFilter.indexOf(value) != -1 && style.checked}>{name}</Checkbox>))
+                        )}
                     </Checkbox.Group>
                     
                     <button onClick={this.onFilter} class={`${style.filterBtn} saveBtn`}>Filter</button>
