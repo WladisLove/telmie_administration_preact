@@ -146,18 +146,12 @@ function getUserActivity(url, authData){
 	});
 }
 
-export function getActiveUsActivities(id, authData){
-	return getUserActivity(apiUrls.GET_ACTIVE_USER_ACTIVITY(id), authData);
+export function getUsActivities(id, authData){
+	return getUserActivity(apiUrls.GET_USER_ACTIVITY(id), authData);
 }
-export function getActiveUsClient(id, authData){
-	return getUserActivity(apiUrls.GET_ACTIVE_USER_ACTIVITY(id)+'?isPro=true', authData);
+export function getUsClient(id, authData){
+	return getUserActivity(apiUrls.GET_USER_ACTIVITY(id)+'?isPro=true', authData);
 }
-export function getActiveUsProsList(id, authData){
-	return getUserActivity(apiUrls.GET_ACTIVE_USER_LIST(id), authData);
-}
-export function getArchivedUsActivities(id, authData){
-	return getUserActivity(apiUrls.GET_ARCHIVED_USER_ACTIVITY(id), authData);
-}
-export function getArchivedUsProsList(id, authData){
-	return getUserActivity(apiUrls.GET_ARCHIVED_USER_LIST(id), authData);
+export function getUsProsList(id, authData){
+	return getUserActivity(apiUrls.GET_USER_LIST(id), authData);
 }

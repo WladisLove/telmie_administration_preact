@@ -19,8 +19,6 @@ export const apiUrls = {
   GET_WITHDRAWS: apiAdminRoot + 'withdraw',
   WITHDRAW_ID: (id) => (apiAdminRoot + 'withdraw/' + id),
 
-  GET_ACTIVE_USER_ACTIVITY: (id) => (apiAdminRoot + 'users/active/' + id + '/activity'),
-  GET_ACTIVE_USER_LIST: (id) => (apiAdminRoot + 'users/active/' + id + '/list'),
-  GET_ARCHIVED_USER_ACTIVITY: (id) => (apiAdminRoot + 'users/archived/' + id + '/activity'),
-  GET_ARCHIVED_USER_LIST: (id) => (apiAdminRoot + 'users/archived/' + id + '/list'),
+  GET_USER_ACTIVITY: (id) => (apiAdminRoot + 'users/' + id + '/activity'),
+  GET_USER_LIST: (id) => (apiAdminRoot + 'users/' + id + '/shortlist'),
 }

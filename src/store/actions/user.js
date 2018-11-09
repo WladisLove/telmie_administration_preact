@@ -182,37 +182,23 @@ export const restoreArchivedUser = (id, authData) => async (dispatch) => {
 		);
 }
 
-export const getActiveUsActivities = (id, authData) => async (dispatch) => {
+export const getUsActivities = (id, authData) => async (dispatch) => {
 	dispatch(modifyU())
-	const response = await user.getActiveUsActivities(id, authData);
+	const response = await user.getUsActivities(id, authData);
 	response.error ?
 		dispatch(modifyUserFailure(`${response.message} (Error in getting ${INFO_TYPES.ACTIVITIES.toLowerCase()})`))
 		: dispatch(setUserInfoList(response.results, INFO_TYPES.ACTIVITIES));
 }
-export const getActiveUsClients = (id, authData) => async (dispatch) => {
+export const getUsClients = (id, authData) => async (dispatch) => {
 	dispatch(modifyU());
-	const response = await user.getActiveUsClient(id, authData);
+	const response = await user.getUsClient(id, authData);
 	response.error ?
 		dispatch(modifyUserFailure(`${response.message} (Error in getting ${INFO_TYPES.CLIENTS.toLowerCase()})`))
 		: dispatch(setUserInfoList(response.results, INFO_TYPES.CLIENTS));
 }
-export const getActiveUsProsList = (id, authData) => async (dispatch) => {
+export const getUsProsList = (id, authData) => async (dispatch) => {
 	dispatch(modifyU())
-	const response = await user.getActiveUsProsList(id, authData);
-	response.error ?
-		dispatch(modifyUserFailure(`${response.message} (Error in getting list of pros)`))
-		: dispatch(setUserInfoList(response, INFO_TYPES.LIST_OF_PROS));
-}
-export const getArchivedUsActivities = (id, authData) => async (dispatch) => {
-	dispatch(modifyU())
-	const response = await user.getArchivedUsActivities(id, authData);
-	response.error ?
-		dispatch(modifyUserFailure(`${response.message} (Error in getting activities)`))
-		: dispatch(setUserInfoList(response.results, INFO_TYPES.ACTIVITIES));
-}
-export const getArchivedUsProsList = (id, authData) => async (dispatch) => {
-	dispatch(modifyU())
-	const response = await user.getArchivedUsProsList(id, authData);
+	const response = await user.getUsProsList(id, authData);
 	response.error ?
 		dispatch(modifyUserFailure(`${response.message} (Error in getting list of pros)`))
 		: dispatch(setUserInfoList(response, INFO_TYPES.LIST_OF_PROS));

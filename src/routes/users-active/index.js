@@ -10,7 +10,7 @@ import style from './style'
 import { getCategories } from '../../store/actions/data'
 import { getActiveUsers, clearActiveUsers, 
 	chooseSelectedUser, clearSelectedUser, editUser, 
-	changeActiveUserStatus, getActiveUsActivities, getActiveUsProsList, getActiveUsClients } from '../../store/actions/user'
+	changeActiveUserStatus, getUsActivities, getUsProsList, getUsClients } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { tableColumns as columns } from '../../helpers/table-data'
@@ -39,9 +39,9 @@ class ActiveUsers extends Component{
 		const {activeUsers = []} = this.props.uArrays;
 		const accControlsFunc = {
 			changeStatus: (id) => this.props.changeActiveUserStatus(id, this.userAuth),
-			getActivities: (id) => this.props.getActiveUsActivities(id, this.userAuth),
-			getProsList: (id) => this.props.getActiveUsProsList(id, this.userAuth),
-			getClients: (id) => this.props.getActiveUsClients(id,this.userAuth),
+			getActivities: (id) => this.props.getUsActivities(id, this.userAuth),
+			getProsList: (id) => this.props.getUsProsList(id, this.userAuth),
+			getClients: (id) => this.props.getUsClients(id,this.userAuth),
 		};
 
 		return <UsersRouteWrapper 
@@ -80,9 +80,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	chooseSelectedUser,
 	editUser,
 	changeActiveUserStatus,
-	getActiveUsActivities,
-	getActiveUsProsList,
-	getActiveUsClients,
+	getUsActivities,
+	getUsProsList,
+	getUsClients,
 }, dispatch);
 
 export default connect(
