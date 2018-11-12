@@ -29,6 +29,14 @@ html, body {
 	padding: 20px;
 	width: 100%;
 }
+@media(max-width: 880px){
+	#app{
+		flex-wrap: wrap;
+	}
+	.route-content{
+		margin: 0 10px 0 10px;
+	}
+}
 
 .headline {
     font-size: 28px;

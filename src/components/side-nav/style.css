@@ -43,3 +43,9 @@
     content: "•";
     left: -10px;
 }
+
+@media(max-width: 880px){
+    .menuWrapper{
+        margin: 10px auto 0 auto;
+    }
+}
