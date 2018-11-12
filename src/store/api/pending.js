@@ -29,11 +29,11 @@ function manipulatePanding(url, method, authData){
 				message: 'Current user is not Admin',
 			} 
 				: 
-				response.status !== 204  ? 
-					response.json().then(json => ({ ...json, error: true, }))
-						.catch(err => ({ error: true, message: err.message, }))
-					: response.json().then(json => ({...json, error: false}))
-						.catch(err => ({ error: false }));
+				(response.status === 204 || response.status === 200) ? 
+					response.json().then(json => ({...json, error: false}))
+						.catch(err => ({ error: false }))
+					: response.json().then(json => ({ ...json, error: true, }))
+						.catch(err => ({ error: true, message: err.message, }));
 
 	}, error => {
 		console.log(error);
