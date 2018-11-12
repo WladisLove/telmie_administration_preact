@@ -193,12 +193,13 @@ export const incomplTableColumns = (sInfo = {}) => ([{
 }]);
 
 const activityTypes = {
-  c: 'CALLED',
-  mc: 'MISSED CALL',
-  fc: 'FAILED CALL',
-  im: 'READ message',
-  uim: 'NEW message',
-  om: 'OUTGOING message',
+  'c': 'CALLED',
+  'mc': 'MISSED CALL',
+  'fc': 'FAILED CALL',
+  'im': 'READ message',
+  'uim': 'NEW message',
+  'om': 'OUTGOING message',
+  's': 'SHORTLISTED',
 }
 
 export const infoColumns = (infoType) => {
