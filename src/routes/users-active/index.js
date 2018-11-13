@@ -9,7 +9,7 @@ import style from './style'
 
 import { getCategories } from '../../store/actions/data'
 import { getActiveUsers, clearActiveUsers, 
-	chooseSelectedUser, clearSelectedUser, editUser, 
+	chooseSelectedUser, clearSelectedUser, editUser, deleteUser,
 	changeActiveUserStatus, getUsActivities, getUsProsList, getUsClients, addFreeCredits } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
@@ -43,6 +43,7 @@ class ActiveUsers extends Component{
 			getProsList: (id) => this.props.getUsProsList(id, this.userAuth),
 			getClients: (id) => this.props.getUsClients(id,this.userAuth),
 			addFreeCredits: (amount, id) => this.props.addFreeCredits(amount, id, this.userAuth),
+			deleteUser: (id) => this.props.deleteUser(id, this.userAuth),
 		};
 
 		return <UsersRouteWrapper 
@@ -85,6 +86,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	getUsProsList,
 	getUsClients,
 	addFreeCredits,
+	deleteUser,
 }, dispatch);
 
 export default connect(

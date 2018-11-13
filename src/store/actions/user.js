@@ -167,6 +167,16 @@ export const chooseSelectedUser = (_user, authData) => async (dispatch) => {
 		: dispatch(selectUser(response));
 };
 
+export const deleteUser = (id, authData) => async (dispatch) => {
+	const response = await user.deleteUser(id, authData);
+	response.error ? 
+		dispatch(manipulateUserFailure(response.message, 'delete'))
+		: (
+			dispatch(clearUser()),
+			dispatch(getActiveUsers(authData))
+		);
+};
+
 export const editUser = (data, id, authData) => async (dispatch) => {
 	dispatch(modifyU());
 	const response = await user.editUser(data, id, authData);

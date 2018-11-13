@@ -34,6 +34,9 @@ class UsersRouteWrapper extends Component{
 			&& this.props.usersArr.length !== nextProps.usersArr.length 
 			&& nextProps.usersArr.length !== 0)
 				&& this.countUsersByStatus(nextProps.usersArr);
+		
+		(!nextProps.selectedUser.selectedUser && !!this.props.selectedUser.selectedUser)
+			&& this.setState({ selected: false, });
 	}
 
 	countUsersByStatus = (users) => {

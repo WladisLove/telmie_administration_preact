@@ -23,6 +23,7 @@ const AccountControlsArea = props => {
         accControlsFunc.getProsList(user.id);
     }
     const restore = () => accControlsFunc.restore(user.id);
+    const deleteUser = () => accControlsFunc.deleteUser(user.id)
 
     return (
         <div>
@@ -48,6 +49,9 @@ const AccountControlsArea = props => {
                 { !isForDelete && <button disabled={!user} onClick={changeStatus}> 
                        {(user && user.enabled) ? 'Disable' : 'Enable'} User  
                     </button> }
+                {accControlsFunc.deleteUser 
+                    && <button disabled={!user} 
+                        onClick={deleteUser}>Delete user</button>}
             </div>
             { modifyErr ? 
                 <div style={{color: 'red', textAlign: 'center'}}>{modifyMsg}</div> : (
