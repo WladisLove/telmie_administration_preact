@@ -56,6 +56,7 @@ class FilterArea extends Component {
 
     render(){
         const {statusFilter} = this.state;
+        const {usersByStatus}= this.props;
 
         return this.props.isShown ? 
             null : ( 
@@ -68,7 +69,9 @@ class FilterArea extends Component {
                                 class={statusFilter.indexOf(value) != -1 && style.checked}>{name}</Checkbox>))
                         ) : (
                             statusArr.map(({name, value}) => (<Checkbox key={name} value={value} 
-                                class={statusFilter.indexOf(value) != -1 && style.checked}>{name}</Checkbox>))
+                                class={statusFilter.indexOf(value) != -1 && style.checked}>
+                                {name} ({ usersByStatus[value] || 0 })
+                            </Checkbox>))
                         )}
                     </Checkbox.Group>
                     
