@@ -158,3 +158,23 @@ export function getUsClient(id, authData){
 export function getUsProsList(id, authData){
 	return getUserActivity(apiUrls.GET_USER_LIST(id), authData);
 }
+
+export function addFreeCredits(amount, id, authData){
+	let headers = new Headers();
+	headers.append("Authorization", "Basic " + authData);
+
+	return fetch(apiUrls.ADD_CREDITS(amount, id), { method: 'POST', headers }).then(response => {
+		return (response.status === 403) ? 
+			{
+				error: true,
+				message: 'Current user is not Admin',
+			} 
+				: 
+				response.status === 200  ? 
+					{ error: false, }
+					: { ...response, error: true };
+
+	}, error => {
+		throw new Error(error.message);
+	});
+}
