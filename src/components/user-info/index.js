@@ -4,6 +4,7 @@ import AccountControlsArea from './acc-controls-area'
 import AccountDetail from './account-detail'
 import ProDetails from './pro-detail/'
 import AdminNotes from './admin-notes'
+import FreeCredits from './free-credits'
 import { Icon, Spin, Table } from 'antd'
 import style from './style.css';
 
@@ -48,12 +49,16 @@ class UserInfo extends Component{
             case INFO_TYPES.ACC_DETAILS: 
             default: {
                 const {categories = [],subCategories=[]} = this.props.serverData;
+                const { credits } = this.props.selectedUser ? this.props.selectedUser : {};
                 
                 return [
                     <AccountDetail isPending = {this.props.isPending} 
                         user={user}
                         saveUserInfo={this.saveUserInfo}
                         changedFields={changedFields}/>,
+                    !this.props.isPending && <FreeCredits credits={credits}
+                                                userId={user.id}
+                                                addCredit={this.props.accControlsFunc.addFreeCredits}/>,
                     (user && user.pro) && <ProDetails categories={categories} 
                                 subCategories={subCategories} 
                                 isPending={this.props.isPending} 
@@ -71,7 +76,7 @@ class UserInfo extends Component{
     render(){
         const { activeTab } = this.state;
         const { backToList, isPending = false, isForDelete, accControlsFunc, } = this.props;
-        const {error: isError, message : errorMessage = '', isModifying} = this.props.selectedUser ? this.props.selectedUser : {};
+        const {error: isError, message : errorMessage = '', isModifying,} = this.props.selectedUser ? this.props.selectedUser : {};
     
         let user = null, changedInfo = null;
         isPending ? (

@@ -80,7 +80,26 @@ export function getUserInfo(id, authData){
 export function editUser(id, authData, data){
 	return userManipulation(apiUrls.USER_ID(id), 'PUT', authData, data);
 }
+export function deleteUser(id, authData){
+	let headers = new Headers();
+	headers.append("Authorization", "Basic " + authData);
 
+	return fetch(apiUrls.USER_ID(id), { method: 'DELETE', headers, }).then(response => {
+		return (response.status === 403) ? 
+			{
+				error: true,
+				message: 'Current user is not Admin',
+			} 
+				: 
+				response.status !== 204  ? 
+					response.json().then(json => ({ ...json, error: true, }))
+						.catch(err => ({ error: true, message: err.message, }))
+					: {error: false,};
+
+	}, error => {
+		throw new Error(error.message);
+	});
+}
 
 function changeUserStatus(url, authData){
 	let headers = new Headers();
@@ -157,4 +176,24 @@ export function getUsClient(id, authData){
 }
 export function getUsProsList(id, authData){
 	return getUserActivity(apiUrls.GET_USER_LIST(id), authData);
+}
+
+export function addFreeCredits(amount, id, authData){
+	let headers = new Headers();
+	headers.append("Authorization", "Basic " + authData);
+
+	return fetch(apiUrls.ADD_CREDITS(amount, id), { method: 'POST', headers }).then(response => {
+		return (response.status === 403) ? 
+			{
+				error: true,
+				message: 'Current user is not Admin',
+			} 
+				: 
+				response.status === 200  ? 
+					{ error: false, }
+					: { ...response, error: true };
+
+	}, error => {
+		throw new Error(error.message);
+	});
 }

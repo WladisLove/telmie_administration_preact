@@ -22,9 +22,30 @@ class UsersRouteWrapper extends Component{
 			searchedData: [],
 			searchFields: {},
 
+			usersByStatus: [],
+
 			sortedInfo: {order: "descend", field: "id", columnKey: "id"},
 			pagination: { pageSize: PAGE_SIZE }
 		}
+	}
+
+	componentWillReceiveProps(nextProps){
+		(this.props.withFilter 
+			&& this.props.usersArr.length !== nextProps.usersArr.length 
+			&& nextProps.usersArr.length !== 0)
+				&& this.countUsersByStatus(nextProps.usersArr);
+		
+		(!nextProps.selectedUser.selectedUser && !!this.props.selectedUser.selectedUser)
+			&& this.setState({ selected: false, });
+	}
+
+	countUsersByStatus = (users) => {
+		let usersByStatus = users.reduce((acc, user) => {
+			let stat = user.status;
+			acc[stat] = (acc[stat] || 0) + 1;
+			return acc;
+		}, {});
+		this.setState({ usersByStatus });
 	}
 
 	onFilter = (statusFilter, generalLength) => {
@@ -98,7 +119,7 @@ class UsersRouteWrapper extends Component{
 	}
 
 	render(){
-        const {isFiltered, filteredData, isSearched, searchedData, sortedInfo = {}, selected} = this.state;
+        const {isFiltered, filteredData, isSearched, searchedData, sortedInfo = {}, selected, usersByStatus} = this.state;
         const {
 			accControlsFunc, serverData, isIndividual, isPending, isForDelete, selectedUser, columns, onEditUser
 		} = this.props;
@@ -108,13 +129,13 @@ class UsersRouteWrapper extends Component{
 		const dataSource = isSearched ? 
 			searchedData : isFiltered 
 				? filteredData : usersArr;
-		
+
 		return (
 			<Card cardClass='route-content'>
 				{isLoaded ? 
 					!isError ? [
 						<p>Total number of users: {usersArr.length}</p>,
-						withFilter && <FilterArea onFilter={this.onFilter} isShown={!!selected}/>,
+						withFilter && <FilterArea onFilter={this.onFilter} isShown={!!selected} usersByStatus={usersByStatus}/>,
 						<SearchArea onSearch={this.onSearch} isShown={!!selected}/>,
 						selected ? 
 							<UserInfo selectedUser={selectedUser}

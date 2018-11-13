@@ -117,6 +117,7 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 				modifyMsg: '',
 				infoList: [],
 				infoType: '',
+				credits: {},
 			}
 		case actionTypes.START_MODIFY_USER:
 			return {
@@ -169,6 +170,21 @@ export const selectedUserReducer = (state = {error: false}, action) => {
 				isModifying: false,
 				infoList: action.infoList,
 				infoType: action.infoType,
+			}
+		case actionTypes.ADD_CREDITS_START:
+			return {
+				...state,
+				credits: { isProcessing: true, }
+			}
+		case actionTypes.ADD_CREDITS_SUCCESS:
+			return {
+				...state,
+				credits: { isProcessing: false, }
+			}
+		case actionTypes.ADD_CREDITS_FAILURE:
+			return {
+				...state,
+				credits: { isProcessing: false, errorMsg: `Error! ${action.message}`}
 			}
 		default:
 			return state;

@@ -18,8 +18,6 @@ const Input = props => {
         value = `${tmp.getFullYear()}-${(tmp.getMonth() + 1).toString().padStart(2, "0")}-${tmp.getDate().toString().padStart(2, "0")}`
     );
     const onChangeDate = (e) => {
-        console.log(e.target.value);
-
         props.onChange({
             ...e,
             target: {

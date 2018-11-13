@@ -9,8 +9,8 @@ import style from './style'
 
 import { getCategories } from '../../store/actions/data'
 import { getActiveUsers, clearActiveUsers, 
-	chooseSelectedUser, clearSelectedUser, editUser, 
-	changeActiveUserStatus, getUsActivities, getUsProsList, getUsClients } from '../../store/actions/user'
+	chooseSelectedUser, clearSelectedUser, editUser, deleteUser,
+	changeActiveUserStatus, getUsActivities, getUsProsList, getUsClients, addFreeCredits } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { tableColumns as columns } from '../../helpers/table-data'
@@ -42,6 +42,8 @@ class ActiveUsers extends Component{
 			getActivities: (id) => this.props.getUsActivities(id, this.userAuth),
 			getProsList: (id) => this.props.getUsProsList(id, this.userAuth),
 			getClients: (id) => this.props.getUsClients(id,this.userAuth),
+			addFreeCredits: (amount, id) => this.props.addFreeCredits(amount, id, this.userAuth),
+			deleteUser: (id) => this.props.deleteUser(id, this.userAuth),
 		};
 
 		return <UsersRouteWrapper 
@@ -83,6 +85,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	getUsActivities,
 	getUsProsList,
 	getUsClients,
+	addFreeCredits,
+	deleteUser,
 }, dispatch);
 
 export default connect(

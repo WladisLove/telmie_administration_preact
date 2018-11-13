@@ -167,6 +167,16 @@ export const chooseSelectedUser = (_user, authData) => async (dispatch) => {
 		: dispatch(selectUser(response));
 };
 
+export const deleteUser = (id, authData) => async (dispatch) => {
+	const response = await user.deleteUser(id, authData);
+	response.error ? 
+		dispatch(manipulateUserFailure(response.message, 'delete'))
+		: (
+			dispatch(clearUser()),
+			dispatch(getActiveUsers(authData))
+		);
+};
+
 export const editUser = (data, id, authData) => async (dispatch) => {
 	dispatch(modifyU());
 	const response = await user.editUser(data, id, authData);
@@ -220,4 +230,15 @@ export const getUsProsList = (id, authData) => async (dispatch) => {
 	response.error ?
 		dispatch(modifyUserFailure(`${response.message} (Error in getting list of pros)`))
 		: dispatch(setUserInfoList(response, INFO_TYPES.LIST_OF_PROS));
+}
+
+export const addFreeCredits = (amount, id, authData) => async (dispatch) => {
+	dispatch({ type: actionTypes.ADD_CREDITS_START, })
+	const response = await user.addFreeCredits(amount, id, authData);
+	response.error ?
+		dispatch({ 
+			type: actionTypes.ADD_CREDITS_FAILURE,
+			message: response.message,
+		})
+		: dispatch({ type: actionTypes.ADD_CREDITS_SUCCESS, })
 }

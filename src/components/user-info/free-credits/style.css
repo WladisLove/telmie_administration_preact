@@ -1,0 +1,14 @@
+.creditsCard{
+    padding: 0 30px;
+}
+.creditsContainer{
+    display: flex;
+    align-items: center;
+    color: #3d5273;
+    width: auto;
+    margin: 0 auto;
+}
+.creditsContainer > div{
+    margin-right: 15px;
+    margin-bottom: 0 !important;
+}
