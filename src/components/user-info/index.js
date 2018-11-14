@@ -78,14 +78,16 @@ class UserInfo extends Component{
         const { backToList, isPending = false, isForDelete, accControlsFunc, } = this.props;
         const {error: isError, message : errorMessage = '', isModifying,} = this.props.selectedUser ? this.props.selectedUser : {};
     
-        let user = null, changedInfo = null;
+        let user = null, changedInfo = null, status;
         isPending ? (
+            status = this.props.user && this.props.user.owner.pro ? 'PENDING_APPROVAL' : 'STARTED_PRO_APP',
             changedInfo = { ...this.props.user },
             user = cloneUser(changedInfo.owner),
             delete changedInfo.owner,
             delete changedInfo.id
         ) : (
-            {selectedUser : user = null} = this.props.selectedUser
+            {selectedUser : user = null} = this.props.selectedUser,
+            user && (status = user.status)
         )
     
         let changedFields = (user && user.pro) ? checkPro(user, changedInfo) : checkNotPro(user, changedInfo);
@@ -96,7 +98,7 @@ class UserInfo extends Component{
                     { user ? <h1 style={{margin: 0}}>{user.name} {user.lastName}</h1> : <h1 style={{margin: 0}}>Loading...</h1> }
                     <div class={style.backBtn} onClick={backToList}> <Icon type="arrow-left" theme="outlined" />Back to list</div>
                 </div>
-                <Delimeter statusText={user ? user.status : ''}/>
+                <Delimeter statusText={status}/>
     
                 {!isPending && <AccountControlsArea 
                                 selectedUser = {this.props.selectedUser}
