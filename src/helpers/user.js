@@ -24,9 +24,9 @@ export const checkPro = (user, changedInfo) => {
                 key === 'dateOfBirth' ? (
                     d = new Date(user[key]),
                     new_d = new Date(changedInfo[key]),
-                    d.getDate() !== new_d.getDate() 
-                        && d.getFullYear() !== new_d.getFullYear() 
-                        && d.getMonth() !== new_d.getMonth() 
+                    !(d.getDate() === new_d.getDate() 
+                        && d.getFullYear() === new_d.getFullYear() 
+                        && d.getMonth() === new_d.getMonth())
                             && (
                                 changedFields[key] = user[key],
                                 user[key] = changedInfo[key]

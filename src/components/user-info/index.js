@@ -90,7 +90,6 @@ class UserInfo extends Component{
     
         let changedFields = (user && user.pro) ? checkPro(user, changedInfo) : checkNotPro(user, changedInfo);
         changedInfo && checkForLocation(user, changedFields);
-
         return (
             <div class={``}>
                 <div class={style.profileHeader}>
