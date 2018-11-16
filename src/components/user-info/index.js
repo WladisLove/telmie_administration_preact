@@ -5,6 +5,7 @@ import AccountDetail from './account-detail'
 import ProDetails from './pro-detail/'
 import AdminNotes from './admin-notes'
 import FreeCredits from './free-credits'
+import MoneyTab from './money-tab'
 import { Icon, Spin, Table } from 'antd'
 import style from './style.css';
 
@@ -46,6 +47,10 @@ class UserInfo extends Component{
                     </div>
                 )
             }
+            case INFO_TYPES.MONEY:
+                return <MoneyTab data={this.props.selectedUser.infoList}
+                            getMoney={this.props.accControlsFunc.getUsMoney}
+                            userId={user.id}/>;
             case INFO_TYPES.ACC_DETAILS: 
             default: {
                 const {categories = [],subCategories=[]} = this.props.serverData;

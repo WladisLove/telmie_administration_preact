@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import { INFO_TYPES } from '../../../helpers/consts'
+import { INFO_TYPES, PAGE_SIZE } from '../../../helpers/consts'
 
 import style from './style.css';
 
@@ -22,6 +22,10 @@ const AccountControlsArea = props => {
         props.changeTab(INFO_TYPES.LIST_OF_PROS);
         accControlsFunc.getProsList(user.id);
     }
+    const getMoney = () => {
+        props.changeTab(INFO_TYPES.MONEY);
+        accControlsFunc.getUsMoney(user.id, 0, PAGE_SIZE);
+    }
     const restore = () => accControlsFunc.restore(user.id);
     const deleteUser = () => accControlsFunc.deleteUser(user.id)
 
@@ -38,7 +42,8 @@ const AccountControlsArea = props => {
                 <button disabled={!user} 
                     onClick={getActivities}
                     class={activeTab === INFO_TYPES.ACTIVITIES && style.selectedBtn}>Activities</button>
-                <button disabled={true} 
+                <button disabled={!user}
+                    onClick={getMoney} 
                     class={activeTab === INFO_TYPES.MONEY && style.selectedBtn}>Money</button>
                 <button disabled={!user} 
                     onClick={getClients}

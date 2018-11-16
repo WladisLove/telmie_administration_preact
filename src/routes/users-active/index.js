@@ -10,7 +10,7 @@ import style from './style'
 import { getCategories } from '../../store/actions/data'
 import { getActiveUsers, clearActiveUsers, 
 	chooseSelectedUser, clearSelectedUser, editUser, deleteUser,
-	changeActiveUserStatus, getUsActivities, getUsProsList, getUsClients, addFreeCredits } from '../../store/actions/user'
+	changeActiveUserStatus, getUsActivities, getUsProsList, getUsClients, getUsMoney, addFreeCredits } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { tableColumns as columns } from '../../helpers/table-data'
@@ -42,6 +42,7 @@ class ActiveUsers extends Component{
 			getActivities: (id) => this.props.getUsActivities(id, this.userAuth),
 			getProsList: (id) => this.props.getUsProsList(id, this.userAuth),
 			getClients: (id) => this.props.getUsClients(id,this.userAuth),
+			getUsMoney: (id, page, size) => this.props.getUsMoney(id, page, size, this.userAuth),
 			addFreeCredits: (amount, id) => this.props.addFreeCredits(amount, id, this.userAuth),
 			deleteUser: (id) => this.props.deleteUser(id, this.userAuth),
 		};
@@ -85,6 +86,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	getUsActivities,
 	getUsProsList,
 	getUsClients,
+	getUsMoney,
 	addFreeCredits,
 	deleteUser,
 }, dispatch);

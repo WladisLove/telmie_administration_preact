@@ -231,6 +231,13 @@ export const getUsProsList = (id, authData) => async (dispatch) => {
 		dispatch(modifyUserFailure(`${response.message} (Error in getting list of pros)`))
 		: dispatch(setUserInfoList(response, INFO_TYPES.LIST_OF_PROS));
 }
+export const getUsMoney = (id, page, size, authData) => async (dispatch) => {
+	dispatch(modifyU())
+	const response = await user.getUsMoney(id, page, size, authData);
+	response.error ?
+		dispatch(modifyUserFailure(`${response.message} (Error in getting list of money)`))
+		: dispatch(setUserInfoList(response, INFO_TYPES.MONEY));
+}
 
 export const addFreeCredits = (amount, id, authData) => async (dispatch) => {
 	dispatch({ type: actionTypes.ADD_CREDITS_START, })
