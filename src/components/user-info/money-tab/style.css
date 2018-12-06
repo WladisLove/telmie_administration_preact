@@ -1,0 +1,83 @@
+.emptyList{
+    text-align: center;
+    margin-top: 25px;
+}
+
+.balanceLine{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.balanceItem{
+    display: inline-block;
+    text-align: center;
+    color: #444;
+}
+.balanceItem:not(:last-child){
+    margin-right: 150px;
+}
+.balanceAmount{
+    font-size: 24px;
+    line-height: 30px;
+    border-bottom: 1px solid;
+}
+.balanceText{
+    font-size: 16px;
+}
+
+.tableCard{
+    width: 95%;
+    margin: 0 auto;
+    padding: 20px 40px;
+    box-shadow: 0 0 2pt 1pt rgba(0,0,0,0.3);
+}
+
+.showAllBtn{
+    width: 90px;
+    text-align: center;
+    margin: 0 30px 15px auto;
+    border-bottom: 1px solid #979797;
+    cursor: pointer;
+}
+
+.tableRow{
+    display: flex;
+}
+.tableRow > div{
+    width: 25%;
+    text-align: center;
+    margin: 15px 0;
+}
+.tableRow > div:first-child{
+    text-align: left;
+    color: #444;
+}
+.tableRow > div:last-child{
+    text-align: right;
+}
+.tableHeader{
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 5px;
+}
+.tableHeader >div{
+    margin: 0;
+}
+.transactionItem{
+    padding-left: 10px;
+}
+.transactionItem:not(:last-child){
+    border-bottom: 1px solid #979797;
+}
+.balanceCell{
+    display: flex;
+    margin: 0 !important;
+}
+.balanceCell > div{
+    width: 50%;
+    padding: 15px 15px 15px 0;
+}
+.balanceCell > div:first-child{
+    background-color: #7f7f7f2d;
+}

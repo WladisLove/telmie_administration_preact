@@ -147,11 +147,11 @@ export function restoreArchivedUser(id, authData){
 	});
 }
 
-function getUserActivity(url, authData){
+function getUserActivity(url, method, authData){
 	let headers = new Headers();
 	headers.append("Authorization", "Basic " + authData);
 
-	return fetch(url, { method: 'GET', headers }).then(response => {
+	return fetch(url, { method, headers }).then(response => {
 		return (response.status === 403) ? 
 			{
 				error: true,
@@ -169,13 +169,16 @@ function getUserActivity(url, authData){
 }
 
 export function getUsActivities(id, authData){
-	return getUserActivity(apiUrls.GET_USER_ACTIVITY(id), authData);
+	return getUserActivity(apiUrls.GET_USER_ACTIVITY(id), 'GET', authData);
 }
 export function getUsClient(id, authData){
-	return getUserActivity(apiUrls.GET_USER_ACTIVITY(id)+'?isPro=true', authData);
+	return getUserActivity(apiUrls.GET_USER_ACTIVITY(id)+'?isPro=true', 'GET', authData);
 }
 export function getUsProsList(id, authData){
-	return getUserActivity(apiUrls.GET_USER_LIST(id), authData);
+	return getUserActivity(apiUrls.GET_USER_LIST(id), 'GET', authData);
+}
+export function getUsMoney(id, page, size, authData){
+	return getUserActivity(apiUrls.GET_USER_MONEY(id, page, size), 'POST', authData);
 }
 
 export function addFreeCredits(amount, id, authData){

@@ -22,5 +22,6 @@ export const apiUrls = {
 
   GET_USER_ACTIVITY: (id) => (apiAdminRoot + 'users/' + id + '/activity'),
   GET_USER_LIST: (id) => (apiAdminRoot + 'users/' + id + '/shortlist'),
+  GET_USER_MONEY: (id, page, size) => (apiAdminRoot + 'users/' + id + '/money?page' + page + '&size=' + size),
   ADD_CREDITS: (amount, id) => (apiAdminRoot + 'users/' + id + '/addcredit?amount=' + amount),
 }
