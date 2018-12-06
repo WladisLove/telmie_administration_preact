@@ -75,6 +75,10 @@ html, body {
 	border-color: #7f7f7f !important;
 }
 
+.react-confirm-alert-overlay{
+	background-color: rgba(0,0,0, 0.7) !important;
+}
+
 .spinContainer{
 	text-align: center;
     margin: 30px 0;
