@@ -10,7 +10,7 @@ import style from './style'
 import { getCategories } from '../../store/actions/data'
 import { getActiveUsers, clearActiveUsers, 
 	chooseSelectedUser, clearSelectedUser, editUser, deleteUser,
-	changeActiveUserStatus, getUsActivities, getUsProsList, getUsClients, getUsMoney, addFreeCredits } from '../../store/actions/user'
+	changeActiveUserStatus, changeProStatus, getUsActivities, getUsProsList, getUsClients, getUsMoney, addFreeCredits } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { tableColumns as columns } from '../../helpers/table-data'
@@ -39,6 +39,7 @@ class ActiveUsers extends Component{
 		const {activeUsers = []} = this.props.uArrays;
 		const accControlsFunc = {
 			changeStatus: (id, value) => this.props.changeActiveUserStatus(id, value, this.userAuth),
+			changeProStatus: (id, value) => this.props.changeProStatus(id, value, this.userAuth),
 			getActivities: (id) => this.props.getUsActivities(id, this.userAuth),
 			getProsList: (id) => this.props.getUsProsList(id, this.userAuth),
 			getClients: (id) => this.props.getUsClients(id,this.userAuth),
@@ -89,6 +90,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	getUsMoney,
 	addFreeCredits,
 	deleteUser,
+	changeProStatus,
 }, dispatch);
 
 export default connect(

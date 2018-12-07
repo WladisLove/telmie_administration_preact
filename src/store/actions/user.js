@@ -209,6 +209,17 @@ export const changeActiveUserStatus = (id, value, authData) => async (dispatch) 
 		);
 }
 
+export const changeProStatus = (id, value, authData) => async (dispatch) => {
+	dispatch(modifyU());
+	const response = await user.changeProStatus(id, authData, value);
+	response.error ?
+		dispatch(modifyUserFailure(`${response.message} (Error in changing PRO status)`))
+		: (
+			dispatch(changeAUStatusSuccess(response)),
+			dispatch(getActiveUsers(authData))
+		);
+}
+
 export const getUsActivities = (id, authData) => async (dispatch) => {
 	dispatch(modifyU())
 	const response = await user.getUsActivities(id, authData);

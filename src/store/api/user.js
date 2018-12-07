@@ -122,6 +122,15 @@ export function changeActiveUserStatus(id, authData, value){
 	return changeUserStatus(apiUrls.CHANGE_ACTIVE_USER_STATUS(id), authData, data);
 }
 
+export function changeProStatus(id, authData, value){
+	const data = {
+		userId: id,
+		status: 'SUSPENDED_AS_PRO',
+		value,
+	};
+	return changeUserStatus(apiUrls.CHANGE_ACTIVE_USER_STATUS(id), authData, data);
+}
+
 function getUserActivity(url, method, authData){
 	let headers = new Headers();
 	headers.append("Authorization", "Basic " + authData);

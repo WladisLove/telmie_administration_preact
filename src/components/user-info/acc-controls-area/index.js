@@ -27,6 +27,7 @@ const AccountControlsArea = props => {
 
     const accDetails = () => props.changeTab(INFO_TYPES.ACC_DETAILS);
     const changeStatus = () => accControlsFunc.changeStatus(user.id, user.enabled);
+    const changeProStatus = () => accControlsFunc.changeProStatus(user.id, user.pro.workPro);
     const getActivities = () => {
         props.changeTab(INFO_TYPES.ACTIVITIES);
         accControlsFunc.getActivities(user.id);
@@ -70,6 +71,10 @@ const AccountControlsArea = props => {
                     class={activeTab === INFO_TYPES.LIST_OF_PROS && style.selectedBtn}>List of Pros</button>
                 { !isForDelete && <button disabled={!user} onClick={submit((user && user.enabled) ? 'Disable' : 'Enable', changeStatus)}> 
                        {(user && user.enabled) ? 'Disable' : 'Enable'} User  
+                    </button> }
+                { !isForDelete && user && user.pro && 
+                    <button disabled={!user} onClick={submit((user && user.pro && user.pro.workPro) ? 'Pro suspend' : 'Pro activate', changeProStatus)}> 
+                       {(user && user.pro && user.pro.workPro) ? 'Pro suspend' : 'Pro activate'}  
                     </button> }
                 {accControlsFunc.deleteUser 
                     && <button disabled={!user} 
