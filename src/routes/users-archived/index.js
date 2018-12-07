@@ -7,7 +7,7 @@ import UsersRouteWrapper from '../../components/users-route-wrapper'
 import { getCategories } from '../../store/actions/data'
 import { getArchivedUsers, clearArchivedUsers, 
 	chooseSelectedUser, clearSelectedUser, 
-	restoreArchivedUser, getUsActivities, getUsClients, getUsProsList, getUsMoney, addFreeCredits } from '../../store/actions/user'
+	deleteUser, getUsActivities, getUsClients, getUsProsList, getUsMoney, addFreeCredits } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { tableColumns as columns } from '../../helpers/table-data'
@@ -33,7 +33,7 @@ class ArchivedUsers extends Component{
 		const {archivedUsers = []} = this.props.uArrays;
 
 		const accControlsFunc = {
-			restore: (id) => this.props.restoreArchivedUser(id, this.userAuth),
+			restore: (id) => this.props.deleteUser(id, false, this.userAuth),
 			getActivities: (id) => this.props.getUsActivities(id, this.userAuth),
 			getProsList: (id) => this.props.getUsProsList(id, this.userAuth),
 			getClients: (id) => this.props.getUsClients(id,this.userAuth),
@@ -73,7 +73,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	clearArchivedUsers,
 	chooseSelectedUser,
 	clearSelectedUser,
-	restoreArchivedUser,
+	deleteUser,
 	getCategories,
 	getUsActivities,
 	getUsClients,

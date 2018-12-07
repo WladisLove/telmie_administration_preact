@@ -50,7 +50,7 @@ const AccountControlsArea = props => {
         <div>
             {isForDelete && <div class={`${style.topBtnsArea} ${style.wideBtnsArea}`}>
                 <button disabled={true}>Permanently delete user</button>
-                <button onClick={restore} >Restore user</button>
+                <button onClick={submit('restore', restore)} >Restore user</button>
             </div>}
             <div class={style.topBtnsArea}>
                 <button disabled={!user} 

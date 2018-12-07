@@ -44,7 +44,7 @@ class ActiveUsers extends Component{
 			getClients: (id) => this.props.getUsClients(id,this.userAuth),
 			getUsMoney: (id, page, size) => this.props.getUsMoney(id, page, size, this.userAuth),
 			addFreeCredits: (amount, id) => this.props.addFreeCredits(amount, id, this.userAuth),
-			deleteUser: (id) => this.props.deleteUser(id, this.userAuth),
+			deleteUser: (id) => this.props.deleteUser(id, true, this.userAuth),
 		};
 
 		return <UsersRouteWrapper 

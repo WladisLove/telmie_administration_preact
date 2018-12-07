@@ -167,14 +167,24 @@ export const chooseSelectedUser = (_user, authData) => async (dispatch) => {
 		: dispatch(selectUser(response));
 };
 
-export const deleteUser = (id, authData) => async (dispatch) => {
-	const response = await user.deleteUser(id, authData);
-	response.error ? 
-		dispatch(manipulateUserFailure(response.message, 'delete'))
-		: (
-			dispatch(clearUser()),
-			dispatch(getActiveUsers(authData))
-		);
+export const deleteUser = (id, value, authData) => async (dispatch) => {
+	const response = await user.deleteUser(id, authData, value);
+	if (value){
+		response.error ? 
+			dispatch(manipulateUserFailure(response.message, 'delete'))
+			: (
+				dispatch(clearUser()),
+				dispatch(getActiveUsers(authData))
+			);
+	} else {
+		response.error ?
+			dispatch(modifyUserFailure(`${response.message} (Error in restoring user)`))
+			: (
+				dispatch(restoreAUSuccess(response)),
+				dispatch(getArchivedUsers(authData))
+			);
+	}
+	
 };
 
 export const editUser = (data, id, authData) => async (dispatch) => {
@@ -196,17 +206,6 @@ export const changeActiveUserStatus = (id, value, authData) => async (dispatch) 
 		: (
 			dispatch(changeAUStatusSuccess(response)),
 			dispatch(getActiveUsers(authData))
-		);
-}
-
-export const restoreArchivedUser = (id, authData) => async (dispatch) => {
-	dispatch(modifyU())
-	const response = await user.restoreArchivedUser(id, authData);
-	response.error ?
-		dispatch(modifyUserFailure(`${response.message} (Error in restoring user)`))
-		: (
-			dispatch(restoreAUSuccess(response)),
-			dispatch(getArchivedUsers(authData))
 		);
 }
 

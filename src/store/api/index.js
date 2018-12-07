@@ -15,7 +15,6 @@ export const apiUrls = {
   PENDING_ID: (id) => (apiAdminRoot + 'pending/' + id),
   USER_ID: (id) => (apiAdminRoot + 'users/' + id),
   CHANGE_ACTIVE_USER_STATUS: (id) => (apiAdminRoot + 'users/' + id + '/status'),
-  RESTORE_ARCHIVED_USER: (id) => (apiAdminRoot + 'users/' + id + '/restore'),
   GET_WITHDRAWS: apiAdminRoot + 'withdraw',
   WITHDRAW_ID: (id) => (apiAdminRoot + 'withdraw/' + id),
 

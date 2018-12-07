@@ -80,26 +80,6 @@ export function getUserInfo(id, authData){
 export function editUser(id, authData, data){
 	return userManipulation(apiUrls.USER_ID(id), 'PUT', authData, data);
 }
-export function deleteUser(id, authData){
-	let headers = new Headers();
-	headers.append("Authorization", "Basic " + authData);
-
-	return fetch(apiUrls.USER_ID(id), { method: 'DELETE', headers, }).then(response => {
-		return (response.status === 403) ? 
-			{
-				error: true,
-				message: 'Current user is not Admin',
-			} 
-				: 
-				response.status !== 204  ? 
-					response.json().then(json => ({ ...json, error: true, }))
-						.catch(err => ({ error: true, message: err.message, }))
-					: {error: false,};
-
-	}, error => {
-		throw new Error(error.message);
-	});
-}
 
 function changeUserStatus(url, authData, data){
 	let headers = new Headers();
@@ -123,6 +103,16 @@ function changeUserStatus(url, authData, data){
 	});
 }
 
+export function deleteUser(id, authData, value){
+	const data = {
+		userId: id,
+		status: 'ARCHIVED',
+		value,
+	};
+	return changeUserStatus(apiUrls.CHANGE_ACTIVE_USER_STATUS(id), authData, data);
+	
+}
+
 export function changeActiveUserStatus(id, authData, value){
 	const data = {
 		userId: id,
@@ -130,27 +120,6 @@ export function changeActiveUserStatus(id, authData, value){
 		value,
 	};
 	return changeUserStatus(apiUrls.CHANGE_ACTIVE_USER_STATUS(id), authData, data);
-}
-
-export function restoreArchivedUser(id, authData){
-	let headers = new Headers();
-	headers.append("Authorization", "Basic " + authData);
-
-	return fetch(apiUrls.RESTORE_ARCHIVED_USER(id), { method: 'PUT', headers }).then(response => {
-		return (response.status === 403) ? 
-			{
-				error: true,
-				message: 'Current user is not Admin',
-			} 
-				: 
-				response.status !== 200  ? 
-					response.json().then(json => ({ ...json, error: true, }))
-						.catch(err => ({ error: true, message: err.message, }))
-					: response.json().then(json => json);
-
-	}, error => {
-		throw new Error(error.message);
-	});
 }
 
 function getUserActivity(url, method, authData){
