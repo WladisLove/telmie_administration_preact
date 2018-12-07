@@ -26,7 +26,7 @@ const AccountControlsArea = props => {
         };
 
     const accDetails = () => props.changeTab(INFO_TYPES.ACC_DETAILS);
-    const changeStatus = () => accControlsFunc.changeStatus(user.id);
+    const changeStatus = () => accControlsFunc.changeStatus(user.id, user.enabled);
     const getActivities = () => {
         props.changeTab(INFO_TYPES.ACTIVITIES);
         accControlsFunc.getActivities(user.id);

@@ -188,9 +188,9 @@ export const editUser = (data, id, authData) => async (dispatch) => {
 		);
 };
 
-export const changeActiveUserStatus = (id, authData) => async (dispatch) => {
+export const changeActiveUserStatus = (id, value, authData) => async (dispatch) => {
 	dispatch(modifyU());
-	const response = await user.changeActiveUserStatus(id, authData);
+	const response = await user.changeActiveUserStatus(id, authData, value);
 	response.error ?
 		dispatch(modifyUserFailure(`${response.message} (Error in changing user status)`))
 		: (

@@ -101,11 +101,12 @@ export function deleteUser(id, authData){
 	});
 }
 
-function changeUserStatus(url, authData){
+function changeUserStatus(url, authData, data){
 	let headers = new Headers();
 	headers.append("Authorization", "Basic " + authData);
+	headers.append("Content-Type", "application/json ");
 
-	return fetch(url, { method: 'PUT', headers }).then(response => {
+	return fetch(url, { method: 'PUT', headers, body: JSON.stringify( data ) }).then(response => {
 		return (response.status === 403) ? 
 			{
 				error: true,
@@ -122,8 +123,13 @@ function changeUserStatus(url, authData){
 	});
 }
 
-export function changeActiveUserStatus(id, authData){		
-	return changeUserStatus(apiUrls.CHANGE_ACTIVE_USER_STATUS(id), authData);
+export function changeActiveUserStatus(id, authData, value){
+	const data = {
+		userId: id,
+		status: 'SUSPENDED',
+		value,
+	};
+	return changeUserStatus(apiUrls.CHANGE_ACTIVE_USER_STATUS(id), authData, data);
 }
 
 export function restoreArchivedUser(id, authData){

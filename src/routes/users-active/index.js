@@ -38,7 +38,7 @@ class ActiveUsers extends Component{
 	render() {
 		const {activeUsers = []} = this.props.uArrays;
 		const accControlsFunc = {
-			changeStatus: (id) => this.props.changeActiveUserStatus(id, this.userAuth),
+			changeStatus: (id, value) => this.props.changeActiveUserStatus(id, value, this.userAuth),
 			getActivities: (id) => this.props.getUsActivities(id, this.userAuth),
 			getProsList: (id) => this.props.getUsProsList(id, this.userAuth),
 			getClients: (id) => this.props.getUsClients(id,this.userAuth),
