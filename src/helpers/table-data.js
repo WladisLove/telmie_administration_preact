@@ -1,4 +1,4 @@
-import {convertDate} from './index'
+import {convertDate, sortVersions} from './index'
 import { INFO_TYPES } from './consts'
 
 export const pendingTableColumns = (sInfo = {}) => ([{
@@ -110,21 +110,27 @@ export const tableColumns = (sInfo = {}) => ([{
       dataIndex: 'status',
       //sorter: (a,b) => String(a.status).localeCompare(b.status),
   },{
+    title: 'App version',
+    dataIndex: 'appVersion',
+    sorter: (a, b) => sortVersions(a.appVersion, b.appVersion),
+    sortOrder: sInfo.columnKey === 'appVersion' && sInfo.order,
+  },{
     title: 'Last active',
-    dataIndex: 'lastActive',
+    dataIndex: 'versionUpdate',
+    render: (text) => convertDate(text),
     // compare date
     //sorter: (a, b) => a.lastActive.length - b.lastActive.length,
-  },{
-    title: 'Credit card',
-    dataIndex: 'creditCard',
-    // are kinds only 'yes'/'no' ???
-    //sorter: (a, b) => a.creditCard.length - b.creditCard.length,
   },{
     title: 'Registration date',
     dataIndex: 'registrationDate',
     render: (text) => convertDate(text),
     // compare date
     //sorter: (a, b) => a.registrationDate.length - b.registrationDate.length,
+  },{
+    title: 'Credit card',
+    dataIndex: 'creditCard',
+    // are kinds only 'yes'/'no' ???
+    //sorter: (a, b) => a.creditCard.length - b.creditCard.length,
   },{
     title: 'Bank account',
     dataIndex: 'bankAccount',

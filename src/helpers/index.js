@@ -9,3 +9,15 @@ export function convertDate(date) {
         'Invalid date'
         : `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1).toString().padStart(2, "0")}/${d.getFullYear()} ${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
 }
+
+function converVersionToNum(version){
+    return version.split('.').reduce((acc, el, i, arr) => { 
+        return acc + (+el)*Math.pow(10, (arr.length - i - 1)*2);
+    }, 0)
+}
+export function sortVersions(a, b){
+
+    let _a = a ? converVersionToNum(a) : 0;
+    let _b = b ? converVersionToNum(b) : 0;
+    return _a - _b;
+}
