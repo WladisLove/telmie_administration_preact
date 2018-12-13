@@ -15,17 +15,7 @@
 	overflow: hidden;
 }
 
-.image:after {
-    content: "";
-    background-image: url('/assets/avatar_mask_xlarge.png');
-    width: 200px;
-    height: 200px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-size: 100%;
-    z-index: 49;
-}
+
 
 .image img {
     width: 198px;
