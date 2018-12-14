@@ -26,8 +26,8 @@ class UserInfo extends Component{
 
     saveUserInfo = (fields = {}) => {
         let data = {
-            ...user,
             ...fields,
+            id: this.props.selectedUser.selectedUser.id,
         };
         this.props.editUserFunc(data);
     }
@@ -68,6 +68,7 @@ class UserInfo extends Component{
                                 subCategories={subCategories} 
                                 isPending={this.props.isPending} 
                                 user={user} 
+                                saveUserInfo={this.props.editUserFunc}
                                 controlsFunc={this.props.pendingControlsFunc} 
                                 activateUser={this.props.activateUser}
                                 changedFields={changedFields}/>,

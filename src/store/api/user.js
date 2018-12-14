@@ -77,7 +77,7 @@ function userManipulation(url, method, authData, data){
 export function getUserInfo(id, authData){
 	return userManipulation(apiUrls.USER_ID(id), 'GET', authData);
 }
-export function editUser(id, authData, data){
+export function editUser(data, id, authData){
 	return userManipulation(apiUrls.USER_ID(id), 'PUT', authData, data);
 }
 
