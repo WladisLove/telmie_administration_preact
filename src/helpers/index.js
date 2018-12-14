@@ -12,7 +12,7 @@ export function convertDate(date) {
 
 function converVersionToNum(version){
     return version.split('.').reduce((acc, el, i, arr) => { 
-        return acc + (+el)*Math.pow(10, (arr.length - i - 1)*2);
+        return acc + (+el)*Math.pow(100, (arr.length - i - 1)*2);
     }, 0)
 }
 export function sortVersions(a, b){
