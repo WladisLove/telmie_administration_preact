@@ -7,6 +7,17 @@ import SearchArea from '../user-table-controls/search-area'
 import 'antd/dist/antd.css';
 
 import { PAGE_SIZE } from '../../helpers/consts'
+const searchItemsArr= [{
+	label: 'General:',
+	name: 'general',
+},{
+	label: 'Mobile:',
+	name: 'mobile',
+},{
+	label: 'Date of birth:',
+	name: 'dateOfBirth',
+	isDate: true,
+},]
 
 class UsersRouteWrapper extends Component{
 	constructor(props){
@@ -136,7 +147,7 @@ class UsersRouteWrapper extends Component{
 					!isError ? [
 						<p>Total number of users: {usersArr.length}</p>,
 						withFilter && <FilterArea onFilter={this.onFilter} isShown={!!selected} usersByStatus={usersByStatus}/>,
-						<SearchArea onSearch={this.onSearch} isShown={!!selected}/>,
+						<SearchArea onSearch={this.onSearch} isShown={!!selected} searchItemsArr={searchItemsArr}/>,
 						selected ? 
 							<UserInfo selectedUser={selectedUser}
 								serverData={serverData}

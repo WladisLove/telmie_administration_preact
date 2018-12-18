@@ -55,8 +55,15 @@ const setInvites = (invites) => ({
 	type: actionTypes.SET_INVITES,
 	invites
 });
+const setCalls = (calls) => ({
+	type: actionTypes.SET_CALLS,
+	calls
+});
 const clearInvitesAction = () => ({
 	type: actionTypes.CLEAR_INVITES,
+});
+const clearCallsAction = () => ({
+	type: actionTypes.CLEAR_CALLS,
 });
 const selectUser = (user) => ({
 	type: actionTypes.SELECT_USER,
@@ -154,6 +161,17 @@ export const getInvites = (authData) => async (dispatch) => {
 };
 export const clearInvites = () => (dispatch) => {
 	dispatch(clearInvitesAction());
+};
+
+export const getCalls = (authData) => async (dispatch) => {
+	dispatch(clearCalls());
+	const response = await user.getCalls(authData);
+	response.error ? 
+		dispatch(getUsersFailure(response.message))
+		: dispatch(setCalls(response.results));
+};
+export const clearCalls = () => (dispatch) => {
+	dispatch(clearCallsAction());
 };
 
 export const clearSelectedUser = () => (dispatch) => {

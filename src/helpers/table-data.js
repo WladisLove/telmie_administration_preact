@@ -256,3 +256,39 @@ export const infoColumns = (infoType) => {
       },])
   }
 }
+export const callsColumns = (sInfo = {}) => ([{
+  title: 'Pro Id',
+  dataIndex: 'consultantId',
+},{
+  title: 'Pro Name',
+  dataIndex: 'consultantFullName',
+},{
+  title: 'Pro Email',
+  dataIndex: 'consultantEmail',
+},{
+  title: 'Client Id',
+  dataIndex: 'consultedId',
+},{
+  title: 'Client Name',
+  dataIndex: 'consultedFullName',
+},{
+  title: 'Client Email',
+  dataIndex: 'consultedEmail',
+},{
+  title: 'Date',
+  dataIndex: 'startDate',
+  render: (text) => convertDate(text),
+},{
+  title: 'Status',
+  dataIndex: 'status',
+},{
+  title: 'Duration',
+  dataIndex: 'duration',
+  sorter: (a, b) => a.duration - b.duration,
+  sortOrder: sInfo.columnKey === 'duration' && sInfo.order,
+},{
+  title: 'Amount',
+  dataIndex: 'amount',
+  sorter: (a, b) => a.amount - b.amount,
+  sortOrder: sInfo.columnKey === 'amount' && sInfo.order,
+},]);

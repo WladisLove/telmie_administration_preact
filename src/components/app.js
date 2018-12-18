@@ -10,6 +10,7 @@ import SideNav from './side-nav'
 
 import Home from '../routes/home';
 import Invites from '../routes/invites';
+import Calls from '../routes/calls';
 import Permissions from '../routes/permissions';
 import ProRequests from '../routes/pro-requests';
 import Withdrawals from '../routes/withdrawals'
@@ -36,6 +37,7 @@ export const routes = {
 	TRANSACTIONS : '/transactions',
 	VARIABLES_SETTINGS: '/variables-settings',
 	INVITES: '/invites',
+	CALLS: '/calls',
 	PERMISSIONS: '/permissions',
 	LOGIN: '/log-in',
 }
@@ -67,6 +69,7 @@ class App extends Component {
 				<Router onChange={this.handleRoute}>
 					<Home path={routes.HOME} />
 					<Invites path={routes.INVITES}/>
+					<Calls path={routes.CALLS}/>
 					<Permissions path={routes.PERMISSIONS}/>
 					
 					<ProRequests path={routes.PRO_REQUESTS}/>

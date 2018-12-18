@@ -51,6 +51,9 @@ export function getIncompleteUsers(authData){
 export function getInvites(authData){
 	return getUsers(apiUrls.GET_INVITES, authData);
 }
+export function getCalls(authData){
+	return getUsers(apiUrls.GET_CALLS, authData);
+}
 
 function userManipulation(url, method, authData, data){
 	let headers = new Headers();

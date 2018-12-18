@@ -86,6 +86,18 @@ export const usersArrays = (state = {error: false, load: false}, action) => {
 				...clearFields,
 				invites: [],
 			}
+		case actionTypes.SET_CALLS:
+			return {
+				...state,
+				...setFields,
+				calls: action.calls,
+			}
+		case actionTypes.CLEAR_CALLS:
+			return {
+				...state,
+				...clearFields,
+				calls: [],
+			}
 		case actionTypes.ERROR_GETTING_USERS:
 			return {
 				...state,

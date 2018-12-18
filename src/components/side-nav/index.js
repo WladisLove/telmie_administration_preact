@@ -102,6 +102,8 @@ class SideNav extends Component{
     
                                     <li><Link activeClassName={style.active} onClick={this.resetMenuSelection} href={routes.INVITES}>
                                         Invites</Link></li>
+                                    <li><Link activeClassName={style.active} onClick={this.resetMenuSelection} href={routes.CALLS}>
+                                        Calls</Link></li>
                                     <li><Link activeClassName={style.active} onClick={this.resetMenuSelection} href={routes.PERMISSIONS}>
                                         Permission management</Link></li>
                                 </ul>
