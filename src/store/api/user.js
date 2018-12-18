@@ -51,6 +51,12 @@ export function getIncompleteUsers(authData){
 export function getInvites(authData){
 	return getUsers(apiUrls.GET_INVITES, authData);
 }
+export function getCalls(authData){
+	return getUsers(apiUrls.GET_CALLS, authData);
+}
+export function getTransactions(authData){
+	return getUsers(apiUrls.GET_TRANSACTIONS, authData);
+}
 
 function userManipulation(url, method, authData, data){
 	let headers = new Headers();
@@ -77,7 +83,7 @@ function userManipulation(url, method, authData, data){
 export function getUserInfo(id, authData){
 	return userManipulation(apiUrls.USER_ID(id), 'GET', authData);
 }
-export function editUser(id, authData, data){
+export function editUser(data, id, authData){
 	return userManipulation(apiUrls.USER_ID(id), 'PUT', authData, data);
 }
 

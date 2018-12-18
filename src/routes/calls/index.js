@@ -7,15 +7,18 @@ import SearchArea from '../../components/user-table-controls/search-area'
 import { Table, Spin } from 'antd';
 import 'antd/dist/antd.css';
 
-import { getTransactions, clearTransactions, } from '../../store/actions/user'
+import { getCalls, clearCalls, } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
-import { transactionsColumns as columns } from '../../helpers/table-data'
+import { callsColumns as columns } from '../../helpers/table-data'
 import { PAGE_SIZE } from '../../helpers/consts'
 
 const searchItemsArr = [{
-	label: 'User info:',
-	name: 'userGeneral',
+	label: 'Pro info:',
+	name: 'proGeneral',
+},{
+	label: 'Client info:',
+	name: 'clGeneral',
 },{
 	label: 'Date interval:',
 	name: 'startDate',
@@ -25,7 +28,7 @@ const searchItemsArr = [{
 	name: 'endDate',
 	isDate: true,
 },]
-class Transactions extends Component{
+class Invites extends Component{
 	constructor(props){
 		super(props);
 
@@ -36,11 +39,11 @@ class Transactions extends Component{
 
 	componentDidMount(){
 		this.userAuth = this.props.userData.userAuth || getCookie('USER_AUTH');
-		this.userAuth && this.props.getTransactions(this.userAuth);
+		this.userAuth && this.props.getCalls(this.userAuth);
 	};
 
 	componentWillUnmount(){
-		this.props.clearTransactions();
+		this.props.clearCalls();
 	}
 
 	onChange = (pagination, filters, sorter) => {
@@ -48,23 +51,33 @@ class Transactions extends Component{
 	}
 	
 	onSearch = (searchFields) => {
-		let usersArr = [...this.props.uArrays.transactions];
+		let usersArr = [...this.props.uArrays.calls];
 
 		if (!Object.keys(searchFields).length){
 			this.setState({ searchedData: [], isSearched: false });
 		} else {
-			let newData = usersArr.filter(transaction => {
-				const {userEmail = '', userFullName = '', userId = '',
-					date,
-				} = transaction;
+			let newData = usersArr.filter(call => {
+				const {consultantEmail = '', consultantFullName = '', consultantId = '',
+					consultedEmail = '', consultedFullName = '', consultedId = '',
+					startDate,
+				} = call;
 
-				const _date = new Date(date).getTime();
+				const _date = new Date(startDate).getTime();
 
-				if(searchFields.userGeneral){
+				if(searchFields.proGeneral){
 					if(
-						(userEmail.toLowerCase().indexOf(searchFields.userGeneral) + 1)
-						|| (userFullName.toLowerCase().indexOf(searchFields.userGeneral) + 1)
-						|| (userId.toString().indexOf(searchFields.userGeneral) + 1)
+						(consultantEmail.toLowerCase().indexOf(searchFields.proGeneral) + 1)
+						|| (consultantFullName.toLowerCase().indexOf(searchFields.proGeneral) + 1)
+						|| (consultantId.toString().indexOf(searchFields.proGeneral) + 1)
+					) return true;
+					else return false;
+				}
+
+				if(searchFields.clGeneral){
+					if(
+						(consultedEmail.toLowerCase().indexOf(searchFields.clGeneral) + 1)
+						|| (consultedFullName.toLowerCase().indexOf(searchFields.clGeneral) + 1)
+						|| (consultedId.toString().indexOf(searchFields.clGeneral) + 1)
 					) return true;
 					else return false;
 				}
@@ -86,7 +99,6 @@ class Transactions extends Component{
 					) return true;
 					else return false;
 				}
-
 				return true;
 			})
 
@@ -97,13 +109,13 @@ class Transactions extends Component{
 	render(){
 		const {isSearched, searchedData, sortedInfo = {} } = this.state;
 
-		const {load : isLoaded = false, error : isError = false, message : errorMsg = '', transactions = []} = this.props.uArrays;
+		const {load : isLoaded = false, error : isError = false, message : errorMsg = '', calls = []} = this.props.uArrays;
 
-		const dataSource = isSearched ? searchedData : transactions;
+		const dataSource = isSearched ? searchedData : calls;
 
 		return (
 			<Card cardClass='route-content'>
-				<p>Total number of transactions: {transactions.length}</p>
+				<p>Total number of calls: {calls.length}</p>
 				{isLoaded ? 
 					!isError ? [
 						<SearchArea onSearch={this.onSearch} searchItemsArr={searchItemsArr}/>,
@@ -129,11 +141,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-	getTransactions,
-	clearTransactions,
+	getCalls,
+	clearCalls,
 }, dispatch);
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Transactions);
+)(Invites);

@@ -7,6 +7,14 @@ import SearchArea from '../user-table-controls/search-area'
 import 'antd/dist/antd.css';
 
 import { PAGE_SIZE } from '../../helpers/consts'
+const searchItemsArr= [{
+	label: 'General:',
+	name: 'general',
+},{
+	label: 'Date of birth:',
+	name: 'dateOfBirth',
+	isDate: true,
+},]
 
 class UsersRouteWrapper extends Component{
 	constructor(props){
@@ -68,7 +76,6 @@ class UsersRouteWrapper extends Component{
 		} else {
 			let newData = usersArr.filter(user => {
 				const {name = '', lastName = '', email = '', pro,
-					mobile = "", 
 					dateOfBirth = ""} = user;
 				const { category = '', profession = '', professionDescription = '', subCategory = ''} = pro ? pro : {};
 				
@@ -80,9 +87,6 @@ class UsersRouteWrapper extends Component{
 						&& (profession ? !(profession.toLowerCase().indexOf(searchFields.general) + 1) : true)
 						&& (professionDescription ? !(professionDescription.toLowerCase().indexOf(searchFields.general) + 1) : true)
 						&& (subCategory ? !(subCategory.toLowerCase().indexOf(searchFields.general) + 1) : true) ) return false;
-				
-				if(searchFields.mobile)
-					if (mobile ? !(mobile.toLowerCase().indexOf(searchFields.mobile) + 1) : true ) return false;
 				
 				if(searchFields.dateOfBirth){
 					let d = null, s_d = null;
@@ -136,7 +140,7 @@ class UsersRouteWrapper extends Component{
 					!isError ? [
 						<p>Total number of users: {usersArr.length}</p>,
 						withFilter && <FilterArea onFilter={this.onFilter} isShown={!!selected} usersByStatus={usersByStatus}/>,
-						<SearchArea onSearch={this.onSearch} isShown={!!selected}/>,
+						<SearchArea onSearch={this.onSearch} isShown={!!selected} searchItemsArr={searchItemsArr}/>,
 						selected ? 
 							<UserInfo selectedUser={selectedUser}
 								serverData={serverData}

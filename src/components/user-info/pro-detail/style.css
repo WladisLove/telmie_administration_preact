@@ -36,6 +36,11 @@
     margin: 15px 0 !important;
     color: green;
 }
+.controls{
+    text-align: right;
+    min-height: 38px;
+    width: 100%;
+}
 
 @media (max-width: 1400px) {
     .detailsArea{

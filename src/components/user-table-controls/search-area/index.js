@@ -8,11 +8,7 @@ class SearchArea extends Component {
     constructor(props){
 		super(props);
 
-        this.state = {
-            general: '',
-            mobile: '',
-            dateOfBirth: '',
-        }
+        this.state = {}
     }
 
     onChange = (e) => {
@@ -23,13 +19,13 @@ class SearchArea extends Component {
     onSearch = () => {
         let notEmptyFields = {};
         for (let key in this.state){
-            notEmptyFields[key] = this.state[key].toLowerCase()
+            this.state[key] && (notEmptyFields[key] = this.state[key].toLowerCase())
         }
         this.props.onSearch(notEmptyFields);
     }
 
     render(){
-        const {general, mobile, dateOfBirth} = this.state;
+        const {searchItemsArr=[]} = this.props;
 
         return this.props.isShown ? 
             null : (
@@ -37,9 +33,14 @@ class SearchArea extends Component {
                     <div class={style.searchGroupLabel}> Search by fields: </div>
                     
                     <div class={style.searchItems}>
-                        <SearchItem label='General:' name='general' value={general} onChange={this.onChange}/>
-                        <SearchItem label='Mobile:' name='mobile' value={mobile} onChange={this.onChange}/>
-                        <SearchItem label='Date of birth:' name='dateOfBirth' value={dateOfBirth} isDate={true} onChange={this.onChange}/>
+                        {
+                            searchItemsArr.map(el=>(
+                                <SearchItem {...el}
+                                    key={el.name}
+                                    value={this.state[el.name] || ''}
+                                    onChange={this.onChange}/>
+                            ))
+                        }
                     </div>
                     
                     <button onClick={this.onSearch} class={`${style.searchBtn} saveBtn`}>Search</button>

@@ -11,6 +11,8 @@ export const apiUrls = {
   GET_ARCHIVED_USERS: apiAdminRoot + 'users/archived',
   GET_INCOMPLETE_USERS: apiAdminRoot + 'users/incomplete',
   GET_INVITES: apiAdminRoot + 'invites',
+  GET_CALLS: apiAdminRoot + 'calls',
+  GET_TRANSACTIONS: apiAdminRoot + 'transactions',
   GET_PENDINGS: apiAdminRoot + 'pending',
   PENDING_ID: (id) => (apiAdminRoot + 'pending/' + id),
   USER_ID: (id) => (apiAdminRoot + 'users/' + id),

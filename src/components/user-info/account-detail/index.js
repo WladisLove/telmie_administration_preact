@@ -63,7 +63,7 @@ class AccountDetail extends Component {
                         <Input label='First Name:' name='name' value={name} onChange={this.onChange} disabled={isPending} changedFields={changedFields}/>
                         <Input label='Last Name:' name='lastName' value={lastName} onChange={this.onChange} disabled={isPending} changedFields={changedFields}/>
                     </div>
-                    <Input label='Email:' name='email' value={email} onChange={this.onChange} disabled={isPending} changedFields={changedFields}/>
+                    <Input label='Email:' name='email' value={email} disabled={true} changedFields={changedFields}/>
     
                     <div class={style.controls}>
                         {

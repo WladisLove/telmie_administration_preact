@@ -118,8 +118,8 @@ export const tableColumns = (sInfo = {}) => ([{
     title: 'Last active',
     dataIndex: 'versionUpdate',
     render: (text) => convertDate(text),
-    // compare date
-    //sorter: (a, b) => a.lastActive.length - b.lastActive.length,
+    sorter: (a, b) => new Date(a.versionUpdate).getTime() - new Date(b.versionUpdate).getTime(),
+    sortOrder: sInfo.columnKey === 'versionUpdate' && sInfo.order,
   },{
     title: 'Registration date',
     dataIndex: 'registrationDate',
@@ -256,3 +256,73 @@ export const infoColumns = (infoType) => {
       },])
   }
 }
+export const callsColumns = (sInfo = {}) => ([{
+  title: 'Pro Id',
+  dataIndex: 'consultantId',
+},{
+  title: 'Pro Name',
+  dataIndex: 'consultantFullName',
+},{
+  title: 'Pro Email',
+  dataIndex: 'consultantEmail',
+},{
+  title: 'Client Id',
+  dataIndex: 'consultedId',
+},{
+  title: 'Client Name',
+  dataIndex: 'consultedFullName',
+},{
+  title: 'Client Email',
+  dataIndex: 'consultedEmail',
+},{
+  title: 'Date',
+  dataIndex: 'startDate',
+  render: (text) => convertDate(text),
+},{
+  title: 'Status',
+  dataIndex: 'status',
+},{
+  title: 'Duration',
+  dataIndex: 'duration',
+  sorter: (a, b) => a.duration - b.duration,
+  sortOrder: sInfo.columnKey === 'duration' && sInfo.order,
+},{
+  title: 'Amount',
+  dataIndex: 'amount',
+  sorter: (a, b) => a.amount - b.amount,
+  sortOrder: sInfo.columnKey === 'amount' && sInfo.order,
+},]);
+
+export const transactionsColumns = (sInfo = {}) => ([{
+  title: 'User Id',
+  dataIndex: 'userId',
+},{
+  title: 'User Name',
+  dataIndex: 'userFullName',
+},{
+  title: 'User Email',
+  dataIndex: 'userEmail',
+},{
+  title: 'Date',
+  dataIndex: 'date',
+  render: (text) => convertDate(text),
+},{
+  title: 'Type',
+  dataIndex: 'transactionType',
+},{
+  title: 'Status',
+  dataIndex: 'status',
+},{
+  title: 'Amount',
+  dataIndex: 'amount',
+  sorter: (a, b) => a.amount - b.amount,
+  sortOrder: sInfo.columnKey === 'amount' && sInfo.order,
+},{
+  title: 'Fee',
+  dataIndex: 'fee',
+  sorter: (a, b) => a.fee - b.fee,
+  sortOrder: sInfo.columnKey === 'fee' && sInfo.order,
+},{
+  title: 'Credit Type',
+  dataIndex: 'creditType',
+},]);

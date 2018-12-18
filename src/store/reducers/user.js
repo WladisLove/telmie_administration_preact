@@ -42,7 +42,7 @@ export const usersArrays = (state = {error: false, load: false}, action) => {
 			return {
 				...state,
 				...setFields,
-				activeUsers: action.users,
+				activeUsers: action.arr,
 			}
 		case actionTypes.CLEAR_ACTIVE_USERS:
 			return {
@@ -54,7 +54,7 @@ export const usersArrays = (state = {error: false, load: false}, action) => {
 			return {
 				...state,
 				...setFields,
-				archivedUsers: action.users,
+				archivedUsers: action.arr,
 			}
 		case actionTypes.CLEAR_ARCHIVED_USERS:
 			return {
@@ -66,7 +66,7 @@ export const usersArrays = (state = {error: false, load: false}, action) => {
 			return {
 				...state,
 				...setFields,
-				incomplUsers: action.users,
+				incomplUsers: action.arr,
 			}
 		case actionTypes.CLEAR_INCOMPLETE_USERS:
 			return {
@@ -78,13 +78,37 @@ export const usersArrays = (state = {error: false, load: false}, action) => {
 			return {
 				...state,
 				...setFields,
-				invites: action.invites,
+				invites: action.arr,
 			}
 		case actionTypes.CLEAR_INVITES:
 			return {
 				...state,
 				...clearFields,
 				invites: [],
+			}
+		case actionTypes.SET_CALLS:
+			return {
+				...state,
+				...setFields,
+				calls: action.arr,
+			}
+		case actionTypes.CLEAR_CALLS:
+			return {
+				...state,
+				...clearFields,
+				calls: [],
+			}
+		case actionTypes.SET_TRANSACTIONS:
+			return {
+				...state,
+				...setFields,
+				transactions: action.arr,
+			}
+		case actionTypes.CLEAR_TRANSACTIONS:
+			return {
+				...state,
+				...clearFields,
+				transactions: [],
 			}
 		case actionTypes.ERROR_GETTING_USERS:
 			return {
