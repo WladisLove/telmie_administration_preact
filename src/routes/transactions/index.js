@@ -104,6 +104,18 @@ class Transactions extends Component{
 		return (
 			<Card cardClass='route-content'>
 				<p>Total number of transactions: {transactions.length}</p>
+				<p style={{marginBottom: 5}}>Transaction types:</p>
+				<ul class='typesDescription'>
+					<li><span>SYS_CHARGE</span>		Charge from customers credit card (captured money from customer for call (calls))</li>
+					<li><span>CALL_PAY_USER</span>		payment from CUSTOMER for call	</li>
+					<li><span>CALL_PAY_PRO</span>		payment to PRO for call	</li>
+					<li><span>PAYOUT</span>		PRO payout request from Stripe account to bank account	</li>
+					<li><span>ADD_CARD</span>		Bonus for card added	</li>
+					<li><span>ADD_FRIEND</span>		Bonus for invitation friend	</li>
+					<li><span>ADD_PRO</span>		Bonus for invitation pro	</li>
+					<li><span>SYSTEM_BONUS</span>		Bonus from system by administrator	</li>
+					<li><span>REGISTRATION</span>		Bonus for registration	</li>
+				</ul>
 				{isLoaded ? 
 					!isError ? [
 						<SearchArea onSearch={this.onSearch} searchItemsArr={searchItemsArr}/>,

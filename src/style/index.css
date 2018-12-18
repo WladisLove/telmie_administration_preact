@@ -131,3 +131,17 @@ button:disabled{
 input, button {
 	outline: none;
 }
+
+ul.typesDescription{
+	font-size: 14px;
+}
+ul.typesDescription li{
+	list-style: none;
+}
+ul.typesDescription span{
+	color: #444;
+	margin-right: 15px;
+	display: inline-block;
+	min-width: 130px;
+	text-align: center;
+}

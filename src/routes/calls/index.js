@@ -116,6 +116,16 @@ class Invites extends Component{
 		return (
 			<Card cardClass='route-content'>
 				<p>Total number of calls: {calls.length}</p>
+				<p style={{marginBottom: 5}}>Transaction types:</p>
+				<ul class='typesDescription'>
+					<li><span>ACTIVE</span>		call, which active now</li>
+					<li><span>FAILED</span>		call, which not started (no answer or drop)</li>		
+					<li><span>SUCCEED</span>		call, which successfully ended</li>
+					<li><span>BREAK	</span>	call, which was broken because customer don't have enought money</li>
+					<li><span>DISCONNECTED</span>		call drop because one of the participants was disconnected</li>	
+					<li><span>BROKEN</span>		hung call (if call has active status duration and amount = 0 but start date was 8 hours ago)</li>
+					
+				</ul>
 				{isLoaded ? 
 					!isError ? [
 						<SearchArea onSearch={this.onSearch} searchItemsArr={searchItemsArr}/>,
