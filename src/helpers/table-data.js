@@ -292,3 +292,37 @@ export const callsColumns = (sInfo = {}) => ([{
   sorter: (a, b) => a.amount - b.amount,
   sortOrder: sInfo.columnKey === 'amount' && sInfo.order,
 },]);
+
+export const transactionsColumns = (sInfo = {}) => ([{
+  title: 'User Id',
+  dataIndex: 'userId',
+},{
+  title: 'User Name',
+  dataIndex: 'userFullName',
+},{
+  title: 'User Email',
+  dataIndex: 'userEmail',
+},{
+  title: 'Date',
+  dataIndex: 'date',
+  render: (text) => convertDate(text),
+},{
+  title: 'Type',
+  dataIndex: 'transactionType',
+},{
+  title: 'Status',
+  dataIndex: 'status',
+},{
+  title: 'Amount',
+  dataIndex: 'amount',
+  sorter: (a, b) => a.amount - b.amount,
+  sortOrder: sInfo.columnKey === 'amount' && sInfo.order,
+},{
+  title: 'Fee',
+  dataIndex: 'fee',
+  sorter: (a, b) => a.fee - b.fee,
+  sortOrder: sInfo.columnKey === 'fee' && sInfo.order,
+},{
+  title: 'Credit Type',
+  dataIndex: 'creditType',
+},]);

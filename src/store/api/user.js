@@ -54,6 +54,9 @@ export function getInvites(authData){
 export function getCalls(authData){
 	return getUsers(apiUrls.GET_CALLS, authData);
 }
+export function getTransactions(authData){
+	return getUsers(apiUrls.GET_TRANSACTIONS, authData);
+}
 
 function userManipulation(url, method, authData, data){
 	let headers = new Headers();

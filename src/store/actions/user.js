@@ -143,10 +143,10 @@ export const clearCalls = () => (dispatch) => {
 
 export const getTransactions = (authData) => async (dispatch) => {
 	dispatch(clearTransactions());
-	const response = await user.getCalls(authData);
-	/*response.error ? 
+	const response = await user.getTransactions(authData);
+	response.error ? 
 		dispatch(getUsersFailure(response.message))
-		: dispatch(setCalls(response.results));*/
+		: dispatch(setArrAction(actionTypes.SET_TRANSACTIONS, response.results));
 };
 export const clearTransactions = () => (dispatch) => {
 	dispatch(clearAction(actionTypes.CLEAR_TRANSACTIONS));
