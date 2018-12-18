@@ -62,7 +62,7 @@ class Invites extends Component{
 					startDate,
 				} = call;
 
-				const callDate = new Date(startDate).getTime();
+				const _date = new Date(startDate).getTime();
 
 				if(searchFields.proGeneral){
 					if(
@@ -82,16 +82,20 @@ class Invites extends Component{
 					else return false;
 				}
 
-				if(searchFields.startDate){
+				if(searchFields.startDate && searchFields.startDate){
 					if(
-						callDate >= (new Date(searchFields.startDate).getTime())
+						_date <= (new Date(searchFields.endDate).getTime())
+							&& _date >= (new Date(searchFields.startDate).getTime())
 					) return true;
 					else return false;
-				}
-
-				if(searchFields.endDate){
+				} else if (searchFields.startDate) {
 					if(
-						callDate <= (new Date(searchFields.endDate).getTime())
+						_date >= (new Date(searchFields.startDate).getTime())
+					) return true;
+					else return false;
+				} else if (searchFields.endDate){
+					if(
+						_date <= (new Date(searchFields.endDate).getTime())
 					) return true;
 					else return false;
 				}
@@ -111,7 +115,7 @@ class Invites extends Component{
 
 		return (
 			<Card cardClass='route-content'>
-				<p>Total number of invites: {calls.length}</p>
+				<p>Total number of calls: {calls.length}</p>
 				{isLoaded ? 
 					!isError ? [
 						<SearchArea onSearch={this.onSearch} searchItemsArr={searchItemsArr}/>,
