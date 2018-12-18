@@ -34,9 +34,7 @@ const setActiveU = (users) => ({
 	type: actionTypes.SET_ACTIVE_USERS,
 	users
 });
-const clearActiveU = () => ({
-	type: actionTypes.CLEAR_ACTIVE_USERS,
-});
+const clearAction = (type) => ({ type });
 const setArchivedU = (users) => ({
 	type: actionTypes.SET_ARCHIVED_USERS,
 	users
@@ -45,12 +43,6 @@ const setIncompleteU = (users) => ({
 	type: actionTypes.SET_INCOMPLETE_USERS,
 	users
 });
-const clearArchivedU = () => ({
-	type: actionTypes.CLEAR_ARCHIVED_USERS,
-});
-const clearIncompleteU = () => ({
-	type: actionTypes.CLEAR_INCOMPLETE_USERS,
-});
 const setInvites = (invites) => ({
 	type: actionTypes.SET_INVITES,
 	invites
@@ -58,12 +50,6 @@ const setInvites = (invites) => ({
 const setCalls = (calls) => ({
 	type: actionTypes.SET_CALLS,
 	calls
-});
-const clearInvitesAction = () => ({
-	type: actionTypes.CLEAR_INVITES,
-});
-const clearCallsAction = () => ({
-	type: actionTypes.CLEAR_CALLS,
 });
 const selectUser = (user) => ({
 	type: actionTypes.SELECT_USER,
@@ -120,47 +106,47 @@ export const logOff = () => (dispatch) => {
 export const checkIfLoggedIn = () =>  /(^|;)\s*USER_AUTH=/.test(document.cookie);
 
 export const getActiveUsers = (authData) => async (dispatch) => {
-	dispatch(clearActiveU()); // when updating starts (for spinner)
+	dispatch(clearActiveUsers()); // when updating starts (for spinner)
 	const response = await user.getActiveUsers(authData);
 	response.error ? 
 		dispatch(getUsersFailure(response.message))
 		: dispatch(setActiveU(response));
 };
 export const clearActiveUsers = () => (dispatch) => {
-	dispatch(clearActiveU());
+	dispatch(clearAction(actionTypes.CLEAR_ACTIVE_USERS));
 };
 
 export const getArchivedUsers = (authData) => async (dispatch) => {
-	dispatch(clearArchivedU());
+	dispatch(clearArchivedUsers());
 	const response = await user.getArchivedUsers(authData);
 	response.error ? 
 		dispatch(getUsersFailure(response.message))
 		: dispatch(setArchivedU(response));
 };
 export const clearArchivedUsers = () => (dispatch) => {
-	dispatch(clearArchivedU());
+	dispatch(clearAction(actionTypes.CLEAR_ARCHIVED_USERS));
 };
 
 export const getIncompleteUsers = (authData) => async (dispatch) => {
-	dispatch(clearIncompleteU());
+	dispatch(clearIncompleteUsers());
 	const response = await user.getIncompleteUsers(authData);
 	response.error ? 
 		dispatch(getUsersFailure(response.message))
 		: dispatch(setIncompleteU(response));
 };
 export const clearIncompleteUsers = () => (dispatch) => {
-	dispatch(clearIncompleteU());
+	dispatch(clearAction(actionTypes.CLEAR_INCOMPLETE_USERS));
 };
 
 export const getInvites = (authData) => async (dispatch) => {
-	dispatch(clearInvitesAction());
+	dispatch(clearInvites());
 	const response = await user.getInvites(authData);
 	response.error ? 
 		dispatch(getUsersFailure(response.message))
 		: dispatch(setInvites(response));
 };
 export const clearInvites = () => (dispatch) => {
-	dispatch(clearInvitesAction());
+	dispatch(clearAction(actionTypes.CLEAR_INVITES));
 };
 
 export const getCalls = (authData) => async (dispatch) => {
@@ -171,7 +157,18 @@ export const getCalls = (authData) => async (dispatch) => {
 		: dispatch(setCalls(response.results));
 };
 export const clearCalls = () => (dispatch) => {
-	dispatch(clearCallsAction());
+	dispatch(clearAction(actionTypes.CLEAR_CALLS));
+};
+
+export const getTransactions = (authData) => async (dispatch) => {
+	dispatch(clearTransactions());
+	const response = await user.getCalls(authData);
+	/*response.error ? 
+		dispatch(getUsersFailure(response.message))
+		: dispatch(setCalls(response.results));*/
+};
+export const clearTransactions = () => (dispatch) => {
+	dispatch(clearAction(actionTypes.CLEAR_TRANSACTIONS));
 };
 
 export const clearSelectedUser = () => (dispatch) => {
