@@ -30,27 +30,8 @@ const getUsersFailure = (message) =>({
 	type: actionTypes.ERROR_GETTING_USERS,
 	message,
 })
-const setActiveU = (users) => ({
-	type: actionTypes.SET_ACTIVE_USERS,
-	users
-});
 const clearAction = (type) => ({ type });
-const setArchivedU = (users) => ({
-	type: actionTypes.SET_ARCHIVED_USERS,
-	users
-});
-const setIncompleteU = (users) => ({
-	type: actionTypes.SET_INCOMPLETE_USERS,
-	users
-});
-const setInvites = (invites) => ({
-	type: actionTypes.SET_INVITES,
-	invites
-});
-const setCalls = (calls) => ({
-	type: actionTypes.SET_CALLS,
-	calls
-});
+const setArrAction = (type, arr) => ({ type, arr });
 const selectUser = (user) => ({
 	type: actionTypes.SELECT_USER,
 	user
@@ -110,7 +91,7 @@ export const getActiveUsers = (authData) => async (dispatch) => {
 	const response = await user.getActiveUsers(authData);
 	response.error ? 
 		dispatch(getUsersFailure(response.message))
-		: dispatch(setActiveU(response));
+		: dispatch(setArrAction(actionTypes.SET_ACTIVE_USERS, response));
 };
 export const clearActiveUsers = () => (dispatch) => {
 	dispatch(clearAction(actionTypes.CLEAR_ACTIVE_USERS));
@@ -121,7 +102,7 @@ export const getArchivedUsers = (authData) => async (dispatch) => {
 	const response = await user.getArchivedUsers(authData);
 	response.error ? 
 		dispatch(getUsersFailure(response.message))
-		: dispatch(setArchivedU(response));
+		: dispatch(setArrAction(actionTypes.SET_ARCHIVED_USERS,response));
 };
 export const clearArchivedUsers = () => (dispatch) => {
 	dispatch(clearAction(actionTypes.CLEAR_ARCHIVED_USERS));
@@ -132,7 +113,7 @@ export const getIncompleteUsers = (authData) => async (dispatch) => {
 	const response = await user.getIncompleteUsers(authData);
 	response.error ? 
 		dispatch(getUsersFailure(response.message))
-		: dispatch(setIncompleteU(response));
+		: dispatch(setArrAction(actionTypes.SET_INCOMPLETE_USERS, response));
 };
 export const clearIncompleteUsers = () => (dispatch) => {
 	dispatch(clearAction(actionTypes.CLEAR_INCOMPLETE_USERS));
@@ -143,7 +124,7 @@ export const getInvites = (authData) => async (dispatch) => {
 	const response = await user.getInvites(authData);
 	response.error ? 
 		dispatch(getUsersFailure(response.message))
-		: dispatch(setInvites(response));
+		: dispatch(setArrAction(actionTypes.SET_INVITES, response));
 };
 export const clearInvites = () => (dispatch) => {
 	dispatch(clearAction(actionTypes.CLEAR_INVITES));
@@ -154,7 +135,7 @@ export const getCalls = (authData) => async (dispatch) => {
 	const response = await user.getCalls(authData);
 	response.error ? 
 		dispatch(getUsersFailure(response.message))
-		: dispatch(setCalls(response.results));
+		: dispatch(setArrAction(actionTypes.SET_CALLS, response.results));
 };
 export const clearCalls = () => (dispatch) => {
 	dispatch(clearAction(actionTypes.CLEAR_CALLS));
