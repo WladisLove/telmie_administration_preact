@@ -126,14 +126,14 @@ export const tableColumns = (sInfo = {}) => ([{
   },{
     title: 'Last active',
     dataIndex: 'versionUpdate',
-    width: 100,
+    width: 170,
     render: (text) => convertDate(text),
     sorter: (a, b) => new Date(a.versionUpdate).getTime() - new Date(b.versionUpdate).getTime(),
     sortOrder: sInfo.columnKey === 'versionUpdate' && sInfo.order,
   },{
     title: 'Registration date',
     dataIndex: 'registrationDate',
-    width: 100,
+    width: 170,
     render: (text) => convertDate(text),
     // compare date
     //sorter: (a, b) => a.registrationDate.length - b.registrationDate.length,

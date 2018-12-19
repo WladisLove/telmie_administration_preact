@@ -157,7 +157,7 @@ class UsersRouteWrapper extends Component{
 									onRow={this.onRow}
 									pagination={this.state.pagination}
 									dataSource={dataSource} 
-									scroll={{ x: 1930 }}/>
+									scroll={{ x: 2070 }}/>
 					] : (
 					<div class="errorContainer">
 						Error! 
