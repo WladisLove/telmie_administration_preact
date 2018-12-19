@@ -116,7 +116,7 @@ class Invites extends Component{
 		return (
 			<Card cardClass='route-content'>
 				<p>Total number of calls: {calls.length}</p>
-				<p style={{marginBottom: 5}}>Transaction types:</p>
+				<p style={{marginBottom: 5}}>Calls types:</p>
 				<ul class='typesDescription'>
 					<li><span>ACTIVE</span>		call, which active now</li>
 					<li><span>FAILED</span>		call, which not started (no answer or drop)</li>		
