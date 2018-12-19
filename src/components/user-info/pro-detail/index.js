@@ -141,7 +141,7 @@ class BusinessProDetail extends Component {
                         <Input label='YouTube ID:' name='video' value={video} disabled={isPending} changedFields={changedFields} onChange={this.onChange} />
                     </div>
 
-                    {isPending && <ApproveArea activateUser={activateUser} controlsFunc={controlsFunc} userId = {user.id}/>}
+                    {isPending && <ApproveArea activateUser={activateUser} controlsFunc={controlsFunc} userId = {this.props.user.id}/>}
 
                     <div class={style.controls}>
                         {
