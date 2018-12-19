@@ -135,7 +135,7 @@ class UsersRouteWrapper extends Component{
 				? filteredData : usersArr;
 
 		return (
-			<Card cardClass='route-content'>
+			<Card cardClass='route-content route-user-table'>
 				{isLoaded ? 
 					!isError ? [
 						<p>Total number of users: {usersArr.length}</p>,
@@ -156,7 +156,8 @@ class UsersRouteWrapper extends Component{
 									onChange={this.onChange}
 									onRow={this.onRow}
 									pagination={this.state.pagination}
-									dataSource={dataSource} />
+									dataSource={dataSource} 
+									scroll={{ x: 1930 }}/>
 					] : (
 					<div class="errorContainer">
 						Error! 

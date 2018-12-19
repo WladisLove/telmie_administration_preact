@@ -75,7 +75,7 @@ class SideNav extends Component{
         const {menuKey,selectedMenuKey} = this.state;
 
         return (
-            <Card cardClass={style.menuWrapper}>
+            <Card cardClass={`${style.menuWrapper} side-nav`}>
                 <Match>
                     { () => {
                         return (

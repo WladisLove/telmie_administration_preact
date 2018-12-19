@@ -88,59 +88,101 @@ export const withdrawalsTableColumns = (sInfo = {}, btnsRender) => ([{
 export const tableColumns = (sInfo = {}) => ([{
     title: 'Id',
     dataIndex: 'id',
+    width: 70,
+    fixed: 'left',
     sorter: (a, b) => a.id - b.id,
     sortOrder: sInfo.columnKey === 'id' && sInfo.order,
   },{
     title: 'First name',
     dataIndex: 'name',
+    width: 150,
+    fixed: 'left',
     sorter: (a,b) => String(a.firstName).localeCompare(b.firstName),
     sortOrder: sInfo.columnKey === 'name' && sInfo.order,
   },{
     title: 'Last name',
     dataIndex: 'lastName',
+    width: 150,
+    fixed: 'left',
     sorter: (a,b) => String(a.lastName).localeCompare(b.lastName),
     sortOrder: sInfo.columnKey === 'lastName' && sInfo.order,
   }, {
     title: 'Email',
     dataIndex: 'email',
+    width: 200,
     sorter: (a,b) => String(a.email).localeCompare(b.email),
     sortOrder: sInfo.columnKey === 'email' && sInfo.order,
   },{
       title: 'Status',
       dataIndex: 'status',
+      width: 120,
       //sorter: (a,b) => String(a.status).localeCompare(b.status),
   },{
     title: 'App version',
     dataIndex: 'appVersion',
+    width: 100,
     sorter: (a, b) => sortVersions(a.appVersion, b.appVersion),
     sortOrder: sInfo.columnKey === 'appVersion' && sInfo.order,
   },{
     title: 'Last active',
     dataIndex: 'versionUpdate',
+    width: 100,
     render: (text) => convertDate(text),
     sorter: (a, b) => new Date(a.versionUpdate).getTime() - new Date(b.versionUpdate).getTime(),
     sortOrder: sInfo.columnKey === 'versionUpdate' && sInfo.order,
   },{
     title: 'Registration date',
     dataIndex: 'registrationDate',
+    width: 100,
     render: (text) => convertDate(text),
     // compare date
     //sorter: (a, b) => a.registrationDate.length - b.registrationDate.length,
   },{
-    title: 'Credit card',
-    dataIndex: 'creditCard',
-    // are kinds only 'yes'/'no' ???
-    //sorter: (a, b) => a.creditCard.length - b.creditCard.length,
+    title: 'Email Notif.',
+    dataIndex: 'emailNotifications',
+    width: 70,
+    render: (text) => text.toString(),
   },{
-    title: 'Bank account',
-    dataIndex: 'bankAccount',
-    // are kinds only 'yes'/'no' ???
-    //sorter: (a, b) => a.bankAccount.length - b.bankAccount.length,
+    title: 'Card',
+    dataIndex: 'card',
+    width: 70,
+    render: (text) => text.toString(),
   },{
-    title: 'Total earning',
-    dataIndex: 'totalEarning',
-    //sorter: (a, b) => a.totalEarning - b.totalEarning,
-  },]);
+    title: 'Telmie Credit',
+    dataIndex: 'telmieCredit',
+    width: 100,
+  },{
+    title: 'Payment Credit',
+    dataIndex: 'paymentCredit',
+    width: 100,
+  },{
+    title: 'Total',
+    children: [{
+      title: 'Days',
+      dataIndex: 'activeForDays',
+      width: 100,
+    },{
+      title: 'Spend',
+      dataIndex: 'totalSpend',
+      width: 100,
+    },{
+      title: 'Earn',
+      dataIndex: 'totalEarn',
+      width: 100,
+    },{
+      title: 'Text Send',
+      dataIndex: 'totalTextSend',
+      width: 100,
+    },{
+      title: 'Minutes Outgoing',
+      dataIndex: 'totalMinsOutgoing',
+      width: 100,
+    },{
+      title: 'Minutes Incoming',
+      dataIndex: 'totalMinsIncoming',
+      width: 100,
+    }]
+  }]);
 
 export const invitesColumns = (sInfo = {}) => ([{
   title: 'Date',
