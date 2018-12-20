@@ -150,9 +150,18 @@ export const clearCalls = () => (dispatch) => {
 	dispatch(clearAction(actionTypes.CLEAR_CALLS));
 };
 
-export const getTransactions = (authData) => async (dispatch) => {
+export const getTransactions = (authData, start = '', end = '') => async (dispatch) => {
+	const queryArr = [];
+	start && queryArr.push({
+		name: 'startDate',
+		value: start
+	});
+	end && queryArr.push({
+		name: 'endDate',
+		value: end
+	});
 	dispatch(clearTransactions());
-	const response = await user.getTransactions(authData);
+	const response = await user.getTransactions(authData, queryArr);
 	response.error ? 
 		dispatch(getUsersFailure(response.message))
 		: dispatch(setArrAction(actionTypes.SET_TRANSACTIONS, response.results));

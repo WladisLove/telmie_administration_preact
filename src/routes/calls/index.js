@@ -57,7 +57,9 @@ class Invites extends Component{
 			this.setState({ searchedData: [], isSearched: false });
 		} else {
 			if((searchFields.startDate || searchFields.endDate) && !isReceived){
-				this.props.getCalls(this.userAuth, new Date(searchFields.startDate).toISOString(), searchFields.endDate);
+				this.props.getCalls(this.userAuth, 
+					searchFields.startDate && new Date(searchFields.startDate).toISOString(), 
+					searchFields.endDate && new Date(searchFields.endDate).toISOString());
 				this.setState({ isSearched: true, searchFields: searchFields});
 			} else {
 

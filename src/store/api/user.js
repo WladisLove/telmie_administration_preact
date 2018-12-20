@@ -59,8 +59,12 @@ export function getCalls(authData, queryArr = []){
 	});
 	return getUsers(apiUrls.GET_CALLS, authData, query);
 }
-export function getTransactions(authData){
-	return getUsers(apiUrls.GET_TRANSACTIONS, authData);
+export function getTransactions(authData, queryArr = []){
+	let query = '';
+	queryArr.forEach(({name, value}, i) => {
+		i === 0 ? query = `?${name}=${value}` : query = query + `&${name}=${value}`
+	});
+	return getUsers(apiUrls.GET_TRANSACTIONS, authData, query);
 }
 
 function userManipulation(url, method, authData, data){

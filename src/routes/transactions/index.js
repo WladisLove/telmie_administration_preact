@@ -31,6 +31,7 @@ class Transactions extends Component{
 
 		this.state= {
 			sortedInfo: {},
+			searchFields: {},
 		}
 	}
 
@@ -47,51 +48,47 @@ class Transactions extends Component{
 		this.setState({ sortedInfo: sorter, });
 	}
 	
-	onSearch = (searchFields) => {
-		let usersArr = [...this.props.uArrays.transactions];
+	onSearch = (usersArr) => (searchFields, isReceived) => {
 
 		if (!Object.keys(searchFields).length){
 			this.setState({ searchedData: [], isSearched: false });
 		} else {
-			let newData = usersArr.filter(transaction => {
-				const {userEmail = '', userFullName = '', userId = '',
-					date,
-				} = transaction;
+			if((searchFields.startDate || searchFields.endDate) && !isReceived){
+				this.props.getTransactions(this.userAuth, 
+					searchFields.startDate && new Date(searchFields.startDate).toISOString(), 
+					searchFields.endDate && new Date(searchFields.endDate).toISOString());
+				this.setState({ isSearched: true, searchFields: searchFields});
+			} else {
 
-				const _date = new Date(date).getTime();
-
-				if(searchFields.userGeneral){
-					if(
-						(userEmail.toLowerCase().indexOf(searchFields.userGeneral) + 1)
-						|| (userFullName.toLowerCase().indexOf(searchFields.userGeneral) + 1)
-						|| (userId.toString().indexOf(searchFields.userGeneral) + 1)
-					) return true;
-					else return false;
-				}
-
-				if(searchFields.startDate && searchFields.startDate){
-					if(
-						_date <= (new Date(searchFields.endDate).getTime())
-							&& _date >= (new Date(searchFields.startDate).getTime())
-					) return true;
-					else return false;
-				} else if (searchFields.startDate) {
-					if(
-						_date >= (new Date(searchFields.startDate).getTime())
-					) return true;
-					else return false;
-				} else if (searchFields.endDate){
-					if(
-						_date <= (new Date(searchFields.endDate).getTime())
-					) return true;
-					else return false;
-				}
-
-				return true;
-			})
-
-			this.setState({ searchedData: newData, isSearched: true, });
+				let newData = usersArr.filter(transaction => {
+					const {userEmail = '', userFullName = '', userId = '',
+						date,
+					} = transaction;
+	
+					const _date = new Date(date).getTime();
+	
+					if(searchFields.userGeneral){
+						if(
+							(userEmail.toLowerCase().indexOf(searchFields.userGeneral) + 1)
+							|| (userFullName.toLowerCase().indexOf(searchFields.userGeneral) + 1)
+							|| (userId.toString().indexOf(searchFields.userGeneral) + 1)
+						) return true;
+						else return false;
+					}
+	
+					return true;
+				})
+	
+				this.setState({ searchedData: newData, isSearched: true, searchFields: searchFields });
+			}
 		}
+	}
+
+	componentWillReceiveProps(nextProps){
+		const {transactions = []} = nextProps.uArrays;
+		(!this.props.uArrays.load  && nextProps.uArrays.load)
+			&& Object.keys(this.state.searchFields).length && transactions.length 
+			&& this.onSearch([...transactions])(this.state.searchFields, true)
 	}
 
 	render(){
@@ -116,9 +113,9 @@ class Transactions extends Component{
 					<li><span>SYSTEM_BONUS</span>		Bonus from system by administrator	</li>
 					<li><span>REGISTRATION</span>		Bonus for registration	</li>
 				</ul>
+				<SearchArea onSearch={this.onSearch([...transactions])} searchItemsArr={searchItemsArr}/>,
 				{isLoaded ? 
 					!isError ? [
-						<SearchArea onSearch={this.onSearch} searchItemsArr={searchItemsArr}/>,
 						<Table columns={columns(sortedInfo)} 
 							rowKey={(record) => record.id} 
 							onChange={this.onChange}
