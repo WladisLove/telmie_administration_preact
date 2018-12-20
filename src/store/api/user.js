@@ -18,11 +18,11 @@ export function logIn(authData){
 	});
 }
 
-function getUsers(url, authData){
+function getUsers(url, authData, query = ''){
 	let headers = new Headers();
 	headers.append("Authorization", "Basic " + authData);
 
-	return fetch(url, { method: 'GET', headers}).then(response => {
+	return fetch(url + query, { method: 'GET', headers}).then(response => {
 		return (response.status === 403) ? 
 			{
 				error: true,
@@ -51,8 +51,13 @@ export function getIncompleteUsers(authData){
 export function getInvites(authData){
 	return getUsers(apiUrls.GET_INVITES, authData);
 }
-export function getCalls(authData){
-	return getUsers(apiUrls.GET_CALLS, authData);
+
+export function getCalls(authData, queryArr = []){
+	let query = '';
+	queryArr.forEach(({name, value}, i) => {
+		i === 0 ? query = `?${name}=${value}` : query = query + `&${name}=${value}`
+	});
+	return getUsers(apiUrls.GET_CALLS, authData, query);
 }
 export function getTransactions(authData){
 	return getUsers(apiUrls.GET_TRANSACTIONS, authData);

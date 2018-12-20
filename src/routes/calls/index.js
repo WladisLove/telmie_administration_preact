@@ -34,6 +34,7 @@ class Invites extends Component{
 
 		this.state= {
 			sortedInfo: {},
+			searchFields: {},
 		}
 	}
 
@@ -50,60 +51,55 @@ class Invites extends Component{
 		this.setState({ sortedInfo: sorter, });
 	}
 	
-	onSearch = (searchFields) => {
-		let usersArr = [...this.props.uArrays.calls];
-
+	onSearch = (usersArr) => (searchFields, isReceived) => {
+		
 		if (!Object.keys(searchFields).length){
 			this.setState({ searchedData: [], isSearched: false });
 		} else {
-			let newData = usersArr.filter(call => {
-				const {consultantEmail = '', consultantFullName = '', consultantId = '',
-					consultedEmail = '', consultedFullName = '', consultedId = '',
-					startDate,
-				} = call;
+			if((searchFields.startDate || searchFields.endDate) && !isReceived){
+				this.props.getCalls(this.userAuth, new Date(searchFields.startDate).toISOString(), searchFields.endDate);
+				this.setState({ isSearched: true, searchFields: searchFields});
+			} else {
 
-				const _date = new Date(startDate).getTime();
-
-				if(searchFields.proGeneral){
-					if(
-						(consultantEmail.toLowerCase().indexOf(searchFields.proGeneral) + 1)
-						|| (consultantFullName.toLowerCase().indexOf(searchFields.proGeneral) + 1)
-						|| (consultantId.toString().indexOf(searchFields.proGeneral) + 1)
-					) return true;
-					else return false;
-				}
-
-				if(searchFields.clGeneral){
-					if(
-						(consultedEmail.toLowerCase().indexOf(searchFields.clGeneral) + 1)
-						|| (consultedFullName.toLowerCase().indexOf(searchFields.clGeneral) + 1)
-						|| (consultedId.toString().indexOf(searchFields.clGeneral) + 1)
-					) return true;
-					else return false;
-				}
-
-				if(searchFields.startDate && searchFields.startDate){
-					if(
-						_date <= (new Date(searchFields.endDate).getTime())
-							&& _date >= (new Date(searchFields.startDate).getTime())
-					) return true;
-					else return false;
-				} else if (searchFields.startDate) {
-					if(
-						_date >= (new Date(searchFields.startDate).getTime())
-					) return true;
-					else return false;
-				} else if (searchFields.endDate){
-					if(
-						_date <= (new Date(searchFields.endDate).getTime())
-					) return true;
-					else return false;
-				}
-				return true;
-			})
-
-			this.setState({ searchedData: newData, isSearched: true, });
+				let newData = usersArr.filter(call => {
+					const {consultantEmail = '', consultantFullName = '', consultantId = '',
+						consultedEmail = '', consultedFullName = '', consultedId = '',
+						startDate,
+					} = call;
+	
+					const _date = new Date(startDate).getTime();
+	
+					if(searchFields.proGeneral){
+						if(
+							(consultantEmail.toLowerCase().indexOf(searchFields.proGeneral) + 1)
+							|| (consultantFullName.toLowerCase().indexOf(searchFields.proGeneral) + 1)
+							|| (consultantId.toString().indexOf(searchFields.proGeneral) + 1)
+						) return true;
+						else return false;
+					}
+	
+					if(searchFields.clGeneral){
+						if(
+							(consultedEmail.toLowerCase().indexOf(searchFields.clGeneral) + 1)
+							|| (consultedFullName.toLowerCase().indexOf(searchFields.clGeneral) + 1)
+							|| (consultedId.toString().indexOf(searchFields.clGeneral) + 1)
+						) return true;
+						else return false;
+					}
+	
+					return true;
+				})
+	
+				this.setState({ searchedData: newData, isSearched: true, searchFields: searchFields});
+			}
 		}
+	}
+
+	componentWillReceiveProps(nextProps){
+		const {calls = []} = nextProps.uArrays;
+		(!this.props.uArrays.load  && nextProps.uArrays.load)
+			&& Object.keys(this.state.searchFields).length && calls.length 
+			&& this.onSearch([...calls])(this.state.searchFields, true)
 	}
 
 	render(){
@@ -126,9 +122,9 @@ class Invites extends Component{
 					<li><span>BROKEN</span>		hung call (if call has active status duration and amount = 0 but start date was 8 hours ago)</li>
 					
 				</ul>
+				<SearchArea onSearch={this.onSearch([...calls])} searchItemsArr={searchItemsArr}/>
 				{isLoaded ? 
 					!isError ? [
-						<SearchArea onSearch={this.onSearch} searchItemsArr={searchItemsArr}/>,
 						<Table columns={columns(sortedInfo)} 
 							rowKey={(record) => record.id} 
 							onChange={this.onChange}
