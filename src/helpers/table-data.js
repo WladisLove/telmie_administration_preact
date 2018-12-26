@@ -1,4 +1,4 @@
-import {convertDate, sortVersions} from './index'
+import {convertDate, sortVersions, convertSec} from './index'
 import { INFO_TYPES } from './consts'
 
 export const pendingTableColumns = (sInfo = {}) => ([{
@@ -336,12 +336,15 @@ export const callsColumns = (sInfo = {}) => ([{
   title: 'Date',
   dataIndex: 'startDate',
   render: (text) => convertDate(text),
+  sorter: (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
+  sortOrder: sInfo.columnKey === 'startDate' && sInfo.order,
 },{
   title: 'Status',
   dataIndex: 'status',
 },{
   title: 'Duration',
   dataIndex: 'duration',
+  render: (text) => convertSec(text),
   sorter: (a, b) => a.duration - b.duration,
   sortOrder: sInfo.columnKey === 'duration' && sInfo.order,
 },{

@@ -21,3 +21,9 @@ export function sortVersions(a, b){
     let _b = b ? converVersionToNum(b) : 0;
     return _a - _b;
 }
+
+export function convertSec(sec = 0){
+    const _sec = sec % 60;
+    const _min = (sec - _sec) / 60;
+    return `${_min ? _min+' min ' : ''}${_sec} sec`;
+}
