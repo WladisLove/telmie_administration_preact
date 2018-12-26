@@ -135,8 +135,8 @@ export const tableColumns = (sInfo = {}) => ([{
     dataIndex: 'registrationDate',
     width: 170,
     render: (text) => convertDate(text),
-    // compare date
-    //sorter: (a, b) => a.registrationDate.length - b.registrationDate.length,
+    sorter: (a, b) => new Date(a.registrationDate).getTime() - new Date(b.registrationDate).getTime(),
+    sortOrder: sInfo.columnKey === 'registrationDate' && sInfo.order,
   },{
     title: 'Email Notif.',
     dataIndex: 'emailNotifications',
@@ -151,36 +151,52 @@ export const tableColumns = (sInfo = {}) => ([{
     title: 'Telmie Credit',
     dataIndex: 'telmieCredit',
     width: 100,
+    sorter: (a, b) => a.telmieCredit - b.telmieCredit,
+    sortOrder: sInfo.columnKey === 'telmieCredit' && sInfo.order,
   },{
     title: 'Payment Credit',
     dataIndex: 'paymentCredit',
     width: 100,
+    sorter: (a, b) => a.paymentCredit - b.paymentCredit,
+    sortOrder: sInfo.columnKey === 'paymentCredit' && sInfo.order,
   },{
     title: 'Total',
     children: [{
       title: 'Days',
       dataIndex: 'activeForDays',
       width: 100,
+      sorter: (a, b) => a.activeForDays - b.activeForDays,
+      sortOrder: sInfo.columnKey === 'activeForDays' && sInfo.order,
     },{
       title: 'Spend',
       dataIndex: 'totalSpend',
       width: 100,
+      sorter: (a, b) => Math.abs(a.totalSpend) - Math.abs(b.totalSpend),
+      sortOrder: sInfo.columnKey === 'totalSpend' && sInfo.order,
     },{
       title: 'Earn',
       dataIndex: 'totalEarn',
       width: 100,
+      sorter: (a, b) => a.totalEarn - b.totalEarn,
+      sortOrder: sInfo.columnKey === 'totalEarn' && sInfo.order,
     },{
       title: 'Text Send',
       dataIndex: 'totalTextSend',
       width: 100,
+      sorter: (a, b) => a.totalTextSend - b.totalTextSend,
+      sortOrder: sInfo.columnKey === 'totalTextSend' && sInfo.order,
     },{
       title: 'Minutes Outgoing',
       dataIndex: 'totalMinsOutgoing',
       width: 100,
+      sorter: (a, b) => a.totalMinsOutgoing - b.totalMinsOutgoing,
+      sortOrder: sInfo.columnKey === 'totalMinsOutgoing' && sInfo.order,
     },{
       title: 'Minutes Incoming',
       dataIndex: 'totalMinsIncoming',
       width: 100,
+      sorter: (a, b) => a.totalMinsIncoming - b.totalMinsIncoming,
+      sortOrder: sInfo.columnKey === 'totalMinsIncoming' && sInfo.order,
     }]
   }]);
 
