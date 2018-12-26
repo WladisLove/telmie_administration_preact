@@ -10,7 +10,8 @@ import 'antd/dist/antd.css';
 
 import { getCalls, clearCalls, 
 	chooseSelectedUser, clearSelectedUser, 
-	changeActiveUserStatus,	getUsActivities, getUsProsList,	getUsClients, getUsMoney, addFreeCredits, deleteUser, changeProStatus,
+	editUser, deleteUser,
+	changeActiveUserStatus,	getUsActivities, getUsProsList,	getUsClients, getUsMoney, addFreeCredits, changeProStatus,
 } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
@@ -127,6 +128,7 @@ class Invites extends Component{
 		addFreeCredits: (amount, id) => this.props.addFreeCredits(amount, id, this.userAuth),
 		deleteUser: (id) => this.props.deleteUser(id, true, this.userAuth, false),
 	};
+	onEditUser = (newData) => this.props.editUser(newData, newData.id, this.userAuth, false);
 
 	render(){
 		const {isSearched, searchedData, sortedInfo = {}, selected } = this.state;
@@ -157,10 +159,8 @@ class Invites extends Component{
 								/*serverData={serverData}*/
 								backToList={this.onBackToList}
 								accControlsFunc={this.accControlsFunc}
-								/*isIndividual={isIndividual}
-								isPending={isPending}
-								isForDelete={isForDelete}
-								editUserFunc={onEditUser}*//>
+								isIndividual={false}
+								editUserFunc={this.onEditUser}/>
 								:
 						<Table columns={columns(sortedInfo, this.onUserSelect)} 
 							rowKey={(record) => record.id} 
@@ -189,6 +189,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	clearCalls,
 	chooseSelectedUser,
 	clearSelectedUser, 
+	editUser,
 
 	changeActiveUserStatus,
 	getUsActivities,

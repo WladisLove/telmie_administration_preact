@@ -201,14 +201,14 @@ export const deleteUser = (id, value, authData, updateAU = true) => async (dispa
 	
 };
 
-export const editUser = (data, id, authData) => async (dispatch) => {
+export const editUser = (data, id, authData, updateAU = true) => async (dispatch) => {
 	dispatch(modifyU());
 	const response = await user.editUser(data, id, authData);
 	response.error ? 
 		dispatch(manipulateUserFailure(response.message, 'edit'))
 		: (
 			dispatch(editUserSuccess(response)),
-			dispatch(getActiveUsers(authData))
+			updateAU && dispatch(getActiveUsers(authData))
 		);
 };
 
