@@ -314,12 +314,13 @@ export const infoColumns = (infoType) => {
       },])
   }
 }
-export const callsColumns = (sInfo = {}) => ([{
+export const callsColumns = (sInfo = {}, onClick) => ([{
   title: 'Pro Id',
   dataIndex: 'consultantId',
 },{
   title: 'Pro Name',
   dataIndex: 'consultantFullName',
+  render: (text, item) => <span class='table-selectable-name' onClick={onClick(item.consultantId)}>{text}</span>,
 },{
   title: 'Pro Email',
   dataIndex: 'consultantEmail',
@@ -329,6 +330,7 @@ export const callsColumns = (sInfo = {}) => ([{
 },{
   title: 'Client Name',
   dataIndex: 'consultedFullName',
+  render: (text, item) => <span class='table-selectable-name' onClick={onClick(item.consultedId)}>{text}</span>,
 },{
   title: 'Client Email',
   dataIndex: 'consultedEmail',

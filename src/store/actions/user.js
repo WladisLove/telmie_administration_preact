@@ -181,14 +181,14 @@ export const chooseSelectedUser = (_user, authData) => async (dispatch) => {
 		: dispatch(selectUser(response));
 };
 
-export const deleteUser = (id, value, authData) => async (dispatch) => {
+export const deleteUser = (id, value, authData, updateAU = true) => async (dispatch) => {
 	const response = await user.deleteUser(id, authData, value);
 	if (value){
 		response.error ? 
 			dispatch(manipulateUserFailure(response.message, 'delete'))
 			: (
 				dispatch(clearUser()),
-				dispatch(getActiveUsers(authData))
+				updateAU && dispatch(getActiveUsers(authData))
 			);
 	} else {
 		response.error ?
@@ -212,25 +212,25 @@ export const editUser = (data, id, authData) => async (dispatch) => {
 		);
 };
 
-export const changeActiveUserStatus = (id, value, authData) => async (dispatch) => {
+export const changeActiveUserStatus = (id, value, authData, updateAU = true) => async (dispatch) => {
 	dispatch(modifyU());
 	const response = await user.changeActiveUserStatus(id, authData, value);
 	response.error ?
 		dispatch(modifyUserFailure(`${response.message} (Error in changing user status)`))
 		: (
 			dispatch(changeAUStatusSuccess(response)),
-			dispatch(getActiveUsers(authData))
+			updateAU && dispatch(getActiveUsers(authData))
 		);
 }
 
-export const changeProStatus = (id, value, authData) => async (dispatch) => {
+export const changeProStatus = (id, value, authData, updateAU = true) => async (dispatch) => {
 	dispatch(modifyU());
 	const response = await user.changeProStatus(id, authData, value);
 	response.error ?
 		dispatch(modifyUserFailure(`${response.message} (Error in changing PRO status)`))
 		: (
 			dispatch(changeAUStatusSuccess(response)),
-			dispatch(getActiveUsers(authData))
+			updateAU && dispatch(getActiveUsers(authData))
 		);
 }
 

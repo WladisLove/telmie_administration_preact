@@ -53,7 +53,7 @@ class UserInfo extends Component{
                             userId={user.id}/>;
             case INFO_TYPES.ACC_DETAILS: 
             default: {
-                const {categories = [],subCategories=[]} = this.props.serverData;
+                const {categories = [],subCategories=[]} = this.props.serverData ? this.props.serverData : {};
                 const { credits } = this.props.selectedUser ? this.props.selectedUser : {};
                 
                 return [

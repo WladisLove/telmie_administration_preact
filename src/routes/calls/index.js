@@ -3,11 +3,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'preact-redux';
 
 import Card from '../../components/card'
+import UserInfo from '../../components/user-info';
 import SearchArea from '../../components/user-table-controls/search-area'
 import { Table, Spin } from 'antd';
 import 'antd/dist/antd.css';
 
-import { getCalls, clearCalls, } from '../../store/actions/user'
+import { getCalls, clearCalls, 
+	chooseSelectedUser, clearSelectedUser, 
+	changeActiveUserStatus,	getUsActivities, getUsProsList,	getUsClients, getUsMoney, addFreeCredits, deleteUser, changeProStatus,
+} from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { callsColumns as columns } from '../../helpers/table-data'
@@ -104,8 +108,28 @@ class Invites extends Component{
 			&& this.onSearch([...calls])(this.state.searchFields, true)
 	}
 
+	onUserSelect = (id) => () => {
+		this.setState({ selected: true, });
+		this.props.chooseSelectedUser({id}, this.userAuth);
+	}
+	onBackToList = () => {
+		this.setState({ selected: false, });
+		this.props.clearSelectedUser();
+	};
+
+	accControlsFunc = {
+		changeStatus: (id, value) => this.props.changeActiveUserStatus(id, value, this.userAuth, false),
+		changeProStatus: (id, value) => this.props.changeProStatus(id, value, this.userAuth, false),
+		getActivities: (id) => this.props.getUsActivities(id, this.userAuth),
+		getProsList: (id) => this.props.getUsProsList(id, this.userAuth),
+		getClients: (id) => this.props.getUsClients(id,this.userAuth),
+		getUsMoney: (id, page, size) => this.props.getUsMoney(id, page, size, this.userAuth),
+		addFreeCredits: (amount, id) => this.props.addFreeCredits(amount, id, this.userAuth),
+		deleteUser: (id) => this.props.deleteUser(id, true, this.userAuth, false),
+	};
+
 	render(){
-		const {isSearched, searchedData, sortedInfo = {} } = this.state;
+		const {isSearched, searchedData, sortedInfo = {}, selected } = this.state;
 
 		const {load : isLoaded = false, error : isError = false, message : errorMsg = '', calls = []} = this.props.uArrays;
 
@@ -114,20 +138,31 @@ class Invites extends Component{
 		return (
 			<Card cardClass='route-content'>
 				<p>Total number of calls: {calls.length}</p>
-				<p style={{marginBottom: 5}}>Calls types:</p>
-				<ul class='typesDescription'>
-					<li><span>ACTIVE</span>		call, which active now</li>
-					<li><span>FAILED</span>		call, which not started (no answer or drop)</li>		
-					<li><span>SUCCEED</span>		call, which successfully ended</li>
-					<li><span>BREAK	</span>	call, which was broken because customer don't have enought money</li>
-					<li><span>DISCONNECTED</span>		call drop because one of the participants was disconnected</li>	
-					<li><span>BROKEN</span>		hung call (if call has active status duration and amount = 0 but start date was 8 hours ago)</li>
-					
-				</ul>
-				<SearchArea onSearch={this.onSearch([...calls])} searchItemsArr={searchItemsArr}/>
+				<div style={selected && {display: 'none'}}>
+					<p style={{marginBottom: 5}}>Calls types:</p>
+					<ul class='typesDescription'>
+						<li><span>ACTIVE</span>		call, which active now</li>
+						<li><span>FAILED</span>		call, which not started (no answer or drop)</li>		
+						<li><span>SUCCEED</span>		call, which successfully ended</li>
+						<li><span>BREAK	</span>	call, which was broken because customer don't have enought money</li>
+						<li><span>DISCONNECTED</span>		call drop because one of the participants was disconnected</li>	
+						<li><span>BROKEN</span>		hung call (if call has active status duration and amount = 0 but start date was 8 hours ago)</li>
+					</ul>
+				</div>
+				<SearchArea onSearch={this.onSearch([...calls])} isShown={!!selected} searchItemsArr={searchItemsArr}/>
 				{isLoaded ? 
 					!isError ? [
-						<Table columns={columns(sortedInfo)} 
+						selected ?
+						<UserInfo selectedUser={this.props.selectedUser}
+								/*serverData={serverData}*/
+								backToList={this.onBackToList}
+								accControlsFunc={this.accControlsFunc}
+								/*isIndividual={isIndividual}
+								isPending={isPending}
+								isForDelete={isForDelete}
+								editUserFunc={onEditUser}*//>
+								:
+						<Table columns={columns(sortedInfo, this.onUserSelect)} 
 							rowKey={(record) => record.id} 
 							onChange={this.onChange}
 							pagination={{pageSize: PAGE_SIZE}}
@@ -146,11 +181,23 @@ class Invites extends Component{
 const mapStateToProps = (state) => ({
 	userData: state.loggedInUser,
 	uArrays: state.usersArrays,
+	selectedUser: state.selectedUser,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
 	getCalls,
 	clearCalls,
+	chooseSelectedUser,
+	clearSelectedUser, 
+
+	changeActiveUserStatus,
+	getUsActivities,
+	getUsProsList,
+	getUsClients,
+	getUsMoney,
+	addFreeCredits,
+	deleteUser,
+	changeProStatus,
 }, dispatch);
 
 export default connect(
