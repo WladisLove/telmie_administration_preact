@@ -315,6 +315,9 @@ export const infoColumns = (infoType) => {
   }
 }
 export const callsColumns = (sInfo = {}, onClick) => ([{
+  title: 'Id',
+  dataIndex: 'id',
+},{
   title: 'Pro Id',
   dataIndex: 'consultantId',
 },{
