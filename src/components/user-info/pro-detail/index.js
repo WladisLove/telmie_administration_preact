@@ -7,32 +7,37 @@ import ApproveArea from './approve-area'
 
 import style from './style.css';
 
+const fillUserInfo = (user) =>{
+    const {location = null, mobile, pro={}, dateOfBirth} = user;
+    const {category = '', subCategory='',profession,professionDescription, costPerMinute = 0, video} = pro ? pro : {};
+    const {country,city,line1,postCode} = JSON.parse(location) ? JSON.parse(location) : {};
+
+    return {
+        mobile,
+        dateOfBirth,
+        country,
+        city,
+        line1,
+        postCode,
+        pro: {
+            category,
+            subCategory,
+            profession,
+            professionDescription,
+            costPerMinute,
+            video,
+        }
+    }
+}
+
 class BusinessProDetail extends Component {
     constructor(props){
         super(props);
 
         const { user = {} } = props;
-        const {location = null, mobile, pro={}, dateOfBirth} = user;
-        const {category = '', subCategory='',profession,professionDescription, costPerMinute = 0, video} = pro ? pro : {};
-        const {country,city,line1,postCode} = JSON.parse(location) ? JSON.parse(location) : {};
 
         this.state = {
-            userInfo: {
-                mobile,
-                dateOfBirth,
-                country,
-                city,
-                line1,
-                postCode,
-                pro: {
-                    category,
-                    subCategory,
-                    profession,
-                    professionDescription,
-                    costPerMinute,
-                    video,
-                }
-            },
+            userInfo: fillUserInfo(user),
             isEdited: false,
         };
     }
@@ -40,7 +45,7 @@ class BusinessProDetail extends Component {
     onChange = (e) => {
         const {name, value} = e.target;
 
-        (['category','subCategory','profession','professionDescription','costPerMinute','video',].indexOf(name) != 0) ? (
+        (['category','subCategory','profession','professionDescription','costPerMinute','video',].indexOf(name) + 1) ? (
             this.setState( prev => ({
                 userInfo: {
                     ...prev.userInfo,
@@ -82,7 +87,7 @@ class BusinessProDetail extends Component {
     onCancel = () => {
         const { user = {} } = this.props;
         this.setState({
-            userInfo: { ...user },
+            userInfo: fillUserInfo(user),
             isEdited: false,
         });
     }
@@ -90,7 +95,7 @@ class BusinessProDetail extends Component {
         this.props.saveUserInfo({
             ...this.state.userInfo,
             id: this.props.user.id,
-        });
+        }, false);
     }
 
     componentWillUnmount(){
@@ -120,24 +125,24 @@ class BusinessProDetail extends Component {
 
                         <Input type='date' label='Date of birth:' name='dateOfBirth' value={dateOfBirth} disabled={isPending || true} changedFields={changedFields}/>
 
-                        <Input label='Service name:' name='profession' value={profession} disabled={isPending || true} changedFields={changedFields}/>
-                        <Select label='Service category:' name='category' value={category} data={categories} onChange={this.onSelectCategory} isArrayData disabled={isPending || true} changedFields={changedFields}/>
-                        <Select label='Service sub-category:' name='subCategory' value={subCategory} data={subCategories[category] ? subCategories[category] : []} onChange={this.onChange} isArrayData disabled={isPending || true} changedFields={changedFields}/>
-                        <Textarea label='Service description:' name='professionDescription' value={professionDescription} disabled={isPending || true} changedFields={changedFields}/>
+                        <Input label='Service name:' name='profession' value={profession} disabled={isPending} onChange={this.onChange} changedFields={changedFields}/>
+                        <Select label='Service category:' name='category' value={category} data={categories} onChange={this.onSelectCategory} isArrayData disabled={isPending} changedFields={changedFields}/>
+                        <Select label='Service sub-category:' name='subCategory' value={subCategory} data={subCategories[category] ? subCategories[category] : []} onChange={this.onChange} isArrayData disabled={isPending} changedFields={changedFields}/>
+                        <Textarea label='Service description:' name='professionDescription' value={professionDescription} disabled={isPending} onChange={this.onChange} changedFields={changedFields}/>
     
                         <div style={{display: 'inline-block',width: '20%'}}>
                             <Input value={'£'} disabled={true} inputStyle={{textAlign: 'center'}} changedFields={changedFields}/>
                             {/*<Select isArrayData value={'£'}/>*/}
                         </div>
                         <div style={{display: 'inline-block',width: '47%', marginLeft: '3%'}}>
-                            <Input name='5' name='costPerMinute' value={costPerMinute} disabled={isPending || true} inputStyle={{textAlign: 'center'}} changedFields={changedFields}/>
+                            <Input name='5' name='costPerMinute' value={costPerMinute} disabled={isPending} onChange={this.onChange} inputStyle={{textAlign: 'center'}} changedFields={changedFields}/>
                         </div>
                         <div style={{display: 'inline-block',width: '27%', marginLeft: '3%'}}>
                             <Input value={'min'} disabled={true} inputStyle={{textAlign: 'center'}} changedFields={changedFields}/>
                             {/*<Select data={['test','test2']} isArrayData value={'min'}/>*/}
                         </div>
 
-                        <Input label='Mobile:' name='mobile' value={mobile} disabled={isPending || true} changedFields={changedFields}/>
+                        <Input label='Mobile:' name='mobile' value={mobile} disabled={isPending} changedFields={changedFields} onChange={this.onChange}/>
                         <Input label='YouTube ID:' name='video' value={video} disabled={isPending} changedFields={changedFields} onChange={this.onChange} />
                     </div>
 

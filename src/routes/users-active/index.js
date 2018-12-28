@@ -32,7 +32,7 @@ class ActiveUsers extends Component{
 		this.props.clearSelectedUser();
 	}
 
-	onEditUser = (newData) => this.props.editUser(newData, newData.id, this.userAuth);
+	onEditUser = (newData, updateAU = true) => this.props.editUser(newData, newData.id, this.userAuth, updateAU);
 	chooseSelectedUser = (user) => this.props.chooseSelectedUser(user, this.userAuth);
 
 	render() {
