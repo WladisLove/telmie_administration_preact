@@ -1,4 +1,4 @@
-import {convertDate, sortVersions, convertSec} from './index'
+import {convertDate, sortVersions, secToMS, secToDH, secToHMS} from './index'
 import { INFO_TYPES } from './consts'
 
 export const pendingTableColumns = (sInfo = {}) => ([{
@@ -109,14 +109,14 @@ export const tableColumns = (sInfo = {}) => ([{
   }, {
     title: 'Email',
     dataIndex: 'email',
-    width: 200,
+    width: 220,
     sorter: (a,b) => String(a.email).localeCompare(b.email),
     sortOrder: sInfo.columnKey === 'email' && sInfo.order,
   },{
-      title: 'Status',
-      dataIndex: 'status',
-      width: 120,
-      //sorter: (a,b) => String(a.status).localeCompare(b.status),
+    title: 'Status',
+    dataIndex: 'status',
+    width: 140,
+    //sorter: (a,b) => String(a.status).localeCompare(b.status),
   },{
     title: 'App version',
     dataIndex: 'appVersion',
@@ -125,11 +125,11 @@ export const tableColumns = (sInfo = {}) => ([{
     sortOrder: sInfo.columnKey === 'appVersion' && sInfo.order,
   },{
     title: 'Last active',
-    dataIndex: 'versionUpdate',
+    dataIndex: 'lastActiveDate',
     width: 170,
     render: (text) => convertDate(text),
-    sorter: (a, b) => new Date(a.versionUpdate).getTime() - new Date(b.versionUpdate).getTime(),
-    sortOrder: sInfo.columnKey === 'versionUpdate' && sInfo.order,
+    sorter: (a, b) => new Date(a.lastActiveDate).getTime() - new Date(b.lastActiveDate).getTime(),
+    sortOrder: sInfo.columnKey === 'lastActiveDate' && sInfo.order,
   },{
     title: 'Registration date',
     dataIndex: 'registrationDate',
@@ -154,19 +154,20 @@ export const tableColumns = (sInfo = {}) => ([{
     sorter: (a, b) => a.telmieCredit - b.telmieCredit,
     sortOrder: sInfo.columnKey === 'telmieCredit' && sInfo.order,
   },{
-    title: 'Payment Credit',
-    dataIndex: 'paymentCredit',
+    title: 'Payment From Card',
+    dataIndex: 'paymentFromCard',
     width: 100,
-    sorter: (a, b) => a.paymentCredit - b.paymentCredit,
-    sortOrder: sInfo.columnKey === 'paymentCredit' && sInfo.order,
+    sorter: (a, b) => a.paymentFromCard - b.paymentFromCard,
+    sortOrder: sInfo.columnKey === 'paymentFromCard' && sInfo.order,
   },{
     title: 'Total',
     children: [{
-      title: 'Days',
-      dataIndex: 'activeForDays',
+      title: 'Active',
+      dataIndex: 'activeFor',
       width: 100,
-      sorter: (a, b) => a.activeForDays - b.activeForDays,
-      sortOrder: sInfo.columnKey === 'activeForDays' && sInfo.order,
+      render: (text) => secToDH(text),
+      sorter: (a, b) => a.activeFor - b.activeFor,
+      sortOrder: sInfo.columnKey === 'activeFor' && sInfo.order,
     },{
       title: 'Spend',
       dataIndex: 'totalSpend',
@@ -180,21 +181,29 @@ export const tableColumns = (sInfo = {}) => ([{
       sorter: (a, b) => a.totalEarn - b.totalEarn,
       sortOrder: sInfo.columnKey === 'totalEarn' && sInfo.order,
     },{
-      title: 'Text Send',
-      dataIndex: 'totalTextSend',
+      title: 'Text Outgoing',
+      dataIndex: 'totalTextOutgoing',
       width: 100,
-      sorter: (a, b) => a.totalTextSend - b.totalTextSend,
-      sortOrder: sInfo.columnKey === 'totalTextSend' && sInfo.order,
+      sorter: (a, b) => a.totalTextOutgoing - b.totalTextOutgoing,
+      sortOrder: sInfo.columnKey === 'totalTextOutgoing' && sInfo.order,
+    },{
+      title: 'Text Incoming',
+      dataIndex: 'totalTextIncoming',
+      width: 100,
+      sorter: (a, b) => a.totalTextIncoming - b.totalTextIncoming,
+      sortOrder: sInfo.columnKey === 'totalTextIncoming' && sInfo.order,
     },{
       title: 'Minutes Outgoing',
       dataIndex: 'totalMinsOutgoing',
       width: 100,
+      render: (text) => secToHMS(text),
       sorter: (a, b) => a.totalMinsOutgoing - b.totalMinsOutgoing,
       sortOrder: sInfo.columnKey === 'totalMinsOutgoing' && sInfo.order,
     },{
       title: 'Minutes Incoming',
       dataIndex: 'totalMinsIncoming',
       width: 100,
+      render: (text) => secToHMS(text),
       sorter: (a, b) => a.totalMinsIncoming - b.totalMinsIncoming,
       sortOrder: sInfo.columnKey === 'totalMinsIncoming' && sInfo.order,
     }]
@@ -349,7 +358,7 @@ export const callsColumns = (sInfo = {}, onClick) => ([{
 },{
   title: 'Duration',
   dataIndex: 'duration',
-  render: (text) => convertSec(text),
+  render: (text) => secToMS(text),
   sorter: (a, b) => a.duration - b.duration,
   sortOrder: sInfo.columnKey === 'duration' && sInfo.order,
 },{

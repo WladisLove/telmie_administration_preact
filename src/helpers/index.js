@@ -22,8 +22,28 @@ export function sortVersions(a, b){
     return _a - _b;
 }
 
-export function convertSec(sec = 0){
-    const _sec = sec % 60;
-    const _min = (sec - _sec) / 60;
-    return `${_min ? _min+' min ' : ''}${_sec} sec`;
+export function secToDH(sec = 0){
+    let h = Math.floor(sec / 3600),
+        d;
+
+    h > 24 && (
+        d = Math.floor(h/24),
+        h = Math.floor(h % 24)
+    )
+    
+    return `${d ? d+'d ' : ''}${h ? h+'h ' : ''}`;
+}
+
+export function secToMS(sec = 0){
+    const s = sec % 60;
+    const m = (sec - s) / 60;
+    
+    return `${m ? m+'m ' : ''}${s}s`;
+}
+
+export function secToHMS(sec = 0){
+    const h = Math.floor(sec / 3600),
+        m = Math.floor(sec % 3600 / 60),
+        s = Math.floor(sec % 3600 % 60);
+    return `${h ? h+'h ' : ''}${m ? m+'m ' : ''}${s}s`;
 }
