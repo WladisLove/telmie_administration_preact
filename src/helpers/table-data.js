@@ -187,6 +187,7 @@ export const tableColumns = (sInfo = {}) => ([{
 export const invitesColumns = (sInfo = {}) => ([{
   title: 'Date',
   dataIndex: 'date',
+  defaultSortOrder: 'descend',
   render: (text) => convertDate(text),
   sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   sortOrder: sInfo.columnKey === 'date' && sInfo.order,
