@@ -125,7 +125,7 @@ class UsersRouteWrapper extends Component{
 	render(){
         const {isFiltered, filteredData, isSearched, searchedData, sortedInfo = {}, selected, usersByStatus} = this.state;
         const {
-			accControlsFunc, serverData, isIndividual, isPending, isForDelete, selectedUser, columns, onEditUser
+			accControlsFunc, serverData, isIndividual, isPending, isForDelete, selectedUser, columns, onEditUser, scroll = {}
 		} = this.props;
         const {load : isLoaded = false, error : isError = false, message : errorMsg = ''} = this.props.uArrays;
 		const {usersArr = [], withFilter = false} = this.props;
@@ -157,7 +157,7 @@ class UsersRouteWrapper extends Component{
 									onRow={this.onRow}
 									pagination={this.state.pagination}
 									dataSource={dataSource} 
-									scroll={{ x: 2070 }}/>
+									scroll={scroll}/>
 					] : (
 					<div class="errorContainer">
 						Error! 

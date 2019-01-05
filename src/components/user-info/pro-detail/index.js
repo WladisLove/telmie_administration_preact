@@ -142,7 +142,7 @@ class BusinessProDetail extends Component {
                             {/*<Select data={['test','test2']} isArrayData value={'min'}/>*/}
                         </div>
 
-                        <Input label='Mobile:' name='mobile' value={mobile} disabled={isPending || true} changedFields={changedFields}/>
+                        <Input label='Mobile:' name='mobile' value={mobile} disabled={isPending} changedFields={changedFields} onChange={this.onChange}/>
                         <Input label='YouTube ID:' name='video' value={video} disabled={isPending} changedFields={changedFields} onChange={this.onChange} />
                     </div>
 

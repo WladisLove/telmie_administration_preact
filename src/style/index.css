@@ -152,3 +152,11 @@ ul.typesDescription span{
 .route-user-table{
 	max-width: 1500px;
 }
+
+.table-selectable-name{
+	cursor: pointer;
+	color: #444;
+}
+.table-selectable-name:hover{
+	text-decoration: underline;
+}
