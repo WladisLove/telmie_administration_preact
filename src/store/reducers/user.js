@@ -39,9 +39,12 @@ export const usersArrays = (state = {error: false, load: false}, action) => {
 		}
 	switch (action.type) {
 		case actionTypes.SET_ACTIVE_USERS:
+			let totalMesSent = action.arr.reduce((prevVal, el) => prevVal + el.totalTextOutgoing, 0);
+
 			return {
 				...state,
 				...setFields,
+				totalMesSent,
 				activeUsers: action.arr,
 			}
 		case actionTypes.CLEAR_ACTIVE_USERS:

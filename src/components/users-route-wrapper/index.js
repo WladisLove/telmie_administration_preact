@@ -127,7 +127,7 @@ class UsersRouteWrapper extends Component{
         const {
 			accControlsFunc, serverData, isIndividual, isPending, isForDelete, selectedUser, columns, onEditUser, scroll = {}
 		} = this.props;
-        const {load : isLoaded = false, error : isError = false, message : errorMsg = ''} = this.props.uArrays;
+        const {load : isLoaded = false, error : isError = false, message : errorMsg = '', totalMesSent} = this.props.uArrays;
 		const {usersArr = [], withFilter = false} = this.props;
 		
 		const dataSource = isSearched ? 
@@ -138,7 +138,8 @@ class UsersRouteWrapper extends Component{
 			<Card cardClass='route-content route-user-table'>
 				{isLoaded ? 
 					!isError ? [
-						<p>Total number of users: {usersArr.length}</p>,
+						<p style={{display: 'inline-block', marginRight: 30}}>Total number of users: {usersArr.length}</p>,
+						totalMesSent && <p style={{display: 'inline-block',}}>Total number of messages sent: {totalMesSent}</p>,
 						withFilter && <FilterArea onFilter={this.onFilter} isShown={!!selected} usersByStatus={usersByStatus}/>,
 						<SearchArea onSearch={this.onSearch} isShown={!!selected} searchItemsArr={searchItemsArr}/>,
 						selected ? 
