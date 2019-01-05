@@ -30,6 +30,8 @@ class UsersRouteWrapper extends Component{
 			searchedData: [],
 			searchFields: {},
 
+			totalMesSent: this.props.uArrays && this.props.uArrays.totalMesSent,
+
 			usersByStatus: [],
 
 			sortedInfo: {order: "descend", field: "id", columnKey: "id"},
@@ -41,7 +43,10 @@ class UsersRouteWrapper extends Component{
 		(this.props.withFilter 
 			&& this.props.usersArr.length !== nextProps.usersArr.length 
 			&& nextProps.usersArr.length !== 0)
-				&& this.countUsersByStatus(nextProps.usersArr);
+				&& (
+					this.countUsersByStatus(nextProps.usersArr),
+					nextProps.isAU && this.setState({ totalMesSent: nextProps.uArrays && nextProps.uArrays.totalMesSent })
+				);
 		
 		(!nextProps.selectedUser.selectedUser && !!this.props.selectedUser.selectedUser)
 			&& this.setState({ selected: false, });
@@ -59,11 +64,19 @@ class UsersRouteWrapper extends Component{
 	onFilter = (statusFilter, generalLength) => {
 		const {usersArr = []} = this.props;
 		if (statusFilter.length === generalLength){
-			this.setState({ filteredData: [], isFiltered: false });
+			this.setState({ 
+				filteredData: [], 
+				totalMesSent: this.props.isAU && this.props.uArrays && this.props.uArrays.totalMesSent, 
+				isFiltered: false 
+			});
 			Object.keys(this.state.searchFields).length && this.onSearch({...this.state.searchFields});
 		} else {
 			let newData = usersArr.filter(el => statusFilter.indexOf(el.status) != -1 );
-			this.setState({ filteredData: newData, isFiltered: true });
+			this.setState({ 
+				filteredData: newData, 
+				totalMesSent: this.props.isAU && newData.reduce((prevVal, el) => prevVal + el.totalTextOutgoing, 0) , 
+				isFiltered: true
+			});
 			Object.keys(this.state.searchFields).length && this.onSearch({...this.state.searchFields});
 		}
 	}
@@ -72,7 +85,12 @@ class UsersRouteWrapper extends Component{
 		let usersArr = this.state.isFiltered ? [...this.state.filteredData] : [...this.props.usersArr];
 
 		if (!Object.keys(searchFields).length){
-			this.setState({ searchedData: [], isSearched: false, searchFields: {} });
+			this.setState({ 
+				searchedData: [], 
+				totalMesSent: this.props.isAU && this.props.uArrays && this.props.uArrays.totalMesSent, 
+				isSearched: false, 
+				searchFields: {} 
+			});
 		} else {
 			let newData = usersArr.filter(user => {
 				const {name = '', lastName = '', email = '', pro,
@@ -102,7 +120,12 @@ class UsersRouteWrapper extends Component{
 				return true;
 			});
 			
-			this.setState({ searchedData: newData, isSearched: true, searchFields: {...searchFields} });
+			this.setState({ 
+				searchedData: newData, 
+				totalMesSent: this.props.isAU && newData.reduce((prevVal, el) => prevVal + el.totalTextOutgoing, 0) , 
+				isSearched: true, 
+				searchFields: {...searchFields} 
+			});
 		}
 	}
 
@@ -139,7 +162,7 @@ class UsersRouteWrapper extends Component{
 				{isLoaded ? 
 					!isError ? [
 						<p style={{display: 'inline-block', marginRight: 30}}>Total number of users: {usersArr.length}</p>,
-						totalMesSent && <p style={{display: 'inline-block',}}>Total number of messages sent: {totalMesSent}</p>,
+						this.props.isAU && <p style={{display: 'inline-block',}}>Total number of messages sent: {this.state.totalMesSent}</p>,
 						withFilter && <FilterArea onFilter={this.onFilter} isShown={!!selected} usersByStatus={usersByStatus}/>,
 						<SearchArea onSearch={this.onSearch} isShown={!!selected} searchItemsArr={searchItemsArr}/>,
 						selected ? 

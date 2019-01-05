@@ -59,6 +59,7 @@ class ActiveUsers extends Component{
 			uArrays={this.props.uArrays}
 
 			isIndividual={false}
+			isAU = {true}
 
 			columns={columns}
 			scroll={{ x: 2210 }}
