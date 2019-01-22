@@ -5,6 +5,7 @@ import { connect } from 'preact-redux';
 import Card from '../../components/card'
 import UserInfo from '../../components/user-info';
 import SearchArea from '../../components/user-table-controls/search-area'
+import FilterArea from '../../components/user-table-controls/filter-area'
 import { Table, Spin } from 'antd';
 import 'antd/dist/antd.css';
 
@@ -16,7 +17,7 @@ import { getCalls, clearCalls,
 
 import { getCookie } from '../../helpers/cookie'
 import { callsColumns as columns } from '../../helpers/table-data'
-import { PAGE_SIZE } from '../../helpers/consts'
+import { PAGE_SIZE, statusArrs } from '../../helpers/consts'
 
 const searchItemsArr = [{
 	label: 'Pro info:',
@@ -33,13 +34,22 @@ const searchItemsArr = [{
 	name: 'endDate',
 	isDate: true,
 },]
+
 class Invites extends Component{
 	constructor(props){
 		super(props);
 
 		this.state= {
-			sortedInfo: {},
+			isFiltered: false,
+			filteredData: [],
+			statusFilter: [],
+
+			isSearched: false,
+			searchedData: [],
 			searchFields: {},
+
+			sortedInfo: {},
+			callsByStatus: [],
 		}
 	}
 
@@ -55,8 +65,42 @@ class Invites extends Component{
 	onChange = (pagination, filters, sorter) => {
 		this.setState({ sortedInfo: sorter, });
 	}
+
+	countCallsByStatus = (calls) => {
+		let callsByStatus = calls.reduce((acc, call) => {
+			let stat = call.status;
+			acc[stat] = (acc[stat] || 0) + 1;
+			return acc;
+		}, {});
+		this.setState({ callsByStatus });
+	}
+
+	onFilter = (statusFilter, generalLength, isReceived, _calls = []) => {
+		const { calls = [] } = this.props.uArrays;
+		const cl = _calls.length ? _calls : calls;
+		if (statusFilter.length === generalLength){
+			this.setState({ 
+				filteredData: [], 
+				statusFilter: [],
+				isFiltered: false 
+			});
+			Object.keys(this.state.searchFields).length && this.onSearch({...this.state.searchFields}, isReceived, _calls);
+		} else {
+			let newData = cl.filter(el => statusFilter.indexOf(el.status) != -1 );
+			this.setState({ 
+				filteredData: newData, 
+				statusFilter,
+				isFiltered: true
+			});
+			Object.keys(this.state.searchFields).length && this.onSearch({...this.state.searchFields}, isReceived, newData);
+		}
+	}
 	
-	onSearch = (usersArr) => (searchFields, isReceived) => {
+	onSearch = (searchFields, isReceived, _clArr = []) => {
+		const { calls = [] } = this.props.uArrays;
+		const clArr = _clArr.length ? 
+			_clArr : this.state.isFiltered ? 
+				[...this.state.filteredData] : [...calls];
 		
 		if (!Object.keys(searchFields).length){
 			this.setState({ searchedData: [], isSearched: false });
@@ -65,17 +109,15 @@ class Invites extends Component{
 				this.props.getCalls(this.userAuth, 
 					searchFields.startDate && new Date(searchFields.startDate).toISOString(), 
 					searchFields.endDate && new Date(searchFields.endDate).toISOString());
-				this.setState({ isSearched: true, searchFields: searchFields});
+				this.setState({ isSearched: true, searchFields: { ...searchFields } });
 			} else {
 
-				let newData = usersArr.filter(call => {
+				let newData = clArr.filter(call => {
 					const {consultantEmail = '', consultantFullName = '', consultantId = '',
 						consultedEmail = '', consultedFullName = '', consultedId = '',
 						startDate,
 					} = call;
-	
-					const _date = new Date(startDate).getTime();
-	
+		
 					if(searchFields.proGeneral){
 						if(
 							(consultantEmail.toLowerCase().indexOf(searchFields.proGeneral) + 1)
@@ -97,16 +139,22 @@ class Invites extends Component{
 					return true;
 				})
 	
-				this.setState({ searchedData: newData, isSearched: true, searchFields: searchFields});
+				this.setState({ searchedData: newData, isSearched: true, searchFields: { ...searchFields}});
 			}
 		}
 	}
 
 	componentWillReceiveProps(nextProps){
-		const {calls = []} = nextProps.uArrays;
-		(!this.props.uArrays.load  && nextProps.uArrays.load)
-			&& Object.keys(this.state.searchFields).length && calls.length 
-			&& this.onSearch([...calls])(this.state.searchFields, true)
+		const { calls = []} = nextProps.uArrays;
+		const { calls: prev_calls = []} = this.props.uArrays;
+
+		(prev_calls.length !== calls.length && calls.length !== 0)
+			&& this.countCallsByStatus(calls);
+
+		(!this.props.uArrays.load  && nextProps.uArrays.load && calls.length)
+			&& this.state.isFiltered ? 
+				this.onFilter(this.state.statusFilter, statusArrs.calls.length, true, [...calls])
+				: this.state.isSearched && this.onSearch(this.state.searchFields, true, [...calls]);
 	}
 
 	onUserSelect = (id) => () => {
@@ -131,12 +179,15 @@ class Invites extends Component{
 	onEditUser = (newData) => this.props.editUser(newData, newData.id, this.userAuth, false);
 
 	render(){
-		const {isSearched, searchedData, sortedInfo = {}, selected } = this.state;
+		const {isSearched, searchedData, isFiltered, filteredData, 
+			sortedInfo = {}, selected, callsByStatus } = this.state;
 
 		const {load : isLoaded = false, error : isError = false, message : errorMsg = '', calls = []} = this.props.uArrays;
 
-		const dataSource = isSearched ? searchedData : calls;
-
+		const dataSource = isSearched ? 
+			searchedData : isFiltered 
+				? filteredData : calls;
+		
 		return (
 			<Card cardClass='route-content'>
 				<p>Total number of calls: {calls.length}</p>
@@ -151,7 +202,8 @@ class Invites extends Component{
 						<li><span>BROKEN</span>		hung call (if call has active status duration and amount = 0 but start date was 8 hours ago)</li>
 					</ul>
 				</div>
-				<SearchArea onSearch={this.onSearch([...calls])} isShown={!!selected} searchItemsArr={searchItemsArr}/>
+				<FilterArea onFilter={this.onFilter} isShown={!!selected} usersByStatus={callsByStatus} statuses={statusArrs.calls}/>
+				<SearchArea onSearch={this.onSearch} isShown={!!selected} searchItemsArr={searchItemsArr}/>
 				{isLoaded ? 
 					!isError ? [
 						selected ?

@@ -68,5 +68,24 @@ export const statusArrs = {
     }, {
         name: 'REGISTRATION',
         value: 'REGISTRATION',
+    }],
+    calls: [{
+        name: 'ACTIVE',
+        value: 'ACTIVE',
+    }, {
+        name: 'FAILED',
+        value: 'FAILED',
+    }, {
+        name: 'SUCCEED',
+        value: 'SUCCEED',
+    }, {
+        name: 'BREAK',
+        value: 'BREAK',
+    }, {
+        name: 'DISCONNECTED',
+        value: 'DISCONNECTED',
+    }, {
+        name: 'BROKEN',
+        value: 'BROKEN',
     }]
 };

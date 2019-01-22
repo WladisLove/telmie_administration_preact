@@ -101,7 +101,7 @@ class Transactions extends Component{
 				this.props.getTransactions(this.userAuth, 
 					searchFields.startDate && new Date(searchFields.startDate).toISOString(), 
 					searchFields.endDate && new Date(searchFields.endDate).toISOString());
-				this.setState({ isSearched: true, searchFields });
+				this.setState({ isSearched: true, searchFields: { ...searchFields } });
 			} else {
 				let newData = trArr.filter(transaction => {
 					const {userEmail = '', userFullName = '', userId = '', } = transaction;
