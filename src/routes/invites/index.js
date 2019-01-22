@@ -11,7 +11,7 @@ import { getInvites, clearInvites, } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { invitesColumns as columns } from '../../helpers/table-data'
-import { PAGE_SIZE } from '../../helpers/consts'
+import { PAGE_SIZE, statusArrs } from '../../helpers/consts'
 
 class Invites extends Component{
 	constructor(props){
@@ -56,7 +56,7 @@ class Invites extends Component{
 		return (
 			<Card cardClass='route-content'>
 				<p>Total number of invites: {invites.length}</p>
-				<FilterArea onFilter={this.onFilter} isInvites={true}/>
+				<FilterArea onFilter={this.onFilter} isInvites={true} statuses={statusArrs.invites}/>
 				{isLoaded ? 
 					!isError ? (
 						<Table columns={columns(this.state.sortedInfo)} 

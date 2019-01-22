@@ -6,7 +6,8 @@ import FilterArea from '../user-table-controls/filter-area'
 import SearchArea from '../user-table-controls/search-area'
 import 'antd/dist/antd.css';
 
-import { PAGE_SIZE } from '../../helpers/consts'
+import { PAGE_SIZE, statusArrs } from '../../helpers/consts'
+
 const searchItemsArr= [{
 	label: 'General:',
 	name: 'general',
@@ -163,7 +164,7 @@ class UsersRouteWrapper extends Component{
 					!isError ? [
 						<p style={{display: 'inline-block', marginRight: 30}}>Total number of users: {usersArr.length}</p>,
 						this.props.isAU && <p style={{display: 'inline-block',}}>Total number of messages sent: {this.state.totalMesSent}</p>,
-						withFilter && <FilterArea onFilter={this.onFilter} isShown={!!selected} usersByStatus={usersByStatus}/>,
+						withFilter && <FilterArea onFilter={this.onFilter} isShown={!!selected} usersByStatus={usersByStatus} statuses={statusArrs.users}/>,
 						<SearchArea onSearch={this.onSearch} isShown={!!selected} searchItemsArr={searchItemsArr}/>,
 						selected ? 
 							<UserInfo selectedUser={selectedUser}

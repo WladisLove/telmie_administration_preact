@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'preact-redux';
 
 import Card from '../../components/card'
+import FilterArea from '../../components/user-table-controls/filter-area'
 import SearchArea from '../../components/user-table-controls/search-area'
 import { Table, Spin } from 'antd';
 import 'antd/dist/antd.css';
@@ -11,7 +12,7 @@ import { getTransactions, clearTransactions, } from '../../store/actions/user'
 
 import { getCookie } from '../../helpers/cookie'
 import { transactionsColumns as columns } from '../../helpers/table-data'
-import { PAGE_SIZE } from '../../helpers/consts'
+import { PAGE_SIZE, statusArrs } from '../../helpers/consts'
 
 const searchItemsArr = [{
 	label: 'User info:',
@@ -25,13 +26,22 @@ const searchItemsArr = [{
 	name: 'endDate',
 	isDate: true,
 },]
+
 class Transactions extends Component{
 	constructor(props){
 		super(props);
 
 		this.state= {
-			sortedInfo: {},
+			isFiltered: false,
+			filteredData: [],
+			statusFilter: [],
+
+			isSearched: false,
+			searchedData: [],
 			searchFields: {},
+
+			sortedInfo: {},
+			trByStatus: [],
 		}
 	}
 
@@ -47,8 +57,42 @@ class Transactions extends Component{
 	onChange = (pagination, filters, sorter) => {
 		this.setState({ sortedInfo: sorter, });
 	}
+
+	countTrByStatus = (transactions) => {
+		let trByStatus = transactions.reduce((acc, tr) => {
+			let stat = tr.transactionType;
+			acc[stat] = (acc[stat] || 0) + 1;
+			return acc;
+		}, {});
+		this.setState({ trByStatus });
+	}
+
+	onFilter = (statusFilter, generalLength, isReceived, _tr = []) => {
+		const { transactions = [] } = this.props.uArrays;
+		const tr = _tr.length ? _tr : transactions;
+		if (statusFilter.length === generalLength){
+			this.setState({ 
+				filteredData: [], 
+				statusFilter: [],
+				isFiltered: false 
+			});
+			Object.keys(this.state.searchFields).length && this.onSearch({...this.state.searchFields}, isReceived, _tr);
+		} else {
+			let newData = tr.filter(el => statusFilter.indexOf(el.transactionType) != -1 );
+			this.setState({ 
+				filteredData: newData, 
+				statusFilter,
+				isFiltered: true
+			});
+			Object.keys(this.state.searchFields).length && this.onSearch({...this.state.searchFields}, isReceived, newData);
+		}
+	}
 	
-	onSearch = (usersArr) => (searchFields, isReceived) => {
+	onSearch = (searchFields, isReceived, _trArr = []) => {
+		const { transactions = [] } = this.props.uArrays;
+		const trArr = _trArr.length ? 
+			_trArr : this.state.isFiltered ? 
+				[...this.state.filteredData] : [...transactions];
 
 		if (!Object.keys(searchFields).length){
 			this.setState({ searchedData: [], isSearched: false });
@@ -57,16 +101,11 @@ class Transactions extends Component{
 				this.props.getTransactions(this.userAuth, 
 					searchFields.startDate && new Date(searchFields.startDate).toISOString(), 
 					searchFields.endDate && new Date(searchFields.endDate).toISOString());
-				this.setState({ isSearched: true, searchFields: searchFields});
+				this.setState({ isSearched: true, searchFields });
 			} else {
-
-				let newData = usersArr.filter(transaction => {
-					const {userEmail = '', userFullName = '', userId = '',
-						date,
-					} = transaction;
-	
-					const _date = new Date(date).getTime();
-	
+				let newData = trArr.filter(transaction => {
+					const {userEmail = '', userFullName = '', userId = '', } = transaction;
+		
 					if(searchFields.userGeneral){
 						if(
 							(userEmail.toLowerCase().indexOf(searchFields.userGeneral) + 1)
@@ -79,24 +118,34 @@ class Transactions extends Component{
 					return true;
 				})
 	
-				this.setState({ searchedData: newData, isSearched: true, searchFields: searchFields });
+				this.setState({ searchedData: newData, isSearched: true, searchFields: { ...searchFields } });
 			}
 		}
 	}
 
 	componentWillReceiveProps(nextProps){
 		const {transactions = []} = nextProps.uArrays;
-		(!this.props.uArrays.load  && nextProps.uArrays.load)
-			&& Object.keys(this.state.searchFields).length && transactions.length 
-			&& this.onSearch([...transactions])(this.state.searchFields, true)
+		const { transactions: prev_transactions = []} = this.props.uArrays;
+
+		(prev_transactions.length !== transactions.length 
+			&& transactions.length !== 0)
+			&& this.countTrByStatus(transactions);
+		
+		(!this.props.uArrays.load  && nextProps.uArrays.load && transactions.length )
+			&& this.state.isFiltered ? 
+				this.onFilter(this.state.statusFilter, statusArrs.transactions.length, true, [...transactions])
+				: this.state.isSearched && this.onSearch(this.state.searchFields, true, [...transactions]);
 	}
 
 	render(){
-		const {isSearched, searchedData, sortedInfo = {} } = this.state;
+		const {isSearched, searchedData, isFiltered, filteredData, 
+			sortedInfo = {}, trByStatus } = this.state;
 
 		const {load : isLoaded = false, error : isError = false, message : errorMsg = '', transactions = []} = this.props.uArrays;
 
-		const dataSource = isSearched ? searchedData : transactions;
+		const dataSource = isSearched ? 
+			searchedData : isFiltered 
+				? filteredData : transactions;
 
 		return (
 			<Card cardClass='route-content'>
@@ -113,7 +162,8 @@ class Transactions extends Component{
 					<li><span>SYSTEM_BONUS</span>		Bonus from system by administrator	</li>
 					<li><span>REGISTRATION</span>		Bonus for registration	</li>
 				</ul>
-				<SearchArea onSearch={this.onSearch([...transactions])} searchItemsArr={searchItemsArr}/>,
+				<FilterArea onFilter={this.onFilter} usersByStatus={trByStatus} statuses={statusArrs.transactions}/>
+				<SearchArea onSearch={this.onSearch} searchItemsArr={searchItemsArr}/>
 				{isLoaded ? 
 					!isError ? [
 						<Table columns={columns(sortedInfo)} 
