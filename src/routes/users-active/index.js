@@ -62,7 +62,7 @@ class ActiveUsers extends Component{
 			isAU = {true}
 
 			columns={columns}
-			scroll={{ x: 2210 }}
+			scroll={{ x: 2290 }}
 			withFilter = {true}
 
 			onEditUser={this.onEditUser}

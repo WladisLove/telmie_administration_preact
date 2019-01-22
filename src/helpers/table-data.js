@@ -116,6 +116,7 @@ export const tableColumns = (sInfo = {}) => ([{
     title: 'Status',
     dataIndex: 'status',
     width: 140,
+    render: text => (<div style={{fontSize: 12}}>{text}</div>),
     //sorter: (a,b) => String(a.status).localeCompare(b.status),
   },{
     title: 'App version',
@@ -123,6 +124,12 @@ export const tableColumns = (sInfo = {}) => ([{
     width: 100,
     sorter: (a, b) => sortVersions(a.appVersion, b.appVersion),
     sortOrder: sInfo.columnKey === 'appVersion' && sInfo.order,
+  },{
+    title: 'Locale',
+    dataIndex: 'locale',
+    width: 80,
+    sorter: (a,b) => String(a.locale).localeCompare(b.locale),
+    sortOrder: sInfo.columnKey === 'locale' && sInfo.order,
   },{
     title: 'Last active',
     dataIndex: 'lastActiveDate',

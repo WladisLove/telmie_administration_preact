@@ -56,7 +56,7 @@ class ArchivedUsers extends Component{
 			isForDelete={true}
 
 			columns={columns}
-			scroll={{ x: 2210 }}
+			scroll={{ x: 2290 }}
 			
 			accControlsFunc={accControlsFunc}/>
 	}
