@@ -47,3 +47,11 @@ export function secToHMS(sec = 0){
         s = Math.floor(sec % 3600 % 60);
     return `${h ? h+'h ' : ''}${m ? m+'m ' : ''}${s}s`;
 }
+
+export function countItemsByStatus(arr, fieldKey){
+    return arr.reduce((acc, el) => {
+        let stat = el[fieldKey];
+        acc[stat] = (acc[stat] || 0) + 1;
+        return acc;
+    }, {});
+}

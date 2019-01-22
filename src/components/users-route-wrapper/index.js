@@ -7,6 +7,7 @@ import SearchArea from '../user-table-controls/search-area'
 import 'antd/dist/antd.css';
 
 import { PAGE_SIZE, statusArrs } from '../../helpers/consts'
+import { countItemsByStatus } from '../../helpers'
 
 const searchItemsArr= [{
 	label: 'General:',
@@ -45,21 +46,14 @@ class UsersRouteWrapper extends Component{
 			&& this.props.usersArr.length !== nextProps.usersArr.length 
 			&& nextProps.usersArr.length !== 0)
 				&& (
-					this.countUsersByStatus(nextProps.usersArr),
+					this.setState({ 
+						usersByStatus: countItemsByStatus(nextProps.usersArr, 'status'),
+					}),
 					nextProps.isAU && this.setState({ totalMesSent: nextProps.uArrays && nextProps.uArrays.totalMesSent })
 				);
 		
 		(!nextProps.selectedUser.selectedUser && !!this.props.selectedUser.selectedUser)
 			&& this.setState({ selected: false, });
-	}
-
-	countUsersByStatus = (users) => {
-		let usersByStatus = users.reduce((acc, user) => {
-			let stat = user.status;
-			acc[stat] = (acc[stat] || 0) + 1;
-			return acc;
-		}, {});
-		this.setState({ usersByStatus });
 	}
 
 	onFilter = (statusFilter, generalLength) => {

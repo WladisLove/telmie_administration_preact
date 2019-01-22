@@ -18,6 +18,7 @@ import { getCalls, clearCalls,
 import { getCookie } from '../../helpers/cookie'
 import { callsColumns as columns } from '../../helpers/table-data'
 import { PAGE_SIZE, statusArrs } from '../../helpers/consts'
+import { countItemsByStatus } from '../../helpers'
 
 const searchItemsArr = [{
 	label: 'Pro info:',
@@ -64,15 +65,6 @@ class Invites extends Component{
 
 	onChange = (pagination, filters, sorter) => {
 		this.setState({ sortedInfo: sorter, });
-	}
-
-	countCallsByStatus = (calls) => {
-		let callsByStatus = calls.reduce((acc, call) => {
-			let stat = call.status;
-			acc[stat] = (acc[stat] || 0) + 1;
-			return acc;
-		}, {});
-		this.setState({ callsByStatus });
 	}
 
 	onFilter = (statusFilter, generalLength, isReceived, _calls = []) => {
@@ -149,7 +141,9 @@ class Invites extends Component{
 		const { calls: prev_calls = []} = this.props.uArrays;
 
 		(prev_calls.length !== calls.length && calls.length !== 0)
-			&& this.countCallsByStatus(calls);
+			&& this.setState({ 
+				callsByStatus: countItemsByStatus(calls, 'status'),
+			});
 
 		(!this.props.uArrays.load  && nextProps.uArrays.load && calls.length)
 			&& this.state.isFiltered ? 

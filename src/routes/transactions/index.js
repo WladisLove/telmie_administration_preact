@@ -13,6 +13,7 @@ import { getTransactions, clearTransactions, } from '../../store/actions/user'
 import { getCookie } from '../../helpers/cookie'
 import { transactionsColumns as columns } from '../../helpers/table-data'
 import { PAGE_SIZE, statusArrs } from '../../helpers/consts'
+import { countItemsByStatus } from '../../helpers'
 
 const searchItemsArr = [{
 	label: 'User info:',
@@ -56,15 +57,6 @@ class Transactions extends Component{
 
 	onChange = (pagination, filters, sorter) => {
 		this.setState({ sortedInfo: sorter, });
-	}
-
-	countTrByStatus = (transactions) => {
-		let trByStatus = transactions.reduce((acc, tr) => {
-			let stat = tr.transactionType;
-			acc[stat] = (acc[stat] || 0) + 1;
-			return acc;
-		}, {});
-		this.setState({ trByStatus });
 	}
 
 	onFilter = (statusFilter, generalLength, isReceived, _tr = []) => {
@@ -129,7 +121,9 @@ class Transactions extends Component{
 
 		(prev_transactions.length !== transactions.length 
 			&& transactions.length !== 0)
-			&& this.countTrByStatus(transactions);
+			&& this.setState({ 
+				trByStatus: countItemsByStatus(transactions, 'transactionType'),
+			});
 		
 		(!this.props.uArrays.load  && nextProps.uArrays.load && transactions.length )
 			&& this.state.isFiltered ? 
