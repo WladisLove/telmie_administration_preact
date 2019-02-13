@@ -132,11 +132,15 @@ export const tableColumns = (sInfo = {}) => ([{
     sortOrder: sInfo.columnKey === 'locale' && sInfo.order,
   },{
     title: 'Last active',
-    dataIndex: 'lastActiveDate',
+    dataIndex: 'dateLastActive',
     width: 170,
-    render: (text) => convertDate(text),
-    sorter: (a, b) => new Date(a.lastActiveDate).getTime() - new Date(b.lastActiveDate).getTime(),
-    sortOrder: sInfo.columnKey === 'lastActiveDate' && sInfo.order,
+    render: (text, record) => record.activeNow ? 'active now' : convertDate(text),
+    sorter: (a, b) => {
+      const _a = a.dateLastActive ? new Date(a.dateLastActive).getTime() : null;
+      const _b = b.dateLastActive ? new Date(b.dateLastActive).getTime() : null;
+      return (_a === null && _b === null) ? 0 : (_a === null) ? 1 : (_b === null) ? -1 : _a - _b;
+    },
+    sortOrder: sInfo.columnKey === 'dateLastActive' && sInfo.order,
   },{
     title: 'Registration date',
     dataIndex: 'registrationDate',
