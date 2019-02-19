@@ -88,7 +88,18 @@ export const checkIfLoggedIn = () =>  /(^|;)\s*USER_AUTH=/.test(document.cookie)
 
 export const getActiveUsers = (authData) => async (dispatch) => {
 	dispatch(clearActiveUsers()); // when updating starts (for spinner)
-	const response = await user.getActiveUsers(authData);
+	let page = 0;
+	let response = await user.getActiveUsers(authData, page) || {};
+	if (Array.isArray(response.results)){
+		if (response.results.length === 2000){
+			const response1 = await user.getActiveUsers(authData, 1);
+			if(response1.error) {
+				dispatch(getUsersFailure(response.message));
+				return;
+			}
+			response = [...response.results, ...response1.results];
+		}
+	}
 	response.error ? 
 		dispatch(getUsersFailure(response.message))
 		: dispatch(setArrAction(actionTypes.SET_ACTIVE_USERS, response));

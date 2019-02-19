@@ -7,6 +7,7 @@ export const apiAdminRoot = `${apiRoot}admin/`;
 export const apiUrls = {
   LOG_IN: apiRoot + 'auth',
   GET_CATEGORIES: apiRoot + 'categories',
+  GET_USERS: apiAdminRoot + 'users',
   GET_ACTIVE_USERS: apiAdminRoot + 'users/active',
   GET_ARCHIVED_USERS: apiAdminRoot + 'users/archived',
   GET_INCOMPLETE_USERS: apiAdminRoot + 'users/incomplete',

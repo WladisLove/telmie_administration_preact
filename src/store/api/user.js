@@ -39,8 +39,27 @@ function getUsers(url, authData, query = ''){
 	});
 }
 
-export function getActiveUsers(authData){
-	return getUsers(apiUrls.GET_ACTIVE_USERS, authData);
+export function getActiveUsers(authData, page = 0){
+	//return getUsers(apiUrls.GET_ACTIVE_USERS + `?size=2000&page=${page}`, authData);
+	let headers = new Headers();
+	headers.append("Authorization", "Basic " + authData);
+	const query = `?f=REGISTERED,SUSPENDED,STARTED_PRO_APP,PENDING_APPROVAL,APPROVED_AS_PRO,SUSPENDED_AS_PRO&size=2000&page=${page}&q=`
+
+	return fetch(apiUrls.GET_USERS + query, { method: 'GET', headers}).then(response => {
+		return (response.status === 403) ? 
+			{
+				error: true,
+				message: 'Current user is not Admin',
+			} 
+				: 
+				response.status !== 200  ? 
+					response.json().then(json => ({ ...json, error: true, }))
+						.catch(err => ({ error: true, message: err.message, }))
+					: (response.json().then(json => json));
+
+	}, error => {
+		throw new Error(error.message);
+	});
 }
 export function getArchivedUsers(authData){
 	return getUsers(apiUrls.GET_ARCHIVED_USERS, authData);
