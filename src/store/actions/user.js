@@ -102,7 +102,7 @@ export const getActiveUsers = (authData) => async (dispatch) => {
 	}
 	response.error ? 
 		dispatch(getUsersFailure(response.message))
-		: dispatch(setArrAction(actionTypes.SET_ACTIVE_USERS, response));
+		: dispatch(setArrAction(actionTypes.SET_ACTIVE_USERS, response.results));
 };
 export const clearActiveUsers = () => (dispatch) => {
 	dispatch(clearAction(actionTypes.CLEAR_ACTIVE_USERS));
