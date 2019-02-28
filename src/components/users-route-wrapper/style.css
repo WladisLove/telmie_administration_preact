@@ -1,0 +1,19 @@
+.creatorTitle{
+    color: #e3002b;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.pushCreator > div:nth-child(2){
+    max-width: 550px;
+}
+
+.pushCreator .textArea{
+    display: flex;
+}
+
+.pushCreator .textArea > div{
+    width: 50%;
+    margin-right: 20px;
+}
+

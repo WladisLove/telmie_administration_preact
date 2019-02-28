@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "antd": "^3.9.3",
+    "emoji-picker-textfield": "^0.2.0",
     "preact": "^8.2.6",
     "preact-cli-sw-precache": "^1.0.3",
     "preact-compat": "^3.17.0",

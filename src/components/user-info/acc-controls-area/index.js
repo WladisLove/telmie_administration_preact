@@ -13,13 +13,13 @@ const AccountControlsArea = props => {
     const submit = (actionText, action = ()=>{}) => () => {
         confirmAlert({
             customUI: ({ onClose }) => (
-                <div class={style.confirmModal}>
-                    <p class={style.confirmTitle}>Do you want to {actionText.toUpperCase()} this user?</p>
-                    <button class={style.confirmOkBtn} onClick={() => {
+                <div class={"confirmModal"}>
+                    <p class={"confirmTitle"}>Do you want to {actionText.toUpperCase()} this user?</p>
+                    <button class={"confirmOkBtn"} onClick={() => {
                         action();
                         onClose();
                     }}>Yes</button>
-                    <button class={style.confirmCancelBtn} onClick={onClose}>No</button>
+                    <button class={"confirmCancelBtn"} onClick={onClose}>No</button>
                 </div>
                 )
             })
