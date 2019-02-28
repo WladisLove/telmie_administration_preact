@@ -4,6 +4,7 @@ import { Table, Spin } from 'antd';
 import UserInfo from '../user-info';
 import FilterArea from '../user-table-controls/filter-area'
 import SearchArea from '../user-table-controls/search-area'
+import MessagesArea from './message-area'
 import 'antd/dist/antd.css';
 
 import { PAGE_SIZE, statusArrs } from '../../helpers/consts'
@@ -37,7 +38,9 @@ class UsersRouteWrapper extends Component{
 			usersByStatus: [],
 
 			sortedInfo: {order: "descend", field: "id", columnKey: "id"},
-			pagination: { pageSize: PAGE_SIZE }
+			pagination: { pageSize: PAGE_SIZE },
+
+			selectedRowKeys: [],
 		}
 	}
 
@@ -131,6 +134,10 @@ class UsersRouteWrapper extends Component{
 		},
 	});
 
+	onSelectChange = (selectedRowKeys) => {
+		this.setState({ selectedRowKeys });
+	}
+
 	onBackToList = () => {
 		this.setState({ selected: false, });
 		this.props.clearSelectedUser();
@@ -141,9 +148,9 @@ class UsersRouteWrapper extends Component{
 	}
 
 	render(){
-        const {isFiltered, filteredData, isSearched, searchedData, sortedInfo = {}, selected, usersByStatus} = this.state;
+        const {isFiltered, filteredData, isSearched, searchedData, sortedInfo = {}, selected, usersByStatus, selectedRowKeys} = this.state;
         const {
-			accControlsFunc, serverData, isIndividual, isPending, isForDelete, selectedUser, columns, onEditUser, scroll = {}
+			accControlsFunc, serverData, isIndividual, isPending, isForDelete, selectedUser, columns, onEditUser, scroll = {}, isAU
 		} = this.props;
         const {load : isLoaded = false, error : isError = false, message : errorMsg = '', totalMesSent} = this.props.uArrays;
 		const {usersArr = [], withFilter = false} = this.props;
@@ -152,12 +159,18 @@ class UsersRouteWrapper extends Component{
 			searchedData : isFiltered 
 				? filteredData : usersArr;
 
+		const rowSelection = isAU ? {
+			selectedRowKeys: selectedRowKeys,
+			onChange: this.onSelectChange,
+		} : null;
+
 		return (
 			<Card cardClass='route-content route-user-table'>
 				{isLoaded ? 
 					!isError ? [
 						<p style={{display: 'inline-block', marginRight: 30}}>Total number of users: {usersArr.length}</p>,
-						this.props.isAU && <p style={{display: 'inline-block',}}>Total number of messages sent: {this.state.totalMesSent}</p>,
+						isAU && <p style={{display: 'inline-block', marginRight: 30}}>Total number of messages sent: {this.state.totalMesSent}</p>,
+						isAU && <p style={{display: 'inline-block',}}>Selected users: {selectedRowKeys.length}</p>,
 						withFilter && <FilterArea onFilter={this.onFilter} isShown={!!selected} usersByStatus={usersByStatus} statuses={statusArrs.users}/>,
 						<SearchArea onSearch={this.onSearch} isShown={!!selected} searchItemsArr={searchItemsArr}/>,
 						selected ? 
@@ -170,13 +183,17 @@ class UsersRouteWrapper extends Component{
 								accControlsFunc={accControlsFunc}
 								editUserFunc={onEditUser}/>
 								:
-							<Table columns={columns(sortedInfo)} 
+							[
+								<Table columns={columns(sortedInfo)} 
 									rowKey={(record) => record.id} 
+									rowSelection={rowSelection}
 									onChange={this.onChange}
 									onRow={this.onRow}
 									pagination={this.state.pagination}
 									dataSource={dataSource} 
-									scroll={scroll}/>
+									scroll={scroll}/>,
+								<MessagesArea selectedUsers={selectedRowKeys}/>
+							]
 					] : (
 					<div class="errorContainer">
 						Error! 
