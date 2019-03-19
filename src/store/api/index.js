@@ -27,5 +27,5 @@ export const apiUrls = {
   ADD_CREDITS: (amount, id) => (apiAdminRoot + 'users/' + id + '/addcredit?amount=' + amount),
 
   SEND_PUSH: apiAdminRoot + 'users/push',
-  SEND_EMAIL: apiAdminRoot + 'users/email',
+  SEND_EMAIL: apiAdminRoot + 'users/mail',
 }

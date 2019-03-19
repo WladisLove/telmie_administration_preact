@@ -1,9 +1,10 @@
 import { h, Component } from 'preact';
 import Card from '../card'
 import Select from '../select'
+import Input from '../input'
 import EmojiField from 'emoji-picker-textfield';
 import { confirmAlert } from 'react-confirm-alert';
-import { sendPush } from '../../store/api/notifications'
+import { sendPush, sendEmail } from '../../store/api/notifications'
 
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import style from './style.css'
@@ -14,11 +15,15 @@ class MessagesArea extends Component{
 
         this.state = {
             unified: '',
+            emailTag: '',
         }
     }
     
     selectPush = () => this.setState({ pushArea: true, emailArea: false });
-    selectEmail = () => this.setState({ pushArea: false, emailArea: true });
+    selectEmail = () => {
+        this.clearPushMes();
+        this.setState({ pushArea: false, emailArea: true });
+    };
 
     /*onSelecPushType = (e) => {
         console.log('[onSelecPushType]');
@@ -28,27 +33,60 @@ class MessagesArea extends Component{
         this._field.state.value = this._field.getUnicode(value);
         this.setState({ unified });
     }
+    clearPushMes = () => {
+        this.setState({ unified: '' });
+        this._field && ( this._field.state.value = '' );
+    }
 
-    onConfirm = () => confirmAlert({
+    onPushConfirm = () => confirmAlert({
         customUI: ({ onClose }) => (
             <div class={"confirmModal"}>
                 <p class={"confirmTitle"}>Do you want to send push notifications?</p>
-                <button class={"confirmOkBtn"} onClick={this.confirmSending(onClose)}>Yes</button>
+                <button class={"confirmOkBtn"} onClick={this.pushConfirmSending(onClose)}>Yes</button>
                 <button class={"confirmCancelBtn"} onClick={onClose}>No</button>
             </div>
         )
     });
 
-    confirmSending = (onClose) => async () => {
+    pushConfirmSending = (onClose) => async () => {
         this.setState({ pushError: false, pushErrorMsg: ''});
         sendPush(this.props.selectedUsers, this._field.state.value, this.props.userAuth).then((data) => {
             
             data.error ? (
                 this.setState({ pushError: true, pushErrorMsg: data.message})
             ) : (
-                this.setState({ unified: '' }),
-                this._field.state.value = ''
+                this.clearPushMes()
             )
+            onClose();
+		}).catch((error) => {
+            console.log(error);
+            onClose();
+		});
+    }
+
+    onChangeEmail = (e) => {
+        this.setState({ emailTag: e.target.value });
+    }
+
+    onEmailConfirm = () => confirmAlert({
+        customUI: ({ onClose }) => (
+            <div class={"confirmModal"}>
+                <p class={"confirmTitle"}>Do you want to send email notifications?</p>
+                <button class={"confirmOkBtn"} onClick={this.emailConfirmSending(onClose)}>Yes</button>
+                <button class={"confirmCancelBtn"} onClick={onClose}>No</button>
+            </div>
+        )
+    });
+
+    emailConfirmSending = (onClose) => async () => {
+        this.setState({ emailError: false, emailErrorMsg: ''});
+        sendEmail(this.props.selectedUsers, this.state.emailTag, this.props.userAuth).then((data) => {
+            
+            data.error ? (
+                this.setState({ emailError: true, emailErrorMsg: data.message})
+            ) : (
+                this.setState({ emailTag: '' })
+            );
             onClose();
 		}).catch((error) => {
             console.log(error);
@@ -82,9 +120,19 @@ class MessagesArea extends Component{
                                         ref={(_field) => this._field = _field}/>   
                                     <div dangerouslySetInnerHTML={{__html: this.state.unified}}/>
                                 </div>
-                                <button class='saveBtn' onClick={this.onConfirm}>Send</button>
+                                <button class='saveBtn' onClick={this.onPushConfirm}>Send</button>
                                 {this.state.pushError && 
                                     <div class="errorSamllMsg">Error in sending push! {this.state.pushErrorMsg}</div>}
+                            </div>
+                        )}
+
+                        { this.state.emailArea && (
+                            <div class={style.pushCreator}>
+                                <div class={style.creatorTitle}>E-mail notification</div>
+                                <Input label='Email tag (from Prismic):' value={this.state.emailTag} onChange={this.onChangeEmail}/>
+                                <button class='saveBtn' onClick={this.onEmailConfirm}>Send</button>
+                                {this.state.emailError && 
+                                    <div class="errorSamllMsg">Error in sending email! {this.state.emailErrorMsg}</div>}
                             </div>
                         )}
                         
