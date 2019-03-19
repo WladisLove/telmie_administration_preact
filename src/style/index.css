@@ -100,6 +100,11 @@ html, body {
 	font-size: 20px;
 	color: green !important;
 }
+.errorSamllMsg{
+	color: #e3002b !important;
+    text-align: center;
+    font-size: 18px;
+}
 
 button {
 	color: #ffffff !important;
@@ -192,4 +197,8 @@ ul.typesDescription span{
     color: black !important;
     background-color: white;
     border: 2px solid black;
+}
+
+.emoji-picker{
+	z-index: 5;
 }

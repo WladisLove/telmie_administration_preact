@@ -60,6 +60,7 @@ class ActiveUsers extends Component{
 
 			isIndividual={false}
 			isAU = {true}
+			userAuth={this.userAuth}
 
 			columns={columns}
 			scroll={{ x: 2340 }}

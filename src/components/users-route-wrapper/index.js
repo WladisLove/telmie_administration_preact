@@ -154,7 +154,7 @@ class UsersRouteWrapper extends Component{
 		} = this.props;
         const {load : isLoaded = false, error : isError = false, message : errorMsg = '', totalMesSent} = this.props.uArrays;
 		const {usersArr = [], withFilter = false} = this.props;
-		
+
 		const dataSource = isSearched ? 
 			searchedData : isFiltered 
 				? filteredData : usersArr;
@@ -192,7 +192,7 @@ class UsersRouteWrapper extends Component{
 									pagination={this.state.pagination}
 									dataSource={dataSource} 
 									scroll={scroll}/>,
-								<MessagesArea selectedUsers={selectedRowKeys}/>
+								<MessagesArea selectedUsers={selectedRowKeys} userAuth={this.props.userAuth}/>
 							]
 					] : (
 					<div class="errorContainer">

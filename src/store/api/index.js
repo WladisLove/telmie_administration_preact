@@ -1,4 +1,4 @@
-export const apiRoot = 'http://sr461.2dayhost.com/api/';
+export const apiRoot = 'https://sr461.2dayhost.com/api/';
 // for main server
 //export const apiRoot = 'https://telmie.com/api/';
 
@@ -25,4 +25,7 @@ export const apiUrls = {
   GET_USER_LIST: (id) => (apiAdminRoot + 'users/' + id + '/shortlist'),
   GET_USER_MONEY: (id, page, size) => (apiAdminRoot + 'users/' + id + '/money?page' + page + '&size=' + size),
   ADD_CREDITS: (amount, id) => (apiAdminRoot + 'users/' + id + '/addcredit?amount=' + amount),
+
+  SEND_PUSH: apiAdminRoot + 'users/push',
+  SEND_EMAIL: apiAdminRoot + 'users/email',
 }

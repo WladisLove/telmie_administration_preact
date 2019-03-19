@@ -3,8 +3,9 @@ import Card from '../card'
 import Select from '../select'
 import EmojiField from 'emoji-picker-textfield';
 import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css'
+import { sendPush } from '../../store/api/notifications'
 
+import 'react-confirm-alert/src/react-confirm-alert.css'
 import style from './style.css'
 
 class MessagesArea extends Component{
@@ -19,17 +20,13 @@ class MessagesArea extends Component{
     selectPush = () => this.setState({ pushArea: true, emailArea: false });
     selectEmail = () => this.setState({ pushArea: false, emailArea: true });
 
-    onSelecPushType = (e) => {
+    /*onSelecPushType = (e) => {
         console.log('[onSelecPushType]');
-    }
+    }*/
     onPushMesChange = (e, value) => {
-        const unified = this._field.getImages(value);
+        const unified = this._field.getImages(value); 
+        this._field.state.value = this._field.getUnicode(value);
         this.setState({ unified });
-    }
-    onSendPush = () => {
-        console.log('[onSendPush]', this._field.state.value);
-        this.setState({ unified: '' });
-        this._field.state.value = '';
     }
 
     onConfirm = () => confirmAlert({
@@ -43,8 +40,20 @@ class MessagesArea extends Component{
     });
 
     confirmSending = (onClose) => async () => {
-        this.onSendPush();
-        onClose();
+        this.setState({ pushError: false, pushErrorMsg: ''});
+        sendPush(this.props.selectedUsers, this._field.state.value, this.props.userAuth).then((data) => {
+            
+            data.error ? (
+                this.setState({ pushError: true, pushErrorMsg: data.message})
+            ) : (
+                this.setState({ unified: '' }),
+                this._field.state.value = ''
+            )
+            onClose();
+		}).catch((error) => {
+            console.log(error);
+            onClose();
+		});
     }
     
 
@@ -65,7 +74,7 @@ class MessagesArea extends Component{
                         { this.state.pushArea && (
                             <div class={style.pushCreator}>
                                 <div class={style.creatorTitle}>Push notification</div>
-                                <Select label='Type of push notification:' name='pushType' value={''} data={[]} onChange={this.onSelecPushType} isArrayData/>
+                                {/*<Select label='Type of push notification:' name='pushType' value={''} data={[]} onChange={this.onSelecPushType} isArrayData/>*/}
                                 <div style={{color: '#3d5273', marginLeft: '50%'}}>Preview:</div>
                                 <div class={style.textArea}>
                                     <EmojiField placeholder='Type here'
@@ -74,6 +83,8 @@ class MessagesArea extends Component{
                                     <div dangerouslySetInnerHTML={{__html: this.state.unified}}/>
                                 </div>
                                 <button class='saveBtn' onClick={this.onConfirm}>Send</button>
+                                {this.state.pushError && 
+                                    <div class="errorSamllMsg">Error in sending push! {this.state.pushErrorMsg}</div>}
                             </div>
                         )}
                         
