@@ -153,11 +153,15 @@ export const tableColumns = (sInfo = {}) => ([{
     dataIndex: 'emailNotifications',
     width: 70,
     render: (text) => text.toString(),
+    sorter: (a, b) => a.emailNotifications - b.emailNotifications,
+    sortOrder: sInfo.columnKey === 'emailNotifications' && sInfo.order,
   },{
     title: 'Card',
     dataIndex: 'card',
     width: 70,
     render: (text) => text.toString(),
+    sorter: (a, b) => a.card - b.card,
+    sortOrder: sInfo.columnKey === 'card' && sInfo.order,
   },{
     title: 'Telmie Credit',
     dataIndex: 'telmieCredit',
