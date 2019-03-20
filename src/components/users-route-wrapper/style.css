@@ -17,3 +17,32 @@
     margin-right: 20px;
 }
 
+.editPushTab{
+    display: flex;
+    align-items: flex-start;
+}
+
+.editPushTab .pushEditArea{
+    max-width: 550px;
+    width: 100%;
+    margin-right: 20px;
+}
+
+.editPushTab .pushList{
+    height: 500px;
+    overflow: auto;
+}
+
+.pushItem{
+    border-bottom: 1px solid black;
+    padding: 5px 0;
+    cursor: pointer;
+}
+.pushItem .pushTitle{
+    font-size: 20px;
+    color: black;
+}
+.pushItem .pushBody{
+    font-size: 18px;
+    padding-left: 10px;
+}
