@@ -92,17 +92,19 @@ export const getActiveUsers = (authData) => async (dispatch) => {
 	let response = await user.getActiveUsers(authData, page) || {};
 	if (Array.isArray(response.results)){
 		if (response.results.length === 2000){
-			const response1 = await user.getActiveUsers(authData, 1);
+			const response1 = await user.getActiveUsers(authData, 1);			
 			if(response1.error) {
 				dispatch(getUsersFailure(response.message));
 				return;
 			}
 			response = [...response.results, ...response1.results];
+		} else {
+			response = [...response.results];
 		}
 	}
 	response.error ? 
 		dispatch(getUsersFailure(response.message))
-		: dispatch(setArrAction(actionTypes.SET_ACTIVE_USERS, response.results));
+		: dispatch(setArrAction(actionTypes.SET_ACTIVE_USERS, response));
 };
 export const clearActiveUsers = () => (dispatch) => {
 	dispatch(clearAction(actionTypes.CLEAR_ACTIVE_USERS));
