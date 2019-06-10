@@ -2,17 +2,17 @@ import * as user from '../api/user';
 import { actionTypes } from './index';
 import { INFO_TYPES } from '../../helpers/consts'
 
-const setCookie = (name,value,days) => {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+const setCookie = (name, value, days) => {
+	var expires = "";
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+		expires = "; expires=" + date.toUTCString();
+	}
+	document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 const eraseCookie = (name) => {
-    document.cookie = name+'=; Max-Age=-99999999;';
+	document.cookie = name + '=; Max-Age=-99999999;';
 }
 
 const logInSuccess = (response, authData) => ({
@@ -26,7 +26,7 @@ const logInFailure = () => ({
 const loggedOff = (response) => ({
 	type: actionTypes.LOGGED_OFF
 });
-const getUsersFailure = (message) =>({
+const getUsersFailure = (message) => ({
 	type: actionTypes.ERROR_GETTING_USERS,
 	message,
 })
@@ -52,11 +52,11 @@ const changeAUStatusSuccess = (user) => ({
 	type: actionTypes.CHANGE_A_U_STATUS_SUCCESS,
 	user,
 });
-const modifyUserFailure = (message) =>({
+const modifyUserFailure = (message) => ({
 	type: actionTypes.MODIFY_USER_FAILURE,
 	message,
 });
-const modifyU = () =>({
+const modifyU = () => ({
 	type: actionTypes.START_MODIFY_USER,
 });
 const restoreAUSuccess = (user) => ({
@@ -71,12 +71,12 @@ const setUserInfoList = (infoList, infoType) => ({
 
 export const logIn = (authData) => async (dispatch) => {
 	const response = await user.logIn(authData);
-	Object.keys(response).length === 0 ?(
+	Object.keys(response).length === 0 ? (
 		dispatch(logInFailure())
 	) : (
-		dispatch(logInSuccess(response, authData)),
-		setCookie('USER_AUTH', authData, 30)
-	)
+			dispatch(logInSuccess(response, authData)),
+			setCookie('USER_AUTH', authData, 30)
+		)
 };
 
 export const logOff = () => (dispatch) => {
@@ -84,27 +84,26 @@ export const logOff = () => (dispatch) => {
 	eraseCookie('USER_AUTH');
 };
 
-export const checkIfLoggedIn = () =>  /(^|;)\s*USER_AUTH=/.test(document.cookie);
+export const checkIfLoggedIn = () => /(^|;)\s*USER_AUTH=/.test(document.cookie);
 
 export const getActiveUsers = (authData) => async (dispatch) => {
 	dispatch(clearActiveUsers()); // when updating starts (for spinner)
 	let page = 0;
-	let response = await user.getActiveUsers(authData, page) || {};
-	if (Array.isArray(response.results)){
-		if (response.results.length === 2000){
-			const response1 = await user.getActiveUsers(authData, 1);			
-			if(response1.error) {
-				dispatch(getUsersFailure(response.message));
-				return;
+	let usersArr = [];
+	do {
+		let response = await user.getActiveUsers(authData, page) || {};
+		response.error && dispatch(getUsersFailure(response.message));
+		if (Array.isArray(response.results)) {
+			if (response.results.length < 2000 || page >= 5) { // in 'page >= 5' set a limit for 10.000 items
+				usersArr = [...usersArr, ...response.results];
+				dispatch(setArrAction(actionTypes.SET_ACTIVE_USERS, usersArr));
+				break;
+			} else {
+				usersArr = [...usersArr, ...response.results];
+				page++;
 			}
-			response = [...response.results, ...response1.results];
-		} else {
-			response = [...response.results];
 		}
-	}
-	response.error ? 
-		dispatch(getUsersFailure(response.message))
-		: dispatch(setArrAction(actionTypes.SET_ACTIVE_USERS, response));
+	} while (true);
 };
 export const clearActiveUsers = () => (dispatch) => {
 	dispatch(clearAction(actionTypes.CLEAR_ACTIVE_USERS));
@@ -113,9 +112,9 @@ export const clearActiveUsers = () => (dispatch) => {
 export const getArchivedUsers = (authData) => async (dispatch) => {
 	dispatch(clearArchivedUsers());
 	const response = await user.getArchivedUsers(authData);
-	response.error ? 
+	response.error ?
 		dispatch(getUsersFailure(response.message))
-		: dispatch(setArrAction(actionTypes.SET_ARCHIVED_USERS,response));
+		: dispatch(setArrAction(actionTypes.SET_ARCHIVED_USERS, response));
 };
 export const clearArchivedUsers = () => (dispatch) => {
 	dispatch(clearAction(actionTypes.CLEAR_ARCHIVED_USERS));
@@ -124,7 +123,7 @@ export const clearArchivedUsers = () => (dispatch) => {
 export const getIncompleteUsers = (authData) => async (dispatch) => {
 	dispatch(clearIncompleteUsers());
 	const response = await user.getIncompleteUsers(authData);
-	response.error ? 
+	response.error ?
 		dispatch(getUsersFailure(response.message))
 		: dispatch(setArrAction(actionTypes.SET_INCOMPLETE_USERS, response));
 };
@@ -135,7 +134,7 @@ export const clearIncompleteUsers = () => (dispatch) => {
 export const getInvites = (authData) => async (dispatch) => {
 	dispatch(clearInvites());
 	const response = await user.getInvites(authData);
-	response.error ? 
+	response.error ?
 		dispatch(getUsersFailure(response.message))
 		: dispatch(setArrAction(actionTypes.SET_INVITES, response));
 };
@@ -155,7 +154,7 @@ export const getCalls = (authData, start = '', end = '') => async (dispatch) => 
 	});
 	dispatch(clearCalls());
 	const response = await user.getCalls(authData, queryArr);
-	response.error ? 
+	response.error ?
 		dispatch(getUsersFailure(response.message))
 		: dispatch(setArrAction(actionTypes.SET_CALLS, response.results));
 };
@@ -175,7 +174,7 @@ export const getTransactions = (authData, start = '', end = '') => async (dispat
 	});
 	dispatch(clearTransactions());
 	const response = await user.getTransactions(authData, queryArr);
-	response.error ? 
+	response.error ?
 		dispatch(getUsersFailure(response.message))
 		: dispatch(setArrAction(actionTypes.SET_TRANSACTIONS, response.results));
 };
@@ -189,15 +188,15 @@ export const clearSelectedUser = () => (dispatch) => {
 export const chooseSelectedUser = (_user, authData) => async (dispatch) => {
 	dispatch(clearUser());
 	const response = await user.getUserInfo(_user.id, authData);
-	response.error ? 
+	response.error ?
 		dispatch(manipulateUserFailure(response.message, 'get'))
 		: dispatch(selectUser(response));
 };
 
 export const deleteUser = (id, value, authData, updateAU = true) => async (dispatch) => {
 	const response = await user.deleteUser(id, authData, value);
-	if (value){
-		response.error ? 
+	if (value) {
+		response.error ?
 			dispatch(manipulateUserFailure(response.message, 'delete'))
 			: (
 				dispatch(clearUser()),
@@ -211,13 +210,13 @@ export const deleteUser = (id, value, authData, updateAU = true) => async (dispa
 				dispatch(getArchivedUsers(authData))
 			);
 	}
-	
+
 };
 
 export const editUser = (data, id, authData, updateAU = true) => async (dispatch) => {
 	dispatch(modifyU());
 	const response = await user.editUser(data, id, authData);
-	response.error ? 
+	response.error ?
 		dispatch(manipulateUserFailure(response.message, 'edit'))
 		: (
 			dispatch(editUserSuccess(response)),
@@ -280,7 +279,7 @@ export const addFreeCredits = (amount, id, authData) => async (dispatch) => {
 	dispatch({ type: actionTypes.ADD_CREDITS_START, })
 	const response = await user.addFreeCredits(amount, id, authData);
 	response.error ?
-		dispatch({ 
+		dispatch({
 			type: actionTypes.ADD_CREDITS_FAILURE,
 			message: response.message,
 		})
